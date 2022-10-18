@@ -10,7 +10,6 @@ A fan-made, improved level editor for the indie game "Rain World"
 - Extract the .zip to where you have installed the Official or Community level editor(s)
 - If you don't already have a level editor, download the official one from RainDB or the community one from the Rain World Discord
 - It shouldn't ask to replace files, but if it does, make backups!
-### Please don't use the tiles and materials marked as "Drought Reserve"
 
 ## Features
 - [x] Import and Export for the official Editor and RWCOM + Drought Editor ver 0.3.6 (aka, the community editor)
