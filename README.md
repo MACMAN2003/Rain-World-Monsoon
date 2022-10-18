@@ -3,7 +3,7 @@ A fan-made, improved level editor for the indie game "Rain World"
 
 ### Current version: 0.1 (Alpha) (17th of October 2022)
 
-
+# If you find a problem, please make an issue for it :)
 
 ## Installation Instructions
 - Get it [here](https://github.com/MACMAN2003/Rain-World-Monsoon/releases/tag/Alpha)
