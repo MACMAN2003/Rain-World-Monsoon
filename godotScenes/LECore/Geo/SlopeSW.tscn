@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqm6f2w33psb1"]
+
+[ext_resource type="Texture2D" uid="uid://docamoucgp86a" path="res://Core/LDownSlopeGEO.tres" id="1_ukego"]
+
+[node name="SlopeSW" type="Sprite3D"]
+pixel_size = 0.001
+alpha_cut = 2
+texture_filter = 1
+texture = ExtResource("1_ukego")

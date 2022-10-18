@@ -1,0 +1,127 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2f2tyn15v4nt"]
+
+[ext_resource type="PackedScene" uid="uid://ccg5b310o2cvf" path="res://godotScenes/LECore/EditorsScenes/MatrixDisplayMaster2d.tscn" id="1_2hjix"]
+
+[node name="Main Menu" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+offset_right = 63.0
+offset_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.22
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+offset_left = 67.0
+offset_right = 899.0
+offset_bottom = 1080.0
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+offset_right = 832.0
+offset_bottom = 16.0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.02
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer"]
+layout_mode = 2
+offset_top = 20.0
+offset_right = 832.0
+offset_bottom = 1059.0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.27
+mouse_filter = 2
+
+[node name="SubViewport" type="SubViewport" parent="VBoxContainer/SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+gui_snap_controls_to_pixels = false
+size = Vector2i(832, 640)
+render_target_update_mode = 4
+
+[node name="Matrix Display Master 2D" parent="VBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("1_2hjix")]
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+offset_top = 1063.0
+offset_right = 832.0
+offset_bottom = 1080.0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.02
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+layout_mode = 2
+offset_left = 903.0
+offset_right = 903.0
+offset_bottom = 1080.0
+size_flags_horizontal = 2
+size_flags_stretch_ratio = 0.03
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 2
+offset_left = 915.0
+offset_right = 1203.0
+offset_bottom = 1080.0
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer2"]
+layout_mode = 2
+offset_right = 288.0
+offset_bottom = 45.0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.29
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer2"]
+layout_mode = 2
+offset_top = 49.0
+offset_right = 288.0
+offset_bottom = 836.0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 5.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer2/PanelContainer"]
+layout_mode = 2
+offset_right = 288.0
+offset_bottom = 787.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer2/PanelContainer/ScrollContainer"]
+layout_mode = 2
+offset_right = 288.0
+offset_bottom = 787.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "General Controls:
+View Controls:
+Numpad 8 4 2 6 OR Middle Mouse + Drag to move
+Menu Controls:
+1 2 3 4 5 6 7 8 9 to switch between editors
+0 or CTRL+S to save
+Other Controls:
+R to reload display"
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer2"]
+layout_mode = 2
+offset_top = 840.0
+offset_right = 288.0
+offset_bottom = 1080.0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.52
+
+[node name="MarginContainer3" type="MarginContainer" parent="."]
+layout_mode = 2
+offset_left = 1207.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.48

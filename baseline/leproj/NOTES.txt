@@ -1,0 +1,194 @@
+line 1: gLEProps.matrix; GEO EDITOR!!!!!! array (or matrix?) starting from 1x, 1y going DOWN until Y reaches MAX_Y when DOWN is done then NEXT COLUMN
+line 2: gTEProps; TILE EDITOR!!!!!! matrix probably the same as geo editors?? but instead of an (integer?) it's a "[#tp: "default", #Data: 0]"
+line 3: gEEprops; effects editor, need more looking.
+line 4: gLightEProps; light editor?
+line 5: gLEVEL; appears to be environment/map settings
+line 6: gLOprops; the maps size settings/seed/stuff (important: #size: point(3, 3) is the MAXIMUM SIZE of the level in (X, Y) and #extratiles [1,1,1,1] appears to be the level's padding/margin)
+line 7: gCameraProps; camera editor
+line 8:gEnvEditorProps; water level editor?
+line 9: gPEProps; prop editor!
+line 10: extra line cause RETURN after the string.
+nine extra lines are added for each save, is the topmost one the most recent?
+
+72 x 43
+
+L   T  R  B
+12 3 12 5
+
+
+
+default playable area rect starts at x 13 y 4 and ends at x 60 y 38
+
+
+
+
+
+the lingo code's global vars (documented so far): //todo sort
+// find out what q and c are
+// does q mean current index of an array used during foreach equivalent thingies?
+// is c the same?
+gLOprops = has a size with "loch" and "locv"   gLOprops = [#mouse:0, #lastMouse:0, #mouseClick:0, #pal:1, pals:[[#detCol:color(255, 0, 0)]], #eCol1:1, #eCol2:2, #totEcols:5, #tileSeed:random(400), #colGlows:[0,0], #size:point(cols, rows), #extraTiles:[12,3,12,5], #light:1]
+gEditLizard = ?? (deprecated probably)
+gLevel = ??
+gLeProps = ??
+gPrioCam = ??
+newSize = ??
+showControls = ??
+projects = ??
+ldPrps = ??
+gTEprops = [#lastKeys:[], #keys:[], #workLayer:1, #lstMsPs:point(0,0), #tlMatrix:[], #defaultMaterial:"Concrete", #toolType:"material", #toolData:"Big Metal",\ tmPos:point(1,1), #tmSavPosL:[], #specialEdit:0] (????)
+gTiles = array of arrays, sub arrays are filled with "[#nm:"Standard", #sz:point(1,1), #specs:[0], #renderType:"unified", #color:color(150,150,150), #tags:[]]" (ignore the ones tagged as drought reserve)
+gLEProps = [#matrix:[] , #levelEditors:[] , #toolMatrix:[],#camPos:point(0,0)] has a matrix attached called "toolMatrix" with [q] and [c] thingies (not the same as gLeProps?) toolmatrix appears to be the tools menu
+gEEprops = [#lastKeys:[], #keys:[], #lstMsPs:point(0,0), #effects:[], emPos:point(1,1), #editEffect:0, #selectEditEffect:0, #mode:"createNew", #brushSize:5] (gEE it sure is boring around here)
+gLightEProps = gLightEProps = [#pos:point(1040/2, 800/2), rot:0, #sz:point(50, 70), #col:1, #keys:0, #lastKeys:0, #lastTm:0, #lightAngle:180, #flatness:1, #lightRect:rect(1000, 1000, -1000, -1000), #paintShape:"pxl"]
+gLEVEL = [#timeLimit:4800, #defaultTerrain:1, #maxFlies:10, #flySpawnRate:50, #lizards:[], #ambientSounds:[], #music:"NONE", #tags:[], #lightType:"Static", #waterDrips:1, #lightRect:rect(0,0,1040,800), #matrix:[]] (not the same as gLevel?)
+gLoadedName = level's name?
+gCameraProps = [#cameras:[point(gLOprops.size.locH*10, gLOprops.size.locV*10)-point(35*20, 20*20)], #selectedCamera:0, #quads:[[[0,0], [0,0], [0,0], [0,0]]], #keys:[#n:0, #d:0, #e:0, #p:0]
+gEnvEditorProps
+gPEprops
+gLOADPATH = [ ] (empty array?)
+gBlurOptions = deprecated???
+levelName
+gPrioCam
+snapToGrid
+preciseSnap
+gEffects = []?
+	gEffects.add([#nm:"Natural", #efs:[]])
+ 	 gEffects[gEffects.count].efs.add( [#nm:"Slime"]    )
+ 	 gEffects[gEffects.count].efs.add( [#nm:"Melt"]    )
+?????
+stg
+ps
+lvlPropOutput = false(bool?)
+hideHelpClick
+gDirectionKeys
+gMegaTrash = [] (empty array?) (don't say that about the mega drive ;-;)
+gSEProps = deprecated?
+gViewRender
+gMassRenderL = [ ] (empty array?)
+gImgXtra = xtra?
+lG (lowercase L) = "1" (integer??? string????)
+gTrashPropOptions = [] (empty array?)
+solidMtrx = [] (empty array?)
+grimeActive
+grimeOnGradients
+drRFixes
+gViewRender = 1 (bool? int?)
+gFullRender = 1 (bool? int?)
+gSaveProps = [baScreenInfo("width"), baScreenInfo("height"), baScreenInfo("depth")]
+gProps = [] added [#nm:vl[1], #clr:vl[2], #prps:[]] (array?) and [#nm:"Tiles as props "&gPageCount, #clr:color(255, 0,0), #prps:[]]
+		
+		gProps.add( [#nm:"Rope type props", #clr:color(0, 255, 0), #prps:[]]    )
+  		gProps[gProps.count].prps.add([#nm:"Wire", #tp:"rope", #depth:0, #tags:[], #notes:[], #segmentLength:3, #collisionDepth:0, #segRad:1, #grav:0.5, #friction:0.5, #airFric:0.9, #stiff:0, #previewColor:color(255,0, 0), #previewEvery:4, #edgeDirection:0, #rigid:0, #selfPush:0, #sourcePush:0])
+		//holy shit that's some physics
+	gProps.add( [#nm:"Long props", #clr:color(0, 255, 0), #prps:[]]    )
+ 	 gProps[gProps.count].prps.add([#nm:"Cabinet Clamp", #tp:"long", #depth:0, #tags:[], #notes:[]])
+
+
+
+
+
+
+gPEcolors = [] (palette?)
+gPageCount = 0?
+gPageTick = 0?
+l1 (lowercase L) = ???
+gLASTDRAWWASFULLANDMINI = 0 (wtf)
+
+
+
+
+other/theories:
+#extraTiles stores in order [left, top, right, bottom]
+#light means whether or not sunlight is shown
+#defaultTerrain is 1 for regular pit supervisors and 0 for bottomless pit supervisors
+geo editor and tile editor might be same size arraywise
+
+geometry editor matrix thingy:
+	 level = column[] one column for each X coord
+		 column = square[] one square for each Y coord
+			square = 3 layer[]
+				layer = tile1.ID, list tile2[tile2.id, tile2.id1]
+geo editor tile IDS:
+0 = air
+1 = Wall
+2 = right up slope
+3 = left up slope
+4 = right down slope
+5 = left down slope
+6 = drop-through floor/platform
+7 = connected? shortcut
+
+9 = glass
+geo editor tile 2 IDS: (null if nothing)
+1 = horizontal beam (all3)
+2 = vertical beam (all3)
+3 = batfly nest
+4 = shortcut
+5 = shortcut connector dot
+6 = entrance
+7 = dragon den (enemy)
+9 = rock
+10 = spear
+11 = carve / crack (all3)
+12 = forbid batfly chain
+13 = garbage worm hole
+14 = ??
+15 = ??
+16 = ??
+17 = ??
+18 = waterfall
+19 = whack a mole hole
+20 = worm grass
+21 = scavenger hole
+
+
+
+
+
+
+
+geo editor matrixarray is contained into one sqbrkt pair []
+is the matrix square? or is it an array that's on crack?
+each square's 3 layers are contianed in brackets like so "[[layer1, [v , hpoles]],[layer2, [v, hpoles]],layer3, [v, hpoles]]"
+geo editor's matrix starts from top left and goes DOWN, so each column is [[x1y1][x1y2][x1y3]] [[x2y1][x2y2][x2y3]]
+
+geo editor square has two thingies, one and another [] in it?
+the other [] goes "[1, 2]" if there's a vertical and horizontal bar in it
+
+matrix goes down!!!!!!!!!
+
+
+TILE EDITOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+tiles = materials, on crack!!
+
+specs[] is a matrix!!!!!!! it goes DOWN!!!!!!!!
+specs2[] is also a matrix!!!!!!! it also goes DOWN!!!!!!!
+specs1 checks if the geo below the tile's is the same!
+specs2 is applied on the layer below specs!!!!!!!!!!
+unless the layer is 3?
+-1 = air (0)?
+what does #repeatL:[] do?
+no it means "put whatever the hell you want here lol"
+
+example material
+gTiles[1].tls.add( [#nm:"Standard", #sz:point(1,1), #specs:[0], #renderType:"unified", #color:color(150,150,150), #tags:[]]    )
+
+example tile
+[#nm:"Big Head", #sz:point(4,4), #specs:[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1], #specs2:0, #tp:"voxelStruct", #repeatL:[1,1,1,1,6], #bfTiles:1, #rnd:1, #ptPos:0, #tags:["nonSolid"]]
+
+example complex tile
+[#nm:"SuperStructure Leg", #sz:point(35,29), #specs:[1,1,1,1,5,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,3,1,1,1,1,      1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,      1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,      1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,      1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,      1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,      1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,     1,1,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1,1,1,1,1,     1,1,1,1,1,1,1,1,1,1,1,5,-1,-1,-1,-1,-1,3,1,1,1,1,1,1,1,1,1,1,1,    -1,-1,-1,2,1,1,1,1,1,1,1,1,5,-1,-1,-1,3,1,1,1,1,1,1,1,1,4,-1,-1,-1,      -1,-1,-1,-1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,-1,-1,-1,-1,       -1,-1,-1,-1,-1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,-1,-1,-1,-1,-1,   -1,-1,-1,-1,-1,-1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,-1,-1,-1,-1,-1,-1,  -1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,    -1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,   -1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,   -1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,   -1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,   -1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,   -1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,   -1,-1,-1,-1,-1,-1,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,-1,-1,-1,-1,-1,-1,   -1,-1,-1,-1,-1,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,-1,-1,-1,-1,-1,   -1,-1,-1,-1,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,-1,-1,-1,-1,    -1,-1,-1,3,1,1,1,1,1,1,1,1,4,-1,-1,-1,2,1,1,1,1,1,1,1,1,5,-1,-1,-1,        1,1,1,1,1,1,1,1,1,1,1,4,-1,-1,-1,-1,-1,2,1,1,1,1,1,1,1,1,1,1,1,     1,1,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1,1,1,1,1,    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,     1,1,1,1,4,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,2,1,1,1,1     ], #specs2:0, #tp:"voxelStruct", #repeatL:[1,1,1,1,1,3,1,1], #bfTiles:1, #rnd:1, #ptPos:0, #tags:[]]
+
+example complex tile 2
+
+
+gTiles != gTEProps
+gTEProps is just a matrix list of which material/tile is where
+
+the matrix is stored in the same way the gLEProps matrix is!!!!!!!!!!!!!!!!!!!!!!!!!!
+01 02 03 > 11 12 13 > 21 22 23 > 31 32 33!!!!!!!!!!!!!!!!!!!!!
+does it just put a prop where the tile is????
+sneaky!!!!
+

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://ctv7llqm1c5jt"
+path="res://.godot/imported/Wall.obj-52c28159430f34bf976d33d03efebecb.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Wall.obj-52c28159430f34bf976d33d03efebecb.mesh"]
+
+source_file="res://Assets/Core_3D doesnt work lol/Wall.obj"
+dest_files=["res://.godot/imported/Wall.obj-52c28159430f34bf976d33d03efebecb.mesh", "res://.godot/imported/Wall.obj-52c28159430f34bf976d33d03efebecb.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

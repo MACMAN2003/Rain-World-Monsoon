@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4xr1yjeiej8m"]
+
+[ext_resource type="Theme" uid="uid://cjaowsnu7xtcr" path="res://godotScenes/LECore/UI/LETheme.tres" id="1_t5jdr"]
+
+[node name="leditor_background" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme = ExtResource("1_t5jdr")

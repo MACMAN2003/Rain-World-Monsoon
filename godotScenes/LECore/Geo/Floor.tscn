@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://djnrn2osn0xhl"]
+
+[ext_resource type="Texture2D" uid="uid://42phppxayysu" path="res://Core/FloorPlatform.tres" id="1_26xns"]
+
+[node name="Floor" type="Sprite3D"]
+flip_v = true
+pixel_size = 0.001
+alpha_cut = 1
+texture_filter = 0
+texture = ExtResource("1_26xns")

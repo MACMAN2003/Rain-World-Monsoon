@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://xg342uyjdht8"]
+
+[ext_resource type="Texture2D" uid="uid://10ddh2wjuaqf" path="res://Core/compass.png" id="1_tg6xb"]
+[ext_resource type="Script" path="res://Scripts/Compass.cs" id="2_kuv2k"]
+
+[node name="Compass" type="Sprite2D"]
+z_index = -1
+texture = ExtResource("1_tg6xb")
+script = ExtResource("2_kuv2k")

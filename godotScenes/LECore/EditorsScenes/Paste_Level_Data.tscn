@@ -1,0 +1,50 @@
+[gd_scene load_steps=2 format=3 uid="uid://be16m22ekk4vu"]
+
+[ext_resource type="Theme" uid="uid://cjaowsnu7xtcr" path="res://godotScenes/LECore/UI/LETheme.tres" id="1_ogjxd"]
+
+[node name="Paste_Level_Data" type="Window"]
+disable_3d = true
+title = "Paste Level Data"
+size = Vector2i(800, 600)
+transient = true
+theme = ExtResource("1_ogjxd")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CodeEdit" type="CodeEdit" parent="VBoxContainer"]
+offset_right = 1920.0
+offset_bottom = 1019.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 16.87
+placeholder_text = "Control V level data here..... (or type your own if you're crazy)
+(this is a bug workaround)"
+scroll_smooth = true
+minimap_draw = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+offset_top = 1019.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer"]
+offset_right = 960.0
+offset_bottom = 61.0
+size_flags_horizontal = 3
+text = "Use this data"
+
+[node name="NoButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+offset_left = 960.0
+offset_right = 1920.0
+offset_bottom = 61.0
+size_flags_horizontal = 3
+text = "Cancel"

@@ -1,0 +1,21 @@
+[gd_resource type="VisualShader" load_steps=3 format=3 uid="uid://bh4gsdtgsi51"]
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id="VisualShaderNodeVectorDecompose_3161f"]
+default_input_values = [0, Quaternion(0, 0, 0, 0)]
+op_type = 2
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_drahw"]
+input_name = "texture"
+
+[resource]
+code = "shader_type canvas_item;
+
+
+"
+graph_offset = Vector2(-414.944, -124.013)
+mode = 1
+flags/light_only = false
+nodes/fragment/2/node = SubResource("VisualShaderNodeVectorDecompose_3161f")
+nodes/fragment/2/position = Vector2(-900, 140)
+nodes/fragment/3/node = SubResource("VisualShaderNodeInput_drahw")
+nodes/fragment/3/position = Vector2(-900, 0)

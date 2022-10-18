@@ -1,0 +1,88 @@
+[gd_scene load_steps=7 format=3 uid="uid://ccg5b310o2cvf"]
+
+[ext_resource type="Texture2D" uid="uid://d2cv54wu5py1y" path="res://Assets/QuickImport/png_from_bmp_files/Internal_040_levelEditImage1.png" id="1_2jwlg"]
+[ext_resource type="Script" path="res://Scripts/LECamera2D.cs" id="1_gcyp1"]
+[ext_resource type="Texture2D" uid="uid://b3i1cvxjyxibg" path="res://Assets/QuickImport/png_from_bmp_files/Internal_039_levelEditImageShortCuts.png" id="1_qhneg"]
+[ext_resource type="Texture2D" uid="uid://blbu6x4ymqsvr" path="res://Assets/QuickImport/png_from_bmp_files/Internal_041_levelEditImage2.png" id="2_m1wi2"]
+[ext_resource type="PackedScene" uid="uid://xg342uyjdht8" path="res://godotScenes/Other/Compass.tscn" id="2_uwaha"]
+[ext_resource type="Texture2D" uid="uid://h1gotbwsap8x" path="res://Assets/QuickImport/png_from_bmp_files/Internal_042_levelEditImage3.png" id="3_taqb7"]
+
+[node name="Matrix Display Master 2D" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(432, 336)
+current = true
+limit_left = -15552
+limit_top = -15744
+limit_right = 15552
+limit_bottom = 15744
+drag_left_margin = 0.0
+drag_top_margin = 0.0
+drag_right_margin = 0.0
+drag_bottom_margin = 0.0
+editor_draw_limits = true
+editor_draw_drag_margin = true
+script = ExtResource("1_gcyp1")
+
+[node name="ReferenceRect" type="ReferenceRect" parent="Camera2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -416.0
+offset_top = -320.0
+offset_right = 416.0
+offset_bottom = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(0, 1, 0, 1)
+
+[node name="Compass" parent="Camera2D" instance=ExtResource("2_uwaha")]
+
+[node name="ZERO_ZERO" type="Marker2D" parent="."]
+
+[node name="ONE_ONE" type="Marker2D" parent="."]
+position = Vector2(16, 16)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="."]
+custom_minimum_size = Vector2i(832, 640)
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 848.0
+offset_bottom = 616.0
+mouse_filter = 2
+
+[node name="Node2d" type="Node2D" parent="."]
+
+[node name="LevelEditImageShortcuts" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+position = Vector2(16, 16)
+z_index = 4
+texture = ExtResource("1_qhneg")
+centered = false
+
+[node name="LevelEditImage1" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(16, 16)
+z_index = 3
+texture = ExtResource("1_2jwlg")
+centered = false
+
+[node name="LevelEditImage2" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+self_modulate = Color(0.266667, 0.266667, 0.266667, 1)
+position = Vector2(16, 16)
+z_index = 2
+texture = ExtResource("2_m1wi2")
+centered = false
+
+[node name="LevelEditImage3" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+self_modulate = Color(0.466667, 0.466667, 0.466667, 1)
+position = Vector2(16, 16)
+z_index = 1
+texture = ExtResource("3_taqb7")
+centered = false

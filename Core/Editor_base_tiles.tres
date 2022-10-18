@@ -1,0 +1,61 @@
+[gd_resource type="TileSet" load_steps=15 format=3 uid="uid://306tdr4hri1m"]
+
+[ext_resource type="Texture2D" uid="uid://cffmc6na2xd3q" path="res://Core/AirGEO.tres" id="1_4vomq"]
+[ext_resource type="Texture2D" uid="uid://b0icr0ye272f5" path="res://Core/BaseGEO.tres" id="2_vqluh"]
+[ext_resource type="Texture2D" uid="uid://dkgg8fevyyt2m" path="res://Core/RUpSlopeGEO.tres" id="3_fn705"]
+[ext_resource type="Texture2D" uid="uid://c7qfhq76pxwkp" path="res://Core/LUpSlopeGEO.tres" id="4_ineva"]
+[ext_resource type="Texture2D" uid="uid://ceqbapykfove6" path="res://Core/RDownSlopeGEO.tres" id="5_p84ec"]
+[ext_resource type="Texture2D" uid="uid://docamoucgp86a" path="res://Core/LDownSlopeGEO.tres" id="6_v4qg5"]
+[ext_resource type="Texture2D" uid="uid://42phppxayysu" path="res://Core/FloorPlatform.tres" id="7_10bqc"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l5fx1"]
+resource_name = "Air"
+texture = ExtResource("1_4vomq")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h0aa4"]
+resource_name = "Wall"
+texture = ExtResource("2_vqluh")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_efu4f"]
+resource_name = "Right Up Slope"
+texture = ExtResource("3_fn705")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w4eqp"]
+resource_name = "Left Up Slope"
+texture = ExtResource("4_ineva")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_heot4"]
+resource_name = "Right Down Slope"
+texture = ExtResource("5_p84ec")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qmwod"]
+resource_name = "Left Down Slope"
+texture = ExtResource("6_v4qg5")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8k8fj"]
+resource_name = "Floor Platform"
+texture = ExtResource("7_10bqc")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[resource]
+tile_size = Vector2i(64, 64)
+sources/0 = SubResource("TileSetAtlasSource_l5fx1")
+sources/1 = SubResource("TileSetAtlasSource_h0aa4")
+sources/2 = SubResource("TileSetAtlasSource_efu4f")
+sources/3 = SubResource("TileSetAtlasSource_w4eqp")
+sources/4 = SubResource("TileSetAtlasSource_heot4")
+sources/5 = SubResource("TileSetAtlasSource_qmwod")
+sources/6 = SubResource("TileSetAtlasSource_8k8fj")

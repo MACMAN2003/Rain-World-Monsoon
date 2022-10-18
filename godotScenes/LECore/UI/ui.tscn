@@ -1,0 +1,195 @@
+[gd_scene load_steps=13 format=3 uid="uid://0642dvrnu4de"]
+
+[ext_resource type="PackedScene" uid="uid://c2f2tyn15v4nt" path="res://godotScenes/LECore/UI/main_menu.tscn" id="1_mcs8x"]
+[ext_resource type="Script" path="res://Scripts/FileButton.cs" id="1_okjbx"]
+[ext_resource type="Script" path="res://Scripts/LevelName.cs" id="2_3s1pn"]
+[ext_resource type="PackedScene" uid="uid://b6wyoexwnfeb2" path="res://godotScenes/LECore/UI/geometry_editor.tscn" id="2_utuqu"]
+[ext_resource type="Script" path="res://Scripts/EditorTabs.cs" id="3_5nesb"]
+[ext_resource type="PackedScene" uid="uid://i6dwbwi2ej2u" path="res://godotScenes/LECore/UI/tile_editor.tscn" id="3_jdsea"]
+[ext_resource type="PackedScene" uid="uid://bah32p2cgoau3" path="res://godotScenes/LECore/UI/camera_editor.tscn" id="4_nqimc"]
+[ext_resource type="PackedScene" uid="uid://w18mjur3lf66" path="res://godotScenes/LECore/UI/light_editor.tscn" id="5_wmanu"]
+[ext_resource type="PackedScene" uid="uid://b4rhighb5bft7" path="res://godotScenes/LECore/UI/level_properties_editor.tscn" id="6_akg3d"]
+[ext_resource type="PackedScene" uid="uid://8u16p5h6w5gy" path="res://godotScenes/LECore/UI/effects_editor.tscn" id="7_ijx4e"]
+[ext_resource type="PackedScene" uid="uid://b70rokuk5j74x" path="res://godotScenes/LECore/UI/prop_editor.tscn" id="8_js2w8"]
+[ext_resource type="PackedScene" uid="uid://snir3strxpng" path="res://godotScenes/LECore/UI/environment_editor.tscn" id="9_1pw1t"]
+
+[node name="UI" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+offset_right = 1920.0
+offset_bottom = 31.0
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2i(4, 0)
+layout_mode = 2
+offset_right = 4.0
+offset_bottom = 31.0
+size_flags_stretch_ratio = 0.01
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer"]
+layout_mode = 2
+offset_left = 8.0
+offset_right = 43.0
+offset_bottom = 31.0
+
+[node name="MenuButton" type="MenuButton" parent="HBoxContainer/CenterContainer"]
+layout_mode = 2
+offset_right = 35.0
+offset_bottom = 31.0
+text = "File"
+flat = false
+switch_on_hover = true
+item_count = 4
+popup/item_0/text = "New"
+popup/item_0/id = 0
+popup/item_1/text = "Load"
+popup/item_1/id = 1
+popup/item_2/text = "Save"
+popup/item_2/id = 2
+popup/item_3/text = "Save As"
+popup/item_3/id = 3
+script = ExtResource("1_okjbx")
+
+[node name="CenterContainer2" type="CenterContainer" parent="HBoxContainer"]
+layout_mode = 2
+offset_left = 47.0
+offset_right = 85.0
+offset_bottom = 31.0
+
+[node name="MenuButton2" type="MenuButton" parent="HBoxContainer/CenterContainer2"]
+layout_mode = 2
+offset_right = 38.0
+offset_bottom = 31.0
+text = "Edit"
+flat = false
+switch_on_hover = true
+item_count = 3
+popup/item_0/text = "not"
+popup/item_0/id = 0
+popup/item_1/text = "yet"
+popup/item_1/id = 1
+popup/item_2/text = "functional :("
+popup/item_2/id = 2
+
+[node name="CenterContainer3" type="CenterContainer" parent="HBoxContainer"]
+layout_mode = 2
+offset_left = 89.0
+offset_right = 159.0
+offset_bottom = 31.0
+
+[node name="SettingsMenu" type="MenuButton" parent="HBoxContainer/CenterContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 70.0
+offset_bottom = 31.0
+text = "Settings"
+flat = false
+switch_on_hover = true
+item_count = 3
+popup/item_0/text = "Toggle Freecam"
+popup/item_0/id = 0
+popup/item_1/text = "Toggle Compass"
+popup/item_1/id = 1
+popup/item_2/text = "Toggle Evilness"
+popup/item_2/id = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+offset_left = 1299.0
+offset_right = 1441.0
+offset_bottom = 31.0
+size_flags_horizontal = 10
+size_flags_vertical = 1
+text = "Current Level: N/A"
+vertical_alignment = 3
+script = ExtResource("2_3s1pn")
+
+[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+offset_left = 1445.0
+offset_right = 1726.0
+offset_bottom = 31.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.22
+
+[node name="Label2" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+offset_left = 1730.0
+offset_right = 1915.0
+offset_bottom = 31.0
+size_flags_horizontal = 10
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.0
+text = "Monsoon Editor Ver: 0.1"
+
+[node name="MarginContainer3" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+offset_left = 1919.0
+offset_right = 1919.0
+offset_bottom = 31.0
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 2
+offset_top = 35.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+size_flags_vertical = 3
+script = ExtResource("3_5nesb")
+
+[node name="Main Menu" parent="TabContainer" instance=ExtResource("1_mcs8x")]
+layout_mode = 2
+offset_top = 31.0
+
+[node name="Geometry Editor" parent="TabContainer" instance=ExtResource("2_utuqu")]
+visible = false
+layout_mode = 2
+offset_top = 31.0
+
+[node name="Tile Editor" parent="TabContainer" instance=ExtResource("3_jdsea")]
+visible = false
+layout_mode = 2
+offset_top = 31.0
+
+[node name="Camera Editor" parent="TabContainer" instance=ExtResource("4_nqimc")]
+visible = false
+layout_mode = 2
+anchors_preset = 15
+offset_top = 31.0
+
+[node name="Light Editor" parent="TabContainer" instance=ExtResource("5_wmanu")]
+visible = false
+layout_mode = 2
+anchors_preset = 15
+offset_top = 31.0
+
+[node name="Level Properties Editor" parent="TabContainer" instance=ExtResource("6_akg3d")]
+visible = false
+layout_mode = 2
+anchors_preset = 15
+offset_top = 31.0
+
+[node name="Effects Editor" parent="TabContainer" instance=ExtResource("7_ijx4e")]
+visible = false
+layout_mode = 2
+anchors_preset = 15
+offset_top = 31.0
+
+[node name="Prop Editor" parent="TabContainer" instance=ExtResource("8_js2w8")]
+visible = false
+layout_mode = 2
+anchors_preset = 15
+offset_top = 31.0
+
+[node name="Environment Editor" parent="TabContainer" instance=ExtResource("9_1pw1t")]
+visible = false
+layout_mode = 2
+anchors_preset = 15
+offset_top = 31.0

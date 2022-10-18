@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b43mkf715m1w2"
+path="res://.godot/imported/SlopeNE.obj-f69f4271f11fe84a42bc077aeefd654e.mesh"
+
+[deps]
+
+files=["res://.godot/imported/SlopeNE.obj-f69f4271f11fe84a42bc077aeefd654e.mesh"]
+
+source_file="res://Assets/Core_3D doesnt work lol/SlopeNE.obj"
+dest_files=["res://.godot/imported/SlopeNE.obj-f69f4271f11fe84a42bc077aeefd654e.mesh", "res://.godot/imported/SlopeNE.obj-f69f4271f11fe84a42bc077aeefd654e.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

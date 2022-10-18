@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://dipy77xtls4pm"
+path="res://.godot/imported/TileColorNuke.glsl-c02a606b77b5297e7e3daa7ee172683d.res"
+
+[deps]
+
+source_file="res://Shaders/TileColorNuke.glsl"
+dest_files=["res://.godot/imported/TileColorNuke.glsl-c02a606b77b5297e7e3daa7ee172683d.res"]
+
+[params]
+

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dffv18ikrt3ry"
+path="res://.godot/imported/Floor.obj-dfb2ef74c6a1988e5df244ba9feb778d.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Floor.obj-dfb2ef74c6a1988e5df244ba9feb778d.mesh"]
+
+source_file="res://Assets/Core_3D doesnt work lol/Floor.obj"
+dest_files=["res://.godot/imported/Floor.obj-dfb2ef74c6a1988e5df244ba9feb778d.mesh", "res://.godot/imported/Floor.obj-dfb2ef74c6a1988e5df244ba9feb778d.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

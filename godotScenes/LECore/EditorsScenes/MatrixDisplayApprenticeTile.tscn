@@ -1,0 +1,171 @@
+[gd_scene load_steps=13 format=3 uid="uid://ce1lvn4je3olx"]
+
+[ext_resource type="Script" path="res://Scripts/ApprenticeCamera.cs" id="1_ihyjl"]
+[ext_resource type="Texture2D" uid="uid://ck3a4sqgiy68b" path="res://Core/Cursorwh.png" id="2_if88j"]
+[ext_resource type="PackedScene" uid="uid://xg342uyjdht8" path="res://godotScenes/Other/Compass.tscn" id="2_m65pe"]
+[ext_resource type="Script" path="res://Scripts/EditorImageDisplay.cs" id="4_1lnu4"]
+[ext_resource type="Texture2D" uid="uid://b3i1cvxjyxibg" path="res://Assets/QuickImport/png_from_bmp_files/Internal_039_levelEditImageShortCuts.png" id="5_0tb6b"]
+[ext_resource type="Texture2D" uid="uid://vwbmxllt8c1n" path="res://Assets/QuickImport/png_from_bmp_files/levelEditor_262484_TEimg1.png" id="6_6ysso"]
+[ext_resource type="Texture2D" uid="uid://d2cv54wu5py1y" path="res://Assets/QuickImport/png_from_bmp_files/Internal_040_levelEditImage1.png" id="7_wpjt7"]
+[ext_resource type="Texture2D" uid="uid://blbu6x4ymqsvr" path="res://Assets/QuickImport/png_from_bmp_files/Internal_041_levelEditImage2.png" id="8_4hjj0"]
+[ext_resource type="Texture2D" uid="uid://bwtetumjbnr76" path="res://Assets/QuickImport/png_from_bmp_files/levelEditor_262485_TEimg2.png" id="8_dnk4i"]
+[ext_resource type="Texture2D" uid="uid://h1gotbwsap8x" path="res://Assets/QuickImport/png_from_bmp_files/Internal_042_levelEditImage3.png" id="9_gv7yv"]
+[ext_resource type="Texture2D" uid="uid://cuu8nom2ou0rf" path="res://Assets/QuickImport/png_from_bmp_files/levelEditor_262486_TEimg3.png" id="10_c7c0i"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_cu4up"]
+font_size = 14
+outline_size = 4
+outline_color = Color(0, 0, 0, 0.501961)
+shadow_color = Color(0, 0, 0, 0.501961)
+shadow_offset = Vector2(3, 3)
+
+[node name="Matrix Display Apprentice Tile" type="Node2D"]
+
+[node name="Camera2d" type="Camera2D" parent="."]
+current = true
+script = ExtResource("1_ihyjl")
+
+[node name="Compass" parent="Camera2d" instance=ExtResource("2_m65pe")]
+visible = false
+scale = Vector2(3, 3)
+
+[node name="Node2d" type="Node2D" parent="."]
+
+[node name="UI" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+centered = false
+
+[node name="Cursor" type="Sprite2D" parent="Node2d/UI"]
+unique_name_in_owner = true
+z_index = 33
+centered = false
+
+[node name="DisplayCursor" type="Sprite2D" parent="Node2d/UI/Cursor"]
+texture = ExtResource("2_if88j")
+centered = false
+offset = Vector2(-1, -1)
+
+[node name="Label1" type="Label" parent="Node2d/UI/Cursor"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 17.0
+offset_top = 13.0
+offset_right = 91.0
+offset_bottom = 35.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.501961)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.501961)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 1
+text = "X : 44, Y: 34"
+label_settings = SubResource("LabelSettings_cu4up")
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="Node2d/UI/Cursor"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 23.0
+offset_top = 30.0
+offset_right = 84.0
+offset_bottom = 52.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.501961)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.501961)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 1
+text = "Standard"
+label_settings = SubResource("LabelSettings_cu4up")
+horizontal_alignment = 1
+
+[node name="UIRect" type="Sprite2D" parent="Node2d/UI"]
+position = Vector2(16, 16)
+z_index = 34
+centered = false
+
+[node name="MirrorRect" type="Sprite2D" parent="Node2d/UI"]
+self_modulate = Color(1, 0, 1, 1)
+position = Vector2(16, 16)
+z_index = 34
+centered = false
+
+[node name="BoundsRect" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+position = Vector2(16, 16)
+z_index = 32
+centered = false
+
+[node name="TileEditImageShortcuts" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+position = Vector2(16, 16)
+z_index = 7
+texture = ExtResource("5_0tb6b")
+centered = false
+script = ExtResource("4_1lnu4")
+whichtext = 4
+
+[node name="TileDisplayImage1" type="Sprite2D" parent="Node2d"]
+position = Vector2(16, 16)
+z_index = 6
+texture = ExtResource("6_6ysso")
+centered = false
+
+[node name="TileEditImage1" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(16, 16)
+z_index = 5
+texture = ExtResource("7_wpjt7")
+centered = false
+script = ExtResource("4_1lnu4")
+
+[node name="TileDisplayImage2" type="Sprite2D" parent="Node2d"]
+position = Vector2(16, 16)
+z_index = 4
+texture = ExtResource("8_dnk4i")
+centered = false
+
+[node name="TileEditImage2" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+self_modulate = Color(0.266667, 0.266667, 0.266667, 1)
+position = Vector2(16, 16)
+z_index = 3
+texture = ExtResource("8_4hjj0")
+centered = false
+script = ExtResource("4_1lnu4")
+whichtext = 1
+
+[node name="TileDisplayImage3" type="Sprite2D" parent="Node2d"]
+position = Vector2(16, 16)
+z_index = 2
+texture = ExtResource("10_c7c0i")
+centered = false
+
+[node name="TileEditImage3" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+self_modulate = Color(0.466667, 0.466667, 0.466667, 1)
+position = Vector2(16, 16)
+z_index = 1
+texture = ExtResource("9_gv7yv")
+centered = false
+script = ExtResource("4_1lnu4")
+whichtext = 2
+
+[node name="Preview Preview" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+self_modulate = Color(0, 1, 1, 1)
+z_index = 46
+centered = false
+script = ExtResource("4_1lnu4")
+whichtext = 5
+
+[node name="ReferenceRect" type="ReferenceRect" parent="."]
+offset_right = 16384.0
+offset_bottom = 16384.0
+mouse_filter = 2
+editor_only = false

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://klol5xj7r4a"]
+
+[ext_resource type="Texture2D" uid="uid://ceqbapykfove6" path="res://Core/RDownSlopeGEO.tres" id="1_qwvo4"]
+
+[node name="SlopeSE" type="Sprite3D"]
+pixel_size = 0.001
+alpha_cut = 2
+texture_filter = 1
+texture = ExtResource("1_qwvo4")

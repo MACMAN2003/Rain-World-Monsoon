@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://ck2c8d4c6sd76"]
+
+[ext_resource type="Texture2D" uid="uid://c7qfhq76pxwkp" path="res://Core/LUpSlopeGEO.tres" id="1_v58gk"]
+
+[node name="SlopeNW" type="Sprite3D"]
+pixel_size = 0.001
+alpha_cut = 2
+texture_filter = 1
+texture = ExtResource("1_v58gk")

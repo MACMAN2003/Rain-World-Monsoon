@@ -1,0 +1,109 @@
+[gd_scene load_steps=12 format=3 uid="uid://dnnijtjhcc218"]
+
+[ext_resource type="Script" path="res://Scripts/ApprenticeCamera.cs" id="1_r8c32"]
+[ext_resource type="PackedScene" uid="uid://xg342uyjdht8" path="res://godotScenes/Other/Compass.tscn" id="2_bfs25"]
+[ext_resource type="Texture2D" uid="uid://b387dhvwomcn7" path="res://Core/Cursor.png" id="2_ffsmb"]
+[ext_resource type="Texture2D" uid="uid://uwc5x3c3w2x3" path="res://Core/quickGrid.png" id="2_r5ffp"]
+[ext_resource type="Texture2D" uid="uid://b3i1cvxjyxibg" path="res://Assets/QuickImport/png_from_bmp_files/Internal_039_levelEditImageShortCuts.png" id="3_5yf3k"]
+[ext_resource type="Script" path="res://Scripts/GeoOverlayGrid.cs" id="3_e1e0x"]
+[ext_resource type="Texture2D" uid="uid://d2cv54wu5py1y" path="res://Assets/QuickImport/png_from_bmp_files/Internal_040_levelEditImage1.png" id="4_76j0q"]
+[ext_resource type="Texture2D" uid="uid://blbu6x4ymqsvr" path="res://Assets/QuickImport/png_from_bmp_files/Internal_041_levelEditImage2.png" id="5_vgeh0"]
+[ext_resource type="Material" uid="uid://bwg6blcf5ntpi" path="res://Shaders/Additive_Modulate.material" id="5_yap84"]
+[ext_resource type="Texture2D" uid="uid://h1gotbwsap8x" path="res://Assets/QuickImport/png_from_bmp_files/Internal_042_levelEditImage3.png" id="6_1gap8"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_gq6hr"]
+font_size = 14
+
+[node name="Matrix Display Apprentice Geo" type="Node2D"]
+
+[node name="Camera2d" type="Camera2D" parent="."]
+current = true
+script = ExtResource("1_r8c32")
+
+[node name="Compass" parent="Camera2d" instance=ExtResource("2_bfs25")]
+
+[node name="Node2d" type="Node2D" parent="."]
+
+[node name="UI" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+centered = false
+
+[node name="Cursor" type="Sprite2D" parent="Node2d/UI"]
+unique_name_in_owner = true
+z_index = 33
+texture = ExtResource("2_ffsmb")
+centered = false
+
+[node name="Label" type="Label" parent="Node2d/UI/Cursor"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 21.0
+offset_right = 81.0
+offset_bottom = 26.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "X : 44, Y: 34"
+label_settings = SubResource("LabelSettings_gq6hr")
+horizontal_alignment = 1
+
+[node name="UIRect" type="Sprite2D" parent="Node2d/UI"]
+position = Vector2(16, 16)
+z_index = 34
+centered = false
+
+[node name="MirrorRect" type="Sprite2D" parent="Node2d/UI"]
+self_modulate = Color(1, 0, 1, 1)
+position = Vector2(16, 16)
+z_index = 34
+centered = false
+
+[node name="BoundsRect" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+position = Vector2(16, 16)
+z_index = 32
+centered = false
+
+[node name="Grid" type="Sprite2D" parent="Node2d"]
+texture_filter = 3
+texture_repeat = 2
+position = Vector2(16, 16)
+z_index = 31
+texture = ExtResource("2_r5ffp")
+centered = false
+script = ExtResource("3_e1e0x")
+
+[node name="GeoEditImageShortcuts" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+position = Vector2(16, 16)
+z_index = 4
+texture = ExtResource("3_5yf3k")
+centered = false
+
+[node name="GeoEditImage1" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+modulate = Color(0, 0, 0, 0.65098)
+material = ExtResource("5_yap84")
+position = Vector2(16, 16)
+z_index = 3
+texture = ExtResource("4_76j0q")
+centered = false
+
+[node name="GeoEditImage2" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+modulate = Color(0, 1, 0, 0.415686)
+material = ExtResource("5_yap84")
+position = Vector2(16, 16)
+z_index = 2
+texture = ExtResource("5_vgeh0")
+centered = false
+
+[node name="GeoEditImage3" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+modulate = Color(1, 0, 0, 0.396078)
+material = ExtResource("5_yap84")
+position = Vector2(16, 16)
+z_index = 1
+texture = ExtResource("6_1gap8")
+centered = false

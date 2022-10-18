@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6nf5dj7878pc"]
+
+[ext_resource type="Texture2D" uid="uid://dkgg8fevyyt2m" path="res://Core/RUpSlopeGEO.tres" id="1_tg4hm"]
+
+[node name="SlopeNE" type="Sprite3D"]
+pixel_size = 0.001
+alpha_cut = 2
+texture_filter = 1
+texture = ExtResource("1_tg4hm")

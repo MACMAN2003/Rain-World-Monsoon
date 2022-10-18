@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://brntgp61vt0vr"]
+
+[ext_resource type="Texture2D" uid="uid://cq3efmd5nn48m" path="res://Core/VertiBarGEO.tres" id="1_t7l3p"]
+
+[node name="VertiBar" type="Sprite3D"]
+pixel_size = 0.001
+alpha_cut = 1
+texture_filter = 0
+texture = ExtResource("1_t7l3p")

@@ -1,0 +1,578 @@
+[gd_scene load_steps=38 format=3 uid="uid://b6wyoexwnfeb2"]
+
+[ext_resource type="Material" uid="uid://bwg6blcf5ntpi" path="res://Shaders/ADD_Modulate.material" id="1_4c0hl"]
+[ext_resource type="PackedScene" uid="uid://dnnijtjhcc218" path="res://godotScenes/LECore/EditorsScenes/MatrixDisplayApprenticeGeo.tscn" id="1_mygyl"]
+[ext_resource type="Texture2D" uid="uid://b3jjou3vbj6ok" path="res://Assets/QuickImport/png_from_bmp_files/Internal_625_iconInverse.png" id="1_wrwt3"]
+[ext_resource type="Texture2D" uid="uid://eu02clmnwk52" path="res://Assets/QuickImport/png_from_bmp_files/Internal_626_iconPaintWall.png" id="2_gn2js"]
+[ext_resource type="Texture2D" uid="uid://c73fxqmquwisg" path="res://Assets/QuickImport/png_from_bmp_files/Internal_627_iconPaintAir.png" id="3_dt3md"]
+[ext_resource type="Script" path="res://Scripts/GeoToolButton.cs" id="3_lle3p"]
+[ext_resource type="Texture2D" uid="uid://bu2ru1ficw1dq" path="res://Assets/QuickImport/png_from_bmp_files/Internal_628_iconSlope.png" id="4_nlst8"]
+[ext_resource type="Texture2D" uid="uid://bj8jqp5p540le" path="res://Assets/QuickImport/png_from_bmp_files/Internal_640_iconFloor.png" id="5_ienui"]
+[ext_resource type="Texture2D" uid="uid://cedlhdrta2lxr" path="res://Assets/QuickImport/png_from_bmp_files/Internal_641_iconsquareWall.png" id="6_btaeb"]
+[ext_resource type="Texture2D" uid="uid://dulj5dwye8sye" path="res://Assets/QuickImport/png_from_bmp_files/Internal_642_iconsquareAir.png" id="7_ojqc8"]
+[ext_resource type="Texture2D" uid="uid://dea2gyvpbhaum" path="res://Assets/QuickImport/png_from_bmp_files/Internal_643_iconMove.png" id="8_mwxcx"]
+[ext_resource type="Texture2D" uid="uid://pmncbd3y4dcs" path="res://Assets/QuickImport/png_from_bmp_files/Internal_638_iconRock.png" id="9_ligyi"]
+[ext_resource type="Texture2D" uid="uid://eonavswh2cno" path="res://Assets/QuickImport/png_from_bmp_files/Internal_639_iconSpear.png" id="10_xjoik"]
+[ext_resource type="Texture2D" uid="uid://bxoawvxbacl0r" path="res://Assets/QuickImport/png_from_bmp_files/Internal_637_iconCrack.png" id="11_vuf4c"]
+[ext_resource type="Texture2D" uid="uid://d320fbmkhnkpf" path="res://Assets/QuickImport/png_from_bmp_files/Internal_653_icon.png" id="12_dgn64"]
+[ext_resource type="Texture2D" uid="uid://di66sd6dwepol" path="res://Assets/QuickImport/png_from_bmp_files/Internal_655_iconHorBeam.png" id="13_o3o3j"]
+[ext_resource type="Texture2D" uid="uid://dnatsfymwp3x2" path="res://Assets/QuickImport/png_from_bmp_files/Internal_656_iconVerBeam.png" id="14_aok3a"]
+[ext_resource type="Texture2D" uid="uid://dkdmh3jc1tydw" path="res://Assets/QuickImport/png_from_bmp_files/Internal_657_iconGlass.png" id="15_l4g27"]
+[ext_resource type="Texture2D" uid="uid://baq1fl7s2ug8q" path="res://Assets/QuickImport/png_from_bmp_files/Internal_677_iconcopyBack.png" id="16_244tx"]
+[ext_resource type="Texture2D" uid="uid://bm2peioiojmk4" path="res://Assets/QuickImport/png_from_bmp_files/Internal_670_iconShortCutEntrance.png" id="17_243bc"]
+[ext_resource type="Texture2D" uid="uid://c4eradkfjs532" path="res://Assets/QuickImport/png_from_bmp_files/Internal_671_iconShortCut.png" id="18_rj5dp"]
+[ext_resource type="Texture2D" uid="uid://bpuyqt7dp1hj3" path="res://Assets/QuickImport/png_from_bmp_files/Internal_673_iconlizardHole.png" id="19_wd2oh"]
+[ext_resource type="Texture2D" uid="uid://bhr3s5udhw0a4" path="res://Assets/QuickImport/png_from_bmp_files/Internal_672_iconplayerSpawn.png" id="20_y67jp"]
+[ext_resource type="Texture2D" uid="uid://dvq6w7qww5rcm" path="res://Core/ForbidBats Fixed.png" id="21_8k0we"]
+[ext_resource type="Texture2D" uid="uid://defsrr1xoju7m" path="res://Core/Hive Fixed.png" id="22_5ylck"]
+[ext_resource type="Texture2D" uid="uid://dt4gghy10bpid" path="res://Assets/QuickImport/png_from_bmp_files/Internal_659_iconforbidbats.png" id="23_dc272"]
+[ext_resource type="Texture2D" uid="uid://253ace6bqgge" path="res://Assets/QuickImport/png_from_bmp_files/Internal_589_iconWaterfall.png" id="23_obkda"]
+[ext_resource type="Texture2D" uid="uid://b1iup014kat8k" path="res://Assets/QuickImport/png_from_bmp_files/Internal_676_iconscavengerHole.png" id="24_l5ujr"]
+[ext_resource type="Texture2D" uid="uid://h61myveu1veo" path="res://Assets/QuickImport/png_from_bmp_files/Internal_658_iconHive.png" id="25_u6jtk"]
+[ext_resource type="Texture2D" uid="uid://c86086e5g8e5g" path="res://Assets/QuickImport/png_from_bmp_files/Internal_674_iconWHAMH.png" id="25_y3kqd"]
+[ext_resource type="Texture2D" uid="uid://cfdq3nskjet5n" path="res://Assets/QuickImport/png_from_bmp_files/Internal_675_icongarbageHole.png" id="26_8ikrx"]
+[ext_resource type="Texture2D" uid="uid://gqbdwldbb6gu" path="res://Assets/QuickImport/png_from_bmp_files/Internal_680_iconWormGrass.png" id="27_7y0xc"]
+[ext_resource type="Texture2D" uid="uid://dq2odb0atjcon" path="res://Assets/QuickImport/png_from_bmp_files/Internal_685_iconWorkLayer.png" id="28_3dq0g"]
+[ext_resource type="Texture2D" uid="uid://eeguph5xu2o3" path="res://Assets/QuickImport/png_from_bmp_files/Internal_635_iconFlip.png" id="29_30mle"]
+[ext_resource type="Texture2D" uid="uid://f6y4sk1wm1sg" path="res://Assets/QuickImport/png_from_bmp_files/Internal_686_iconMirrorToggle.png" id="30_lepyj"]
+[ext_resource type="Texture2D" uid="uid://dw8nijpcjxi1h" path="res://Assets/QuickImport/png_from_bmp_files/Internal_687_iconSetMirrorPoint.png" id="31_xvrcq"]
+[ext_resource type="Script" path="res://Scripts/LayerChecker.cs" id="36_wbk6m"]
+
+[node name="Geometry Editor" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2i(16, 0)
+offset_right = 16.0
+offset_bottom = 1080.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2i(215, 0)
+offset_left = 20.0
+offset_right = 235.0
+offset_bottom = 1080.0
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2i(0, 16)
+offset_right = 215.0
+offset_bottom = 16.0
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer"]
+material = ExtResource("1_4c0hl")
+offset_top = 20.0
+offset_right = 215.0
+offset_bottom = 224.0
+columns = 4
+
+[node name="Invert" type="TextureButton" parent="VBoxContainer/GridContainer"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_right = 48.0
+offset_bottom = 48.0
+tooltip_text = "Invert"
+texture_normal = ExtResource("1_wrwt3")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+
+[node name="Paint Wall" type="TextureButton" parent="VBoxContainer/GridContainer"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 52.0
+offset_right = 100.0
+offset_bottom = 48.0
+tooltip_text = "Paint Wall"
+texture_normal = ExtResource("2_gn2js")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 1
+
+[node name="Paint Air" type="TextureButton" parent="VBoxContainer/GridContainer"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 104.0
+offset_right = 152.0
+offset_bottom = 48.0
+tooltip_text = "Paint Air"
+texture_normal = ExtResource("3_dt3md")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 2
+
+[node name="Slope" type="TextureButton" parent="VBoxContainer/GridContainer"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 156.0
+offset_right = 204.0
+offset_bottom = 48.0
+tooltip_text = "Slope"
+texture_normal = ExtResource("4_nlst8")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 4
+
+[node name="Floor" type="TextureButton" parent="VBoxContainer/GridContainer"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_top = 52.0
+offset_right = 48.0
+offset_bottom = 100.0
+tooltip_text = "Paint Floor"
+texture_normal = ExtResource("5_ienui")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 3
+
+[node name="Rect Wall" type="TextureButton" parent="VBoxContainer/GridContainer"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 52.0
+offset_top = 52.0
+offset_right = 100.0
+offset_bottom = 100.0
+tooltip_text = "Rect Wall"
+texture_normal = ExtResource("6_btaeb")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 7
+
+[node name="Rect Air" type="TextureButton" parent="VBoxContainer/GridContainer"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 104.0
+offset_top = 52.0
+offset_right = 152.0
+offset_bottom = 100.0
+tooltip_text = "Rect Air"
+texture_normal = ExtResource("7_ojqc8")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 8
+
+[node name="Move" type="TextureButton" parent="VBoxContainer/GridContainer"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 156.0
+offset_top = 52.0
+offset_right = 204.0
+offset_bottom = 100.0
+tooltip_text = "Move Level"
+texture_normal = ExtResource("8_mwxcx")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 9
+
+[node name="Rock" type="TextureButton" parent="VBoxContainer/GridContainer"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_top = 104.0
+offset_right = 48.0
+offset_bottom = 152.0
+tooltip_text = "Rock"
+texture_normal = ExtResource("9_ligyi")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 21
+
+[node name="Spear" type="TextureButton" parent="VBoxContainer/GridContainer"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 52.0
+offset_top = 104.0
+offset_right = 100.0
+offset_bottom = 152.0
+tooltip_text = "Spear"
+texture_normal = ExtResource("10_xjoik")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 22
+
+[node name="Crack" type="TextureButton" parent="VBoxContainer/GridContainer"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 104.0
+offset_top = 104.0
+offset_right = 152.0
+offset_bottom = 152.0
+tooltip_text = "Crack"
+texture_normal = ExtResource("11_vuf4c")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 23
+
+[node name="Blank" type="TextureButton" parent="VBoxContainer/GridContainer"]
+self_modulate = Color(0.533333, 0.533333, 0.533333, 1)
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 156.0
+offset_top = 104.0
+offset_right = 204.0
+offset_bottom = 152.0
+texture_normal = ExtResource("12_dgn64")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Horizontal Beam" type="TextureButton" parent="VBoxContainer/GridContainer"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_top = 156.0
+offset_right = 48.0
+offset_bottom = 204.0
+tooltip_text = "Horizontal Pole"
+texture_normal = ExtResource("13_o3o3j")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 12
+
+[node name="Vertical Beam" type="TextureButton" parent="VBoxContainer/GridContainer"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 52.0
+offset_top = 156.0
+offset_right = 100.0
+offset_bottom = 204.0
+tooltip_text = "Vertical Pole"
+texture_normal = ExtResource("14_aok3a")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 13
+
+[node name="Glass" type="TextureButton" parent="VBoxContainer/GridContainer"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 104.0
+offset_top = 156.0
+offset_right = 152.0
+offset_bottom = 204.0
+tooltip_text = "Paint Glass"
+texture_normal = ExtResource("15_l4g27")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 14
+
+[node name="Copy Back" type="TextureButton" parent="VBoxContainer/GridContainer"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 156.0
+offset_top = 156.0
+offset_right = 204.0
+offset_bottom = 204.0
+tooltip_text = "Copy to next layer"
+texture_normal = ExtResource("16_244tx")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 10
+
+[node name="GridContainer2" type="GridContainer" parent="VBoxContainer"]
+material = ExtResource("1_4c0hl")
+offset_top = 228.0
+offset_right = 215.0
+offset_bottom = 432.0
+columns = 4
+
+[node name="Shortcut" type="TextureButton" parent="VBoxContainer/GridContainer2"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_right = 48.0
+offset_bottom = 48.0
+tooltip_text = "Shortcut Entrance"
+texture_normal = ExtResource("17_243bc")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 15
+
+[node name="Shortcut Dot" type="TextureButton" parent="VBoxContainer/GridContainer2"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 52.0
+offset_right = 100.0
+offset_bottom = 48.0
+tooltip_text = "Shortcut Dot"
+texture_normal = ExtResource("18_rj5dp")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 16
+
+[node name="Enemy Den" type="TextureButton" parent="VBoxContainer/GridContainer2"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 104.0
+offset_right = 152.0
+offset_bottom = 48.0
+tooltip_text = "Enemy Den"
+texture_normal = ExtResource("19_wd2oh")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 5
+
+[node name="Entrance" type="TextureButton" parent="VBoxContainer/GridContainer2"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 156.0
+offset_right = 204.0
+offset_bottom = 48.0
+tooltip_text = "Room Entrance"
+texture_normal = ExtResource("20_y67jp")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 6
+
+[node name="No Batfly Chains" type="TextureButton" parent="VBoxContainer/GridContainer2"]
+self_modulate = Color(0.533333, 0.533333, 0.533333, 1)
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_top = 52.0
+offset_right = 48.0
+offset_bottom = 100.0
+tooltip_text = "Forbid Batfly Chains"
+texture_normal = ExtResource("23_dc272")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 24
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/GridContainer2/No Batfly Chains"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("21_8k0we")
+
+[node name="Blank" type="TextureButton" parent="VBoxContainer/GridContainer2"]
+self_modulate = Color(0.533333, 0.533333, 0.533333, 1)
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 52.0
+offset_top = 52.0
+offset_right = 100.0
+offset_bottom = 100.0
+texture_normal = ExtResource("12_dgn64")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Hive" type="TextureButton" parent="VBoxContainer/GridContainer2"]
+self_modulate = Color(0.533333, 0.533333, 0.533333, 1)
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 104.0
+offset_top = 52.0
+offset_right = 152.0
+offset_bottom = 100.0
+tooltip_text = "Batfly Hive"
+texture_normal = ExtResource("25_u6jtk")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 17
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/GridContainer2/Hive"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("22_5ylck")
+
+[node name="Waterfall" type="TextureButton" parent="VBoxContainer/GridContainer2"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 156.0
+offset_top = 52.0
+offset_right = 204.0
+offset_bottom = 100.0
+tooltip_text = "Waterfall"
+texture_normal = ExtResource("23_obkda")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 26
+
+[node name="Scavenger Teleporter" type="TextureButton" parent="VBoxContainer/GridContainer2"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_top = 104.0
+offset_right = 48.0
+offset_bottom = 152.0
+tooltip_text = "Scavenger Hole"
+texture_normal = ExtResource("24_l5ujr")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 29
+
+[node name="Whack A Mole Hole" type="TextureButton" parent="VBoxContainer/GridContainer2"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 52.0
+offset_top = 104.0
+offset_right = 100.0
+offset_bottom = 152.0
+tooltip_text = "Whack A Mole Hole"
+texture_normal = ExtResource("25_y3kqd")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 27
+
+[node name="Garbage Worm Hole" type="TextureButton" parent="VBoxContainer/GridContainer2"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 104.0
+offset_top = 104.0
+offset_right = 152.0
+offset_bottom = 152.0
+tooltip_text = "Garbage Worm Hole"
+texture_normal = ExtResource("26_8ikrx")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 25
+
+[node name="Worm Grass" type="TextureButton" parent="VBoxContainer/GridContainer2"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 156.0
+offset_top = 104.0
+offset_right = 204.0
+offset_bottom = 152.0
+tooltip_text = "Worm Grass"
+texture_normal = ExtResource("27_7y0xc")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 28
+
+[node name="Change Layer" type="TextureButton" parent="VBoxContainer/GridContainer2"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_top = 156.0
+offset_right = 48.0
+offset_bottom = 204.0
+tooltip_text = "Change Layer"
+texture_normal = ExtResource("28_3dq0g")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 18
+
+[node name="Rect Remove All" type="TextureButton" parent="VBoxContainer/GridContainer2"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 52.0
+offset_top = 156.0
+offset_right = 100.0
+offset_bottom = 204.0
+tooltip_text = "Rect Delete"
+texture_normal = ExtResource("29_30mle")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 11
+
+[node name="Toggle Mirror" type="TextureButton" parent="VBoxContainer/GridContainer2"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 104.0
+offset_top = 156.0
+offset_right = 152.0
+offset_bottom = 204.0
+tooltip_text = "Toggle Mirror"
+texture_normal = ExtResource("30_lepyj")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 19
+
+[node name="Move Mirror Point" type="TextureButton" parent="VBoxContainer/GridContainer2"]
+use_parent_material = true
+custom_minimum_size = Vector2i(48, 48)
+offset_left = 156.0
+offset_top = 156.0
+offset_right = 204.0
+offset_bottom = 204.0
+tooltip_text = "Set Mirror Point"
+texture_normal = ExtResource("31_xvrcq")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 20
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+offset_top = 436.0
+offset_right = 215.0
+offset_bottom = 462.0
+text = "Current Layer:"
+script = ExtResource("36_wbk6m")
+PrefixString = "Current Layer: "
+
+[node name="Label2" type="Label" parent="VBoxContainer"]
+offset_top = 466.0
+offset_right = 215.0
+offset_bottom = 492.0
+text = "Mirror Mode:"
+script = ExtResource("36_wbk6m")
+checkMirror = true
+PrefixString = "Mirror Mode: "
+
+[node name="Label3" type="Label" parent="VBoxContainer"]
+offset_top = 496.0
+offset_right = 215.0
+offset_bottom = 522.0
+text = "Move Tool doesn't work :("
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2i(241, 0)
+offset_left = 239.0
+offset_right = 1439.0
+offset_bottom = 1080.0
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer2"]
+custom_minimum_size = Vector2i(0, 16)
+offset_right = 1200.0
+offset_bottom = 16.0
+size_flags_vertical = 0
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer2"]
+offset_top = 20.0
+offset_right = 1200.0
+offset_bottom = 820.0
+size_flags_vertical = 3
+
+[node name="SubViewport" type="SubViewport" parent="VBoxContainer2/SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+gui_snap_controls_to_pixels = false
+size = Vector2i(1200, 800)
+render_target_update_mode = 4
+
+[node name="Matrix Display Apprentice Geo" parent="VBoxContainer2/SubViewportContainer/SubViewport" instance=ExtResource("1_mygyl")]
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer2"]
+offset_top = 824.0
+offset_right = 1200.0
+offset_bottom = 1080.0
+size_flags_vertical = 3

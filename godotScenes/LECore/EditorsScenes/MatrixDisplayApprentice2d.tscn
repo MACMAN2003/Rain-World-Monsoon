@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://bo3eyf71vps4a"]
+
+[ext_resource type="Script" path="res://Scripts/ApprenticeCamera.cs" id="1_3u040"]
+[ext_resource type="Texture2D" uid="uid://b3i1cvxjyxibg" path="res://Assets/QuickImport/png_from_bmp_files/Internal_039_levelEditImageShortCuts.png" id="1_k3yt0"]
+[ext_resource type="Texture2D" uid="uid://uwc5x3c3w2x3" path="res://Core/quickGrid.png" id="2_3jjxl"]
+[ext_resource type="Texture2D" uid="uid://d2cv54wu5py1y" path="res://Assets/QuickImport/png_from_bmp_files/Internal_040_levelEditImage1.png" id="2_lol03"]
+[ext_resource type="Texture2D" uid="uid://blbu6x4ymqsvr" path="res://Assets/QuickImport/png_from_bmp_files/Internal_041_levelEditImage2.png" id="3_8v38l"]
+[ext_resource type="Texture2D" uid="uid://h1gotbwsap8x" path="res://Assets/QuickImport/png_from_bmp_files/Internal_042_levelEditImage3.png" id="4_ysaks"]
+
+[node name="Matrix Display Apprentice Geo" type="Node2D"]
+
+[node name="Camera2d" type="Camera2D" parent="."]
+script = ExtResource("1_3u040")
+
+[node name="Node2d" type="Node2D" parent="."]
+
+[node name="Grid" type="Sprite2D" parent="Node2d"]
+texture_filter = 3
+texture_repeat = 2
+z_index = 31
+texture = ExtResource("2_3jjxl")
+centered = false
+
+[node name="GeoEditImageShortcuts" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+position = Vector2(16, 16)
+z_index = 4
+texture = ExtResource("1_k3yt0")
+centered = false
+
+[node name="GeoEditImage1" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(16, 16)
+z_index = 3
+texture = ExtResource("2_lol03")
+centered = false
+
+[node name="GeoEditImage2" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+self_modulate = Color(0.266667, 0.266667, 0.266667, 1)
+position = Vector2(16, 16)
+z_index = 2
+texture = ExtResource("3_8v38l")
+centered = false
+
+[node name="GeoEditImage3" type="Sprite2D" parent="Node2d"]
+unique_name_in_owner = true
+self_modulate = Color(0.466667, 0.466667, 0.466667, 1)
+position = Vector2(16, 16)
+z_index = 1
+texture = ExtResource("4_ysaks")
+centered = false

@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://ddl6idjpc2ijp"]
+
+[ext_resource type="Texture2D" uid="uid://uwc5x3c3w2x3" path="res://Core/quickGrid.png" id="1_nbaai"]
+
+[node name="Tile Preview Matrix" type="Node2D"]
+
+[node name="Camera2d" type="Camera2D" parent="."]
+anchor_mode = 0
+current = true
+
+[node name="ReferenceRect" type="ReferenceRect" parent="Camera2d"]
+custom_minimum_size = Vector2i(320, 320)
+offset_right = 320.0
+offset_bottom = 320.0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
+self_modulate = Color(1, 1, 1, 0.396078)
+offset_right = 832.0
+offset_bottom = 640.0
+texture = ExtResource("1_nbaai")
+
+[node name="TilePrevLayer1" type="Sprite2D" parent="."]
+z_index = 1
+centered = false
+
+[node name="TilePrevLayer2" type="Sprite2D" parent="."]
+position = Vector2(4, 4)
+centered = false

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://c7ccf0nsaywr2"]
+
+[node name="Main Control" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+projection = 1

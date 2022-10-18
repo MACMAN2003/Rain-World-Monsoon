@@ -1,0 +1,8 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://cffmc6na2xd3q"]
+
+[ext_resource type="Texture2D" uid="uid://cdpygynwymiy6" path="res://Core/quickTestAtlas.png" id="1_ujglm"]
+
+[resource]
+atlas = ExtResource("1_ujglm")
+region = Rect2(0, 2000, 1000, 1000)
+filter_clip = true

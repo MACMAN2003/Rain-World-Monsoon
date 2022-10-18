@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://nbtx6jm6wl4b"]
+
+[ext_resource type="Theme" uid="uid://cjaowsnu7xtcr" path="res://godotScenes/LECore/UI/LETheme.tres" id="1_m5fp7"]
+[ext_resource type="PackedScene" uid="uid://0642dvrnu4de" path="res://godotScenes/LECore/UI/ui.tscn" id="1_pgfme"]
+[ext_resource type="Script" path="res://Scripts/LEditor.cs" id="2_82715"]
+[ext_resource type="Script" path="res://Scripts/MatrixMaster.cs" id="4_ha4do"]
+[ext_resource type="Script" path="res://Scripts/CursorController.cs" id="6_myg7d"]
+[ext_resource type="Script" path="res://Scripts/TileController.cs" id="7_3vqm6"]
+
+[node name="Level Editor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_m5fp7")
+script = ExtResource("2_82715")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="UI" parent="." instance=ExtResource("1_pgfme")]
+layout_mode = 1
+
+[node name="Matrix Master" type="Node" parent="."]
+script = ExtResource("4_ha4do")
+
+[node name="Cursor Controller" type="Node" parent="."]
+process_priority = -1
+script = ExtResource("6_myg7d")
+
+[node name="Tile Controller" type="Node" parent="."]
+script = ExtResource("7_3vqm6")

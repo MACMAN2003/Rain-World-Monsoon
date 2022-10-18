@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://bw7e4orx1apfl"
+path="res://.godot/imported/TileColorConvertTest2.glsl-48c058475bede12abbb46d995354ec7e.res"
+
+[deps]
+
+source_file="res://Shaders/TileColorConvertTest2.glsl"
+dest_files=["res://.godot/imported/TileColorConvertTest2.glsl-48c058475bede12abbb46d995354ec7e.res"]
+
+[params]
+

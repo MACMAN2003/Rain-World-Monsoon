@@ -1,0 +1,164 @@
+﻿// special thanks to Bro#5929 on the rain world discord
+Level Editor Project File Structure
+
+
+
+
+Geometry
+
+
+3d array
+array cell formatting:
+[<int>, [<int>, <int>, <int>, <ect...>]] (first int is the geometry type, while the list is stackables)
+0 = air
+1 = solid
+2 - 5 = slopes
+6 = platform
+7 = shortcut entrance
+9 = glass (obsolete?)
+[1] = horizontal pole
+[2] = vertical pole
+[3] = bat hive
+[4] = shortcut entrance
+[5] = shortcut path
+[6] = room entrance
+[7] = dragon den
+[9] = place rock
+[10] = place spear
+[11] = cracked terrain
+[12] = forbid fly chains
+[13] = garbage worm hole
+[18] = waterfall
+[19] = whack-a-mole hole
+[20] = worm grass
+[21] = scavenger hole
+
+
+
+
+Tiles
+3d Array
+
+
+array cell formatting:
+-[#tp: "default", #data: 0]
+-[#tp: "material", #data: "<material name>"]
+-[#tp: "tileHead", #data: [point(<x>, <y>), "<tile name>"] (no clue what x,y are in this circumstance)
+-[#tp: "tileBody", #data: [point(<x>, <y>), <z>]] (x, y, z point to the coords of the tileHead)
+
+
+#defaultMaterial: "<material name>",
+
+
+
+
+Effects
+(effects are a ‘list’ of 2d arrays, one array for each effect)
+#effects:
+
+
+#nm: "<effect name>", #tp: "<effect types: standardErosion || nn>", #crossScreen: <bool>,
+
+
+#mtrx: <the array itself> (each cell contains values ranging from 0 - 100)
+
+
+#options: <list of all effects options> (it’s a customizable list for each one, so I won’t bother for now)
+
+
+->next effect array
+
+
+
+
+Lighting
+(light map is the png file with the same name as the project file)
+
+
+#lightAngle: <int>, (light angle, values 90 - 180)
+#flatness: <int>, (light depth, values 1 - 10)
+#lightRect: rect(1000, 1000, -1000, -1000), #paintShape: "pxl"] (obsolete?)
+
+
+
+
+General
+
+
+[#timeLimit: 4800, #defaultTerrain: <bool>, #maxFlies: 10, #flySpawnRate: 50, #lizards: [], #ambientSounds: [], #music: "NONE", #tags: [], #lightType: "Static", #waterDrips: 1, #lightRect: rect(0, 0, 1040, 800), #Matrix: []]
+[#mouse: 1, #lastMouse: 1, #mouseClick: 0, #pal: 1, #pals: [[#detCol: color( 255, 0, 0 )]], #eCol1: 1, #eCol2: 2, #totEcols: 5, (obsolete? Does default terrain affect the output at all?)
+
+
+#tileSeed: <int>, (seed for randomness in rendering)
+#colGlows: [0, 0], (obsolete?)
+#size: point(<x>, <y>), (x,y size of the room, including border tiles)
+#extraTiles: [<int>, <int>, <int>, <int>], (Left, Top, Right, Bottom. Border tiles.)
+#light: <bool> (sunlight: 0 = ON, 1 = OFF)
+
+
+
+
+Cameras
+[#cameras:
+
+
+[point(<x>, <y>), point(<x>, <y>), point(<x>, <y>) <ect...>], (list of x, y coords for each camera)
+
+
+#selectedCamera: 0,
+
+
+#quads: [[[<x>, <y>], [<x>, <y>], [<x>, <y>], [<x>, <y>]], [<x>, <y>], [<x>, <y>], [<x>, <y>], [<x>, <y>]], <ect...>]
+(list of quad coords, matched with the related camera on the coordinate list. Actually should be an angle and a float.)
+
+
+
+
+Water
+#waterLevel: <int>, (-1 is no water, 0+ is water level measured in tiles from bottom of room)
+
+
+#waterInFront: <bool>, (in front of sublayer 0 or behind sublayer 0)
+
+
+#waveLength: 60, #waveAmplitude: 5, #waveSpeed: 10 (obsolete?)
+
+
+
+
+Props
+#props: (list of props)
+
+
+[<int, 0 - sublayer>, "<prop/tile name>", point(<x>, <y>), (x,y here is width and height, measure in tiles)
+[point(<x>, <y>), point(<x>, <y>), point(<x>, <y>), point(<x>, <y>)], (x,y here is x,y coords for each corner)
+[#settings: [#renderorder: <int>, #seed: <int>, #renderTime: <int>], (some props have more settings, I’ll list those later)
+
+
+#point: [point(<x>, <y>), point(<x>, <y>), point(<x>, <y>), <ect...>] (for rope types only, list of x,y coords for all points)
+
+
+
+
+Non-linear Recap
+(this section contains all relevant variables, sorted by type and complexity)
+Static values:
+#tileSeed: <int>, #size: point(<x>, <y>), #extraTiles: [<int>, <int>, <int>, <int>], 
+#light: <bool>, Light Angle <int>, Light Flatness <int>, 
+Water level <int>, waterInFront <bool>, 
+#defaultMaterial: "<material name>", 
+
+
+Lists:
+#cameras:(<x>, <y>)
+#quads:[<angle>, <float>], [<angle>, <float>], [<angle>, <float>], [<angle>, <float>]
+#props[tons of info]
+
+
+List of 2d arrays:
+Effects stuff
+
+
+3d arrays:
+Geometry
+Tiles
