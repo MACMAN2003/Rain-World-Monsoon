@@ -50,5 +50,5 @@ Or in other words: It's difficult, and working around it will be a pain.
 - LB Gamer/M4rbleL1ne - Community Editor project lead, Community Editor materials
 - DryCryCrystal - Community Editor materials
 - Henpemaz - Community Editor camera snap
-- Drought Team - Drought Editor, which was absorbed by the Community Editor
+- LB Gamer/M4rbleL1ne - Drought Editor, which was absorbed by the Community Editor
 - MSC Team - RainDB Editor, which was also absorbed by the Community Editor
