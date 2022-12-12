@@ -1,7 +1,7 @@
 # Rain World Monsoon
 A fan-made, improved level editor for the indie game "Rain World"
 
-### Current version: 0.1 (Alpha) (17th of October 2022)
+### Current version: 0.2 (Alpha) (12th of December 2022)
 
 # If you find a problem, please make an issue for it :)
 
@@ -17,9 +17,10 @@ A fan-made, improved level editor for the indie game "Rain World"
 - [x] Geometry Editor features (except the move tool ;-;)
 - [x] Tile Editor features (except default material and special tools)
 - [x] Evil Mode (makes the tiles red)
+- [x] Undo/Redo
 
 ## Planned Features (In order of likely to be done first)
-- [ ] Finishing touches for the Tile Editor
+- [x] Finishing touches for the Tile Editor
 - [ ] Level Properties Editor
 - [ ] Environment Editor
 - [ ] Effects Editor
@@ -36,7 +37,7 @@ A fan-made, improved level editor for the indie game "Rain World"
 ### N/A :(
 Or in other words: It's difficult, and working around it will be a pain.
 ## Build Instructions workaround (might not work)
-- Download the Godot Engine Editor 4.0 Beta .NET (C#) build and make a new project in it
+- Download the Godot Engine Editor 4.3 Beta .NET (C#) build and make a new project in it
 - Copy the "Graphics" folder from any level editor installation into the same folder as the Godot Editor .exe
 - Copy the LevelEditorProjects folder from the Monsoon .zip and put it in the same folder as the Godot Editor .exe
 - Copy all the files from the "Source-Code" Directory into the project's root "res://" folder /n
@@ -52,3 +53,4 @@ Or in other words: It's difficult, and working around it will be a pain.
 - Henpemaz - Community Editor camera snap
 - LB Gamer/M4rbleL1ne - Drought Editor, which was absorbed by the Community Editor
 - MSC Team - RainDB Editor, which was also absorbed by the Community Editor
+- PJB/Drizzle team - reverse engineered adobe RNG algorithm
