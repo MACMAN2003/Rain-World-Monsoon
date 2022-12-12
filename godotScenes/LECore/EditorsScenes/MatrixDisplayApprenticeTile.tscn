@@ -88,6 +88,11 @@ position = Vector2(16, 16)
 z_index = 34
 centered = false
 
+[node name="CursorRect" type="Sprite2D" parent="Node2d/UI"]
+position = Vector2(16, 16)
+z_index = 34
+centered = false
+
 [node name="MirrorRect" type="Sprite2D" parent="Node2d/UI"]
 self_modulate = Color(1, 0, 1, 1)
 position = Vector2(16, 16)
@@ -158,7 +163,6 @@ whichtext = 2
 
 [node name="Preview Preview" type="Sprite2D" parent="Node2d"]
 unique_name_in_owner = true
-self_modulate = Color(0, 1, 1, 1)
 z_index = 46
 centered = false
 script = ExtResource("4_1lnu4")

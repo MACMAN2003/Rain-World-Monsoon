@@ -78,6 +78,7 @@ texture_normal = ExtResource("1_wrwt3")
 ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
+ToolMatrixPosition = Vector2i(1, 1)
 
 [node name="Paint Wall" type="TextureButton" parent="VBoxContainer/GridContainer"]
 use_parent_material = true
@@ -91,6 +92,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 1
+ToolMatrixPosition = Vector2i(2, 1)
 
 [node name="Paint Air" type="TextureButton" parent="VBoxContainer/GridContainer"]
 use_parent_material = true
@@ -104,6 +106,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 2
+ToolMatrixPosition = Vector2i(3, 1)
 
 [node name="Slope" type="TextureButton" parent="VBoxContainer/GridContainer"]
 use_parent_material = true
@@ -117,6 +120,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 4
+ToolMatrixPosition = Vector2i(4, 1)
 
 [node name="Floor" type="TextureButton" parent="VBoxContainer/GridContainer"]
 use_parent_material = true
@@ -130,6 +134,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 3
+ToolMatrixPosition = Vector2i(1, 2)
 
 [node name="Rect Wall" type="TextureButton" parent="VBoxContainer/GridContainer"]
 use_parent_material = true
@@ -144,6 +149,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 7
+ToolMatrixPosition = Vector2i(2, 2)
 
 [node name="Rect Air" type="TextureButton" parent="VBoxContainer/GridContainer"]
 use_parent_material = true
@@ -158,6 +164,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 8
+ToolMatrixPosition = Vector2i(3, 2)
 
 [node name="Move" type="TextureButton" parent="VBoxContainer/GridContainer"]
 use_parent_material = true
@@ -172,6 +179,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 9
+ToolMatrixPosition = Vector2i(4, 2)
 
 [node name="Rock" type="TextureButton" parent="VBoxContainer/GridContainer"]
 use_parent_material = true
@@ -185,6 +193,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 21
+ToolMatrixPosition = Vector2i(1, 3)
 
 [node name="Spear" type="TextureButton" parent="VBoxContainer/GridContainer"]
 use_parent_material = true
@@ -199,6 +208,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 22
+ToolMatrixPosition = Vector2i(2, 3)
 
 [node name="Crack" type="TextureButton" parent="VBoxContainer/GridContainer"]
 use_parent_material = true
@@ -213,9 +223,9 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 23
+ToolMatrixPosition = Vector2i(3, 3)
 
 [node name="Blank" type="TextureButton" parent="VBoxContainer/GridContainer"]
-self_modulate = Color(0.533333, 0.533333, 0.533333, 1)
 use_parent_material = true
 custom_minimum_size = Vector2i(48, 48)
 offset_left = 156.0
@@ -225,6 +235,9 @@ offset_bottom = 152.0
 texture_normal = ExtResource("12_dgn64")
 ignore_texture_size = true
 stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 32
+ToolMatrixPosition = Vector2i(4, 3)
 
 [node name="Horizontal Beam" type="TextureButton" parent="VBoxContainer/GridContainer"]
 use_parent_material = true
@@ -238,6 +251,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 12
+ToolMatrixPosition = Vector2i(1, 4)
 
 [node name="Vertical Beam" type="TextureButton" parent="VBoxContainer/GridContainer"]
 use_parent_material = true
@@ -252,6 +266,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 13
+ToolMatrixPosition = Vector2i(2, 4)
 
 [node name="Glass" type="TextureButton" parent="VBoxContainer/GridContainer"]
 use_parent_material = true
@@ -266,6 +281,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 14
+ToolMatrixPosition = Vector2i(3, 4)
 
 [node name="Copy Back" type="TextureButton" parent="VBoxContainer/GridContainer"]
 use_parent_material = true
@@ -280,6 +296,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 10
+ToolMatrixPosition = Vector2i(4, 4)
 
 [node name="GridContainer2" type="GridContainer" parent="VBoxContainer"]
 material = ExtResource("1_4c0hl")
@@ -299,6 +316,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 15
+ToolMatrixPosition = Vector2i(1, 5)
 
 [node name="Shortcut Dot" type="TextureButton" parent="VBoxContainer/GridContainer2"]
 use_parent_material = true
@@ -312,6 +330,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 16
+ToolMatrixPosition = Vector2i(2, 5)
 
 [node name="Enemy Den" type="TextureButton" parent="VBoxContainer/GridContainer2"]
 use_parent_material = true
@@ -325,6 +344,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 5
+ToolMatrixPosition = Vector2i(3, 5)
 
 [node name="Entrance" type="TextureButton" parent="VBoxContainer/GridContainer2"]
 use_parent_material = true
@@ -338,6 +358,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 6
+ToolMatrixPosition = Vector2i(4, 5)
 
 [node name="No Batfly Chains" type="TextureButton" parent="VBoxContainer/GridContainer2"]
 self_modulate = Color(0.533333, 0.533333, 0.533333, 1)
@@ -352,6 +373,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 24
+ToolMatrixPosition = Vector2i(1, 6)
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/GridContainer2/No Batfly Chains"]
 anchors_preset = 15
@@ -362,7 +384,6 @@ grow_vertical = 2
 texture = ExtResource("21_8k0we")
 
 [node name="Blank" type="TextureButton" parent="VBoxContainer/GridContainer2"]
-self_modulate = Color(0.533333, 0.533333, 0.533333, 1)
 use_parent_material = true
 custom_minimum_size = Vector2i(48, 48)
 offset_left = 52.0
@@ -372,6 +393,9 @@ offset_bottom = 100.0
 texture_normal = ExtResource("12_dgn64")
 ignore_texture_size = true
 stretch_mode = 0
+script = ExtResource("3_lle3p")
+toolToChangeTo = 33
+ToolMatrixPosition = Vector2i(2, 6)
 
 [node name="Hive" type="TextureButton" parent="VBoxContainer/GridContainer2"]
 self_modulate = Color(0.533333, 0.533333, 0.533333, 1)
@@ -387,6 +411,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 17
+ToolMatrixPosition = Vector2i(3, 6)
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/GridContainer2/Hive"]
 anchors_preset = 15
@@ -409,6 +434,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 26
+ToolMatrixPosition = Vector2i(4, 6)
 
 [node name="Scavenger Teleporter" type="TextureButton" parent="VBoxContainer/GridContainer2"]
 use_parent_material = true
@@ -422,6 +448,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 29
+ToolMatrixPosition = Vector2i(1, 7)
 
 [node name="Whack A Mole Hole" type="TextureButton" parent="VBoxContainer/GridContainer2"]
 use_parent_material = true
@@ -436,6 +463,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 27
+ToolMatrixPosition = Vector2i(2, 7)
 
 [node name="Garbage Worm Hole" type="TextureButton" parent="VBoxContainer/GridContainer2"]
 use_parent_material = true
@@ -450,6 +478,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 25
+ToolMatrixPosition = Vector2i(3, 7)
 
 [node name="Worm Grass" type="TextureButton" parent="VBoxContainer/GridContainer2"]
 use_parent_material = true
@@ -464,6 +493,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 28
+ToolMatrixPosition = Vector2i(4, 7)
 
 [node name="Change Layer" type="TextureButton" parent="VBoxContainer/GridContainer2"]
 use_parent_material = true
@@ -477,6 +507,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 18
+ToolMatrixPosition = Vector2i(1, 8)
 
 [node name="Rect Remove All" type="TextureButton" parent="VBoxContainer/GridContainer2"]
 use_parent_material = true
@@ -491,6 +522,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 11
+ToolMatrixPosition = Vector2i(2, 8)
 
 [node name="Toggle Mirror" type="TextureButton" parent="VBoxContainer/GridContainer2"]
 use_parent_material = true
@@ -505,6 +537,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 19
+ToolMatrixPosition = Vector2i(3, 8)
 
 [node name="Move Mirror Point" type="TextureButton" parent="VBoxContainer/GridContainer2"]
 use_parent_material = true
@@ -519,6 +552,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_lle3p")
 toolToChangeTo = 20
+ToolMatrixPosition = Vector2i(4, 8)
 
 [node name="Label" type="Label" parent="VBoxContainer"]
 offset_top = 436.0
@@ -576,3 +610,4 @@ offset_top = 824.0
 offset_right = 1200.0
 offset_bottom = 1080.0
 size_flags_vertical = 3
+mouse_filter = 2

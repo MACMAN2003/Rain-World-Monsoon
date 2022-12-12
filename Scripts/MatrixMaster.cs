@@ -8,7 +8,9 @@ namespace RainWorldMonsoon;
 
 public partial class MatrixMaster : Node
 {
+#pragma warning disable CA1822 // Mark members as static
 	public bool LayerIncompatStackables(Tiles2 tile)
+#pragma warning restore CA1822 // Mark members as static
 	{
 		if (tile == (Tiles2)1 | tile == (Tiles2)2 | tile == (Tiles2)11)
 		{
@@ -150,8 +152,8 @@ public partial class MatrixMaster : Node
 		//ReferenceMatrix = Globals.matrix;
 		GeoMatrixMaster = GetTree().Root.FindChild("Matrix Display Master 2D", true, false);
 		GeoEdMatrixApprentice = GetTree().Root.FindChild("Matrix Display Apprentice Geo", true, false);
-        TileEdMatrixApprentice = GetTree().Root.FindChild("Matrix Display Apprentice Tile", true, false);
-        Camera = (LECamera2D)GetTree().Root.FindChild("Camera2D", true, false);
+		TileEdMatrixApprentice = GetTree().Root.FindChild("Matrix Display Apprentice Tile", true, false);
+		Camera = (LECamera2D)GetTree().Root.FindChild("Master Camera", true, false);
 		//GD.Print(GeoMatrixMaster);
 		//Texture2D walltex = (Texture2D)GD.Load("res://Core/EasyWallID1.png");
 
@@ -172,19 +174,19 @@ public partial class MatrixMaster : Node
 		geoed3text = (Sprite2D)GeoEdMatrixApprentice.FindChild("GeoEditImage3", true);
 		geoedrecttext = (Sprite2D)GeoEdMatrixApprentice.FindChild("BoundsRect", true);
 		geoeduitext = (Sprite2D)GeoEdMatrixApprentice.FindChild("UIRect", true);
-        geoedmirrortext = (Sprite2D)GeoEdMatrixApprentice.FindChild("MirrorRect", true);
+		geoedmirrortext = (Sprite2D)GeoEdMatrixApprentice.FindChild("MirrorRect", true);
 
-        tileedshtext = (Sprite2D)TileEdMatrixApprentice.FindChild("TileEditImageShortcuts", true);
-        tileed1text = (Sprite2D)TileEdMatrixApprentice.FindChild("TileEditImage1", true);
-        tileed2text = (Sprite2D)TileEdMatrixApprentice.FindChild("TileEditImage2", true);
-        tileed3text = (Sprite2D)TileEdMatrixApprentice.FindChild("TileEditImage3", true);
-
-
+		tileedshtext = (Sprite2D)TileEdMatrixApprentice.FindChild("TileEditImageShortcuts", true);
+		tileed1text = (Sprite2D)TileEdMatrixApprentice.FindChild("TileEditImage1", true);
+		tileed2text = (Sprite2D)TileEdMatrixApprentice.FindChild("TileEditImage2", true);
+		tileed3text = (Sprite2D)TileEdMatrixApprentice.FindChild("TileEditImage3", true);
 
 
 
 
-        WhiteRectV = Utilities.QuickConvert("res://Core/Rect_L.png");
+
+
+		WhiteRectV = Utilities.QuickConvert("res://Core/Rect_L.png");
 		WhiteRectV = Utilities.ColorConvert(WhiteRectV, Color.Color8(255, 0, 0, 255), Color.Color8(255, 255, 255, 255));
 		WhiteRectH = Utilities.QuickConvert("res://Core/Rect_T.png");
 		WhiteRectH = Utilities.ColorConvert(WhiteRectH, Color.Color8(255, 0, 0, 255), Color.Color8(255, 255, 255, 255));
@@ -384,12 +386,14 @@ public partial class MatrixMaster : Node
 			GeoMatrixMaster = GetTree().Root.FindChild("Matrix Display Master 2D", true, false);
 			GD.Print(GeoMatrixMaster);
 		}
-		if (Globals.IsRectOn == true)
+		if (Globals.IsRectOn == true & Globals.State == EditorState.Geometry)
 		{
 			AffectRect = new LERect(new Vector2i (Globals.CursorPosition.x - 1, Globals.CursorPosition.y - 1), Globals.RectLockPos);
 			if (AffectRect.top > AffectRect.bottom)
 			{
+#pragma warning disable IDE0180 // Use tuple to swap values
 				int sav = AffectRect.bottom;
+#pragma warning restore IDE0180 // Use tuple to swap values
 				AffectRect.bottom = AffectRect.top;
 				AffectRect.top = sav;
 			}
@@ -401,8 +405,8 @@ public partial class MatrixMaster : Node
 			}
 			if (LastCursorPosition != new Vector2i(Globals.CursorPosition.x - 1, Globals.CursorPosition.y - 1))
 			{
-                UpdateToolRect();
-            }
+				UpdateToolRect();
+			}
 			
 		}
 		if (Globals.IsMirrorOn == true)
@@ -500,185 +504,185 @@ public partial class MatrixMaster : Node
 
 	public void UpdateToolRect()
 	{
-        if (RedRect == null)
-        {
-            RedRect = new Image();
-            RedRect.Create((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16, false, Image.Format.Rgba8);
-        }
-        RedRect.Resize((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16);
-        RedRect.Fill(Color.Color8(0, 0, 0, 0));
-        int X = 0;
-        int Y = 0;
-        int Z = 0;
-        foreach (GeometryTile tile in Globals.matrix)
-        {
-            if ((Z + 1) == 1)
-            {
-                DrawToolRect(X, Y);
-            }
+		if (RedRect == null)
+		{
+			RedRect = new Image();
+			RedRect.Create((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16, false, Image.Format.Rgba8);
+		}
+		RedRect.Resize((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16);
+		RedRect.Fill(Color.Color8(0, 0, 0, 0));
+		int X = 0;
+		int Y = 0;
+		int Z = 0;
+		foreach (GeometryTile tile in Globals.matrix)
+		{
+			if ((Z + 1) == 1)
+			{
+				DrawToolRect(X, Y);
+			}
 
 
-            //lol copy and pasted
-            Z++;
-            if (Z + 1 > 3)
-            {
-                Z = 0;
-                Y++;
-            }
-            if (Y + 1 > Globals.levelSize.y)
-            {
-                Y = 0;
-                X++;
-            }
-        }
-        redrect = new ImageTexture();
-        redrect.SetImage(RedRect);
-        geoeduitext.Texture = redrect;
+			//lol copy and pasted
+			Z++;
+			if (Z + 1 > 3)
+			{
+				Z = 0;
+				Y++;
+			}
+			if (Y + 1 > Globals.levelSize.y)
+			{
+				Y = 0;
+				X++;
+			}
+		}
+		redrect = new ImageTexture();
+		redrect.SetImage(RedRect);
+		geoeduitext.Texture = redrect;
 
 
-    }
+	}
 
-    public void UpdateMirrorRect()
-    {
-        if (PurpleRect == null)
-        {
-            PurpleRect = new Image();
-            PurpleRect.Create((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16, false, Image.Format.Rgba8);
-        }
-        PurpleRect.Resize((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16);
-        PurpleRect.Fill(Color.Color8(0, 0, 0, 0));
-        int X = 0;
-        int Y = 0;
-        int Z = 0;
-        foreach (GeometryTile tile in Globals.matrix)
-        {
-            if ((Z + 1) == 1)
-            {
-                DrawMirrorRect(X, Y);
-            }
-
-
-            //lol copy and pasted
-            Z++;
-            if (Z + 1 > 3)
-            {
-                Z = 0;
-                Y++;
-            }
-            if (Y + 1 > Globals.levelSize.y)
-            {
-                Y = 0;
-                X++;
-            }
-        }
-        purplerect = new ImageTexture();
-        purplerect.SetImage(PurpleRect);
-        geoedmirrortext.Texture = purplerect;
-
-
-    }
-
-    public void DrawMirrorRect(int x, int y)
-    {
-        LERect displayMirrorRect = new LERect(Globals.MirrorXPos, -1, Globals.MirrorXPos, (int)Globals.levelSize.y);
-        if (displayMirrorRect.IsOnEdge(new Vector2i(x, y)) == true)
-        {
-            LERectEdge edge = displayMirrorRect.WhichEdge(new Vector2i(x, y));
-            switch (edge)
-            {
-                case LERectEdge.Null:
-                    break;
-                case LERectEdge.Left:
-                    PurpleRect.BlitRect(PurpleRectV, PurpleRectV.GetUsedRect(), new Vector2i((x * 16) + 7, (y * 16)));
-                    break;
-                case LERectEdge.Top:
-                    PurpleRect.BlitRect(PurpleRectH, PurpleRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16) + 7));
-                    break;
-                case LERectEdge.Right:
-                    PurpleRect.BlitRect(PurpleRectV, PurpleRectV.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
-                    break;
-                case LERectEdge.Bottom:
-                    PurpleRect.BlitRect(PurpleRectH, PurpleRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
-                    break;
-                case LERectEdge.TopLeft:
-                    PurpleRect.BlitRect(PurpleRectH, PurpleRectH.GetUsedRect(), new Vector2i((x * 16) + 7, (y * 16) + 7));
-                    break;
-                case LERectEdge.TopRight:
-                    //WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16) + 14));
-                    break;
-                case LERectEdge.BottomRight:
-                    //WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
-                    break;
-                case LERectEdge.BottomLeft:
-                    //WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
-                    break;
-                default:
-                    break;
-            }
-        }
-        else PurpleRect.FillRect(new Rect2i((int)x * 16, (int)y * 16, 16, 16), Color.FromHSV(0, 0, 0, 0));
-
-
-    }
-    public void ClearMirrorRect()
-    {
-        PurpleRect.Fill(Color.FromHSV(0, 0, 0, 0));
-        purplerect = new ImageTexture();
-        purplerect.SetImage(PurpleRect);
-        geoedmirrortext.Texture = purplerect;
-    }
-
-    public void ClearToolRect()
+	public void UpdateMirrorRect()
 	{
-        RedRect.Fill(Color.FromHSV(0, 0, 0, 0));
-        redrect = new ImageTexture();
-        redrect.SetImage(RedRect);
-        geoeduitext.Texture = redrect;
-    }
+		if (PurpleRect == null)
+		{
+			PurpleRect = new Image();
+			PurpleRect.Create((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16, false, Image.Format.Rgba8);
+		}
+		PurpleRect.Resize((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16);
+		PurpleRect.Fill(Color.Color8(0, 0, 0, 0));
+		int X = 0;
+		int Y = 0;
+		int Z = 0;
+		foreach (GeometryTile tile in Globals.matrix)
+		{
+			if ((Z + 1) == 1)
+			{
+				DrawMirrorRect(X, Y);
+			}
+
+
+			//lol copy and pasted
+			Z++;
+			if (Z + 1 > 3)
+			{
+				Z = 0;
+				Y++;
+			}
+			if (Y + 1 > Globals.levelSize.y)
+			{
+				Y = 0;
+				X++;
+			}
+		}
+		purplerect = new ImageTexture();
+		purplerect.SetImage(PurpleRect);
+		geoedmirrortext.Texture = purplerect;
+
+
+	}
+
+	public void DrawMirrorRect(int x, int y)
+	{
+		LERect displayMirrorRect = new LERect(Globals.MirrorXPos, -1, Globals.MirrorXPos, (int)Globals.levelSize.y);
+		if (displayMirrorRect.IsOnEdge(new Vector2i(x, y)) == true)
+		{
+			LERectEdge edge = displayMirrorRect.WhichEdge(new Vector2i(x, y));
+			switch (edge)
+			{
+				case LERectEdge.Null:
+					break;
+				case LERectEdge.Left:
+					PurpleRect.BlitRect(PurpleRectV, PurpleRectV.GetUsedRect(), new Vector2i((x * 16) + 7, (y * 16)));
+					break;
+				case LERectEdge.Top:
+					PurpleRect.BlitRect(PurpleRectH, PurpleRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16) + 7));
+					break;
+				case LERectEdge.Right:
+					PurpleRect.BlitRect(PurpleRectV, PurpleRectV.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
+					break;
+				case LERectEdge.Bottom:
+					PurpleRect.BlitRect(PurpleRectH, PurpleRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
+					break;
+				case LERectEdge.TopLeft:
+					PurpleRect.BlitRect(PurpleRectH, PurpleRectH.GetUsedRect(), new Vector2i((x * 16) + 7, (y * 16) + 7));
+					break;
+				case LERectEdge.TopRight:
+					//WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16) + 14));
+					break;
+				case LERectEdge.BottomRight:
+					//WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
+					break;
+				case LERectEdge.BottomLeft:
+					//WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
+					break;
+				default:
+					break;
+			}
+		}
+		else PurpleRect.FillRect(new Rect2i((int)x * 16, (int)y * 16, 16, 16), Color.FromHSV(0, 0, 0, 0));
+
+
+	}
+	public void ClearMirrorRect()
+	{
+		PurpleRect.Fill(Color.FromHSV(0, 0, 0, 0));
+		purplerect = new ImageTexture();
+		purplerect.SetImage(PurpleRect);
+		geoedmirrortext.Texture = purplerect;
+	}
+
+	public void ClearToolRect()
+	{
+		RedRect.Fill(Color.FromHSV(0, 0, 0, 0));
+		redrect = new ImageTexture();
+		redrect.SetImage(RedRect);
+		geoeduitext.Texture = redrect;
+	}
 
 
 	public void DrawToolRect(int x, int y)
 	{
 		LERect displayToolRect = new LERect(AffectRect.left - 1, AffectRect.top - 1, AffectRect.right + 1, AffectRect.bottom + 1);
-        if (displayToolRect.IsOnEdge(new Vector2i(x, y)) == true)
-        {
-            LERectEdge edge = displayToolRect.WhichEdge(new Vector2i(x, y));
-            switch (edge)
-            {
-                case LERectEdge.Null:
-                    break;
-                case LERectEdge.Left:
-                    RedRect.BlitRect(RedRectV, RedRectV.GetUsedRect(), new Vector2i((x * 16) + 14, (y * 16)));
-                    break;
-                case LERectEdge.Top:
-                    RedRect.BlitRect(RedRectH, RedRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16) + 14));
-                    break;
-                case LERectEdge.Right:
-                    RedRect.BlitRect(RedRectV, RedRectV.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
-                    break;
-                case LERectEdge.Bottom:
-                    RedRect.BlitRect(RedRectH, RedRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
-                    break;
-                case LERectEdge.TopLeft:
-                    RedRect.BlitRect(RedRectH, RedRectH.GetUsedRect(), new Vector2i((x * 16) + 14, (y * 16) + 14));
-                    break;
-                case LERectEdge.TopRight:
-                    //WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16) + 14));
-                    break;
-                case LERectEdge.BottomRight:
-                    //WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
-                    break;
-                case LERectEdge.BottomLeft:
-                    //WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
-                    break;
-                default:
-                    break;
-            }
-        }
-        else RedRect.FillRect(new Rect2i((int)x * 16, (int)y * 16, 16, 16), Color.FromHSV(0, 0, 0, 0));
+		if (displayToolRect.IsOnEdge(new Vector2i(x, y)) == true)
+		{
+			LERectEdge edge = displayToolRect.WhichEdge(new Vector2i(x, y));
+			switch (edge)
+			{
+				case LERectEdge.Null:
+					break;
+				case LERectEdge.Left:
+					RedRect.BlitRect(RedRectV, RedRectV.GetUsedRect(), new Vector2i((x * 16) + 14, (y * 16)));
+					break;
+				case LERectEdge.Top:
+					RedRect.BlitRect(RedRectH, RedRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16) + 14));
+					break;
+				case LERectEdge.Right:
+					RedRect.BlitRect(RedRectV, RedRectV.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
+					break;
+				case LERectEdge.Bottom:
+					RedRect.BlitRect(RedRectH, RedRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
+					break;
+				case LERectEdge.TopLeft:
+					RedRect.BlitRect(RedRectH, RedRectH.GetUsedRect(), new Vector2i((x * 16) + 14, (y * 16) + 14));
+					break;
+				case LERectEdge.TopRight:
+					//WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16) + 14));
+					break;
+				case LERectEdge.BottomRight:
+					//WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
+					break;
+				case LERectEdge.BottomLeft:
+					//WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
+					break;
+				default:
+					break;
+			}
+		}
+		else RedRect.FillRect(new Rect2i((int)x * 16, (int)y * 16, 16, 16), Color.FromHSV(0, 0, 0, 0));
 
 
-    }
+	}
 
 
 
@@ -1186,21 +1190,23 @@ public partial class MatrixMaster : Node
 		switch (Globals.CurrentTool)
 		{
 			case GeometryTools.Invert:
-				if (Globals.matrix[X,Y,Layer].TileID == (Tiles)0 && hasChangedAlreadyThisFrame == false)
+				if (Globals.matrix[X,Y,Layer].TileID == (Tiles)0 && hasChangedAlreadyThisFrame == false && LastPos != new Vector2i(X,Y))
 				{
 					//GD.Print("Walled! ", X + 1, " ", Y + 1);
 					LERect rect = new LERect(X, Y, X, Y);
 					ChangeTo(rect, Layer, 1);
 					//Globals.matrix[X,Y,Layer].TileID = (Tiles)1;
+					LastPos = new Vector2i(X, Y);
 					hasChangedAlreadyThisFrame = true;
 				}
-				if (Globals.matrix[X, Y, Layer].TileID == (Tiles)1 && hasChangedAlreadyThisFrame == false)
+				if (Globals.matrix[X, Y, Layer].TileID == (Tiles)1 && hasChangedAlreadyThisFrame == false && LastPos != new Vector2i(X, Y))
 				{
 					//GD.Print("Aired! ", X + 1, " ", Y + 1);
 					LERect rect = new LERect(X, Y, X, Y);
 					ChangeTo(rect, Layer, 0);
 					//Globals.matrix[X, Y, Layer].TileID = (Tiles)0;
-					hasChangedAlreadyThisFrame=true;
+					LastPos = new Vector2i(X, Y);
+					hasChangedAlreadyThisFrame =true;
 				}
 			   //UpdateTile(X, Y);
 				break;
@@ -1220,9 +1226,9 @@ public partial class MatrixMaster : Node
 				int slope = SlopeTile(new Vector2i(X, Y));
 				if (slope != 0)
 				{
-                    LERect rect6 = new LERect(X, Y, X, Y);
-                    ChangeTo(rect6, Layer, slope);
-                }
+					LERect rect6 = new LERect(X, Y, X, Y);
+					ChangeTo(rect6, Layer, slope);
+				}
 				break;
 			case GeometryTools.EnemyDen:
 				if (Layer == 0 && LastPos != new Vector2i(X,Y))
@@ -1258,36 +1264,36 @@ public partial class MatrixMaster : Node
 				}
 				break;
 			case GeometryTools.RectAir:
-                if (LastPos != new Vector2i(X, Y))
-                {
-                    bool thisframerect = false;
-                    if (Globals.IsRectOn == false)
-                    {
-                        Globals.RectLockPos = new Vector2i(X, Y);
-                        Globals.IsRectOn = true;
-                        thisframerect = true;
-                    }
-                    else if (thisframerect == false)
-                    {
-                        //GD.Print(AffectRect.ToString());
-                        ChangeTo(AffectRect, Layer, 0);
-                        ClearToolRect();
-                        Globals.IsRectOn = false;
-                    }
-                }
-                break;
+				if (LastPos != new Vector2i(X, Y))
+				{
+					bool thisframerect = false;
+					if (Globals.IsRectOn == false)
+					{
+						Globals.RectLockPos = new Vector2i(X, Y);
+						Globals.IsRectOn = true;
+						thisframerect = true;
+					}
+					else if (thisframerect == false)
+					{
+						//GD.Print(AffectRect.ToString());
+						ChangeTo(AffectRect, Layer, 0);
+						ClearToolRect();
+						Globals.IsRectOn = false;
+					}
+				}
+				break;
 			case GeometryTools.CopyBack:
-                if (LastPos != new Vector2i(X, Y))
-                {
-                    bool thisframerect = false;
-                    if (Globals.IsRectOn == false)
-                    {
-                        Globals.RectLockPos = new Vector2i(X, Y);
-                        Globals.IsRectOn = true;
-                        thisframerect = true;
-                    }
-                    else if (thisframerect == false)
-                    {
+				if (LastPos != new Vector2i(X, Y))
+				{
+					bool thisframerect = false;
+					if (Globals.IsRectOn == false)
+					{
+						Globals.RectLockPos = new Vector2i(X, Y);
+						Globals.IsRectOn = true;
+						thisframerect = true;
+					}
+					else if (thisframerect == false)
+					{
 						if (Globals.CurrentLayer != 3)
 						{
 							for(int q = 0; q < Globals.levelSize.x; q++)
@@ -1296,66 +1302,66 @@ public partial class MatrixMaster : Node
 								{
 									if (AffectRect.IsInsideRect(new Vector2i(q, c)))
 									{
-                                        Tiles tileid = Globals.matrix[q, c, Layer].TileID;
+										Tiles tileid = Globals.matrix[q, c, Layer].TileID;
 										//List<Tiles2> tiles3 = Globals.matrix[q, c, Layer].Tile2IDS;
 										LERect rect7 = new LERect(q, c, q, c);
 										ChangeTo(rect7, Layer + 1, (int)tileid);
-                                    }
+									}
 									//Tiles tile = Globals.matrix[q, c, Layer].TileID;
 									//LERect rect7 = new LERect(q, c, q,)
 
 								}
 							}
 						}
-                        ClearToolRect();
-                        Globals.IsRectOn = false;
-                    }
-                }
-                break;
+						ClearToolRect();
+						Globals.IsRectOn = false;
+					}
+				}
+				break;
 			case GeometryTools.Flip:
-                if (LastPos != new Vector2i(X, Y))
-                {
-                    bool thisframerect = false;
-                    if (Globals.IsRectOn == false)
-                    {
-                        Globals.RectLockPos = new Vector2i(X, Y);
-                        Globals.IsRectOn = true;
-                        thisframerect = true;
-                    }
-                    else if (thisframerect == false)
-                    {
+				if (LastPos != new Vector2i(X, Y))
+				{
+					bool thisframerect = false;
+					if (Globals.IsRectOn == false)
+					{
+						Globals.RectLockPos = new Vector2i(X, Y);
+						Globals.IsRectOn = true;
+						thisframerect = true;
+					}
+					else if (thisframerect == false)
+					{
 						for(int i = 0; i < 3; i++)
 						{
-                            ChangeTo(AffectRect, i, 0);
-                            for (int q = 0; q < Globals.levelSize.x; q++)
-                            {
-                                for (int c = 0; c < Globals.levelSize.y; c++)
-                                {
-                                    if (AffectRect.IsInsideRect(new Vector2i(q, c)))
-                                    {
-                                        Tiles tile = Globals.matrix[q, c, Layer].TileID;
-                                        //if (Globals.matrix[q,c,Layer].Tile2IDS != null)
-                                        //{
-                                        //    List<Tiles2> tiles2 = Globals.matrix[q, c, Layer].Tile2IDS;
-                                        // }
-                                        //List<Tiles2> tiles2 = Globals.matrix[q, c, Layer].Tile2IDS;
-                                        LERect rect7 = new LERect(q, c, q, c);
+							ChangeTo(AffectRect, i, 0);
+							for (int q = 0; q < Globals.levelSize.x; q++)
+							{
+								for (int c = 0; c < Globals.levelSize.y; c++)
+								{
+									if (AffectRect.IsInsideRect(new Vector2i(q, c)))
+									{
+										Tiles tile = Globals.matrix[q, c, Layer].TileID;
+										//if (Globals.matrix[q,c,Layer].Tile2IDS != null)
+										//{
+										//    List<Tiles2> tiles2 = Globals.matrix[q, c, Layer].Tile2IDS;
+										// }
+										//List<Tiles2> tiles2 = Globals.matrix[q, c, Layer].Tile2IDS;
+										LERect rect7 = new LERect(q, c, q, c);
 										ClearFeatures(q, c, i);
-                                        //ChangeTo(rect7, Layer + 1, (int)tile);
-                                    }
-                                    //Tiles tile = Globals.matrix[q, c, Layer].TileID;
-                                    //LERect rect7 = new LERect(q, c, q,)
+										//ChangeTo(rect7, Layer + 1, (int)tile);
+									}
+									//Tiles tile = Globals.matrix[q, c, Layer].TileID;
+									//LERect rect7 = new LERect(q, c, q,)
 
-                                }
-                            }
-                        }
-                        //GD.Print(AffectRect.ToString());
-                        //ChangeTo(AffectRect, Layer, 1);
-                        ClearToolRect();
-                        Globals.IsRectOn = false;
-                    }
-                }
-                break;
+								}
+							}
+						}
+						//GD.Print(AffectRect.ToString());
+						//ChangeTo(AffectRect, Layer, 1);
+						ClearToolRect();
+						Globals.IsRectOn = false;
+					}
+				}
+				break;
 			case GeometryTools.HorizBeam:
 				if (LastPos != new Vector2i(X, Y))
 				{
@@ -1490,8 +1496,8 @@ public partial class MatrixMaster : Node
 	{
 		string nbs = "";
 		int result;
-        Vector2i[] dir = { new Vector2i(-1, 0), new Vector2i(0, -1), new Vector2i(1, 0), new Vector2i(0, 1) };
-        for (int i = 0; i < dir.Length; i++)
+		Vector2i[] dir = { new Vector2i(-1, 0), new Vector2i(0, -1), new Vector2i(1, 0), new Vector2i(0, 1) };
+		for (int i = 0; i < dir.Length; i++)
 		{
 			nbs = nbs + Utilities.AfaMvLevelEdit(pos + dir[i], Globals.CurrentLayer - 1).ToString();
 		}
@@ -1520,29 +1526,29 @@ public partial class MatrixMaster : Node
 
 	public void ClearFeatures(int x, int y, int z)
 	{
-        if (Globals.matrix[x, y, z].Tile2IDS != null)
+		if (Globals.matrix[x, y, z].Tile2IDS != null)
 		{
-            Globals.matrix[x, y, z].Tile2IDS.Clear();
-        }
-        LERect rect = new LERect(x - 1, y - 1, x + 2, y + 2);
-        for (int q = rect.left; q < rect.right; q++)
-        {
-            for (int c = rect.top; c < rect.bottom; c++)
-            {
-                if (q > 0 & q < Globals.levelSize.x)
-                {
-                    if (c > 0 & c < Globals.levelSize.y)
-                    {
-                        //GD.Print(q + 1, " 2 ", c + 1);
-                        UpdateTile(q, c);
-                    }
-                }
-                //GD.Print("2y ", c);
-                // GD.Print(q + 1, " 2 ", c + 1);
-                // UpdateTile(q, c);
-            }
-        }
-    }
+			Globals.matrix[x, y, z].Tile2IDS.Clear();
+		}
+		LERect rect = new LERect(x - 1, y - 1, x + 2, y + 2);
+		for (int q = rect.left; q < rect.right; q++)
+		{
+			for (int c = rect.top; c < rect.bottom; c++)
+			{
+				if (q > 0 & q < Globals.levelSize.x)
+				{
+					if (c > 0 & c < Globals.levelSize.y)
+					{
+						//GD.Print(q + 1, " 2 ", c + 1);
+						UpdateTile(q, c);
+					}
+				}
+				//GD.Print("2y ", c);
+				// GD.Print(q + 1, " 2 ", c + 1);
+				// UpdateTile(q, c);
+			}
+		}
+	}
 	public void AddRemoveFeature(int x, int y, int z, int featuretype)
 	{
 		if (Globals.matrix[x,y,z].Tile2IDS != null && Globals.matrix[x, y, z].Tile2IDS.Contains((Tiles2)featuretype))
@@ -1609,11 +1615,11 @@ public partial class MatrixMaster : Node
 		if (Globals.IsMirrorOn == true)
 		{
 			LERect rect3 = MirrorRect(rect);
-            for (int q = rect3.left; q <= rect3.right; q++)
-            {
-                for (int c = rect3.top; c <= rect3.bottom; c++) // lol funny coding language
-                {
-                    //GD.Print(q + 1, " ", c + 1);
+			for (int q = rect3.left; q <= rect3.right; q++)
+			{
+				for (int c = rect3.top; c <= rect3.bottom; c++) // lol funny coding language
+				{
+					//GD.Print(q + 1, " ", c + 1);
 					if ((q > 0 & q < Globals.levelSize.x) & (c > 0 & c < Globals.levelSize.y))
 					{
 						int tile2type = tiletype;
@@ -1633,32 +1639,32 @@ public partial class MatrixMaster : Node
 						{
 							tile2type = 2;
 						}
-                        Globals.matrix[q, c, Z].TileID = (Tiles)tile2type;
-                        UpdateTile(q, c);
-                    }
-                    //Globals.matrix[q, c, Z].TileID = (Tiles)tiletype;
-                    //UpdateTile(q, c);
-                }
-            }
-            LERect rect4 = new LERect(rect3.left - 1, rect3.top - 1, rect3.right + 2, rect3.bottom + 2);
-            for (int q = rect4.left; q < rect4.right; q++)
-            {
-                for (int c = rect4.top; c < rect4.bottom; c++)
-                {
-                    if (q > 0 & q < Globals.levelSize.x)
-                    {
-                        if (c > 0 & c < Globals.levelSize.y)
-                        {
-                            //GD.Print(q + 1, " 2 ", c + 1);
-                            UpdateTile(q, c);
-                        }
-                    }
-                    //GD.Print("2y ", c);
-                    // GD.Print(q + 1, " 2 ", c + 1);
-                    // UpdateTile(q, c);
-                }
-            }
-        }
+						Globals.matrix[q, c, Z].TileID = (Tiles)tile2type;
+						UpdateTile(q, c);
+					}
+					//Globals.matrix[q, c, Z].TileID = (Tiles)tiletype;
+					//UpdateTile(q, c);
+				}
+			}
+			LERect rect4 = new LERect(rect3.left - 1, rect3.top - 1, rect3.right + 2, rect3.bottom + 2);
+			for (int q = rect4.left; q < rect4.right; q++)
+			{
+				for (int c = rect4.top; c < rect4.bottom; c++)
+				{
+					if (q > 0 & q < Globals.levelSize.x)
+					{
+						if (c > 0 & c < Globals.levelSize.y)
+						{
+							//GD.Print(q + 1, " 2 ", c + 1);
+							UpdateTile(q, c);
+						}
+					}
+					//GD.Print("2y ", c);
+					// GD.Print(q + 1, " 2 ", c + 1);
+					// UpdateTile(q, c);
+				}
+			}
+		}
 	}
 
 	public LERect MirrorRect(LERect rect1)
@@ -1679,17 +1685,17 @@ public partial class MatrixMaster : Node
 	}
 	public void ResetMatrix()
 	{
-        Globals.LevelEditImageShortcuts.Resize((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16);
+		Globals.LevelEditImageShortcuts.Resize((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16);
 		Globals.LevelEditImageShortcuts.Fill(Colors.White);
 		//Globals.LevelEditImageShortcuts.Resize(16, 16);
-        //Globals.LevelEditImageShortcuts.Fill(Colors.White);
-        Globals.LevelEditImage1.Resize((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16);
-        Globals.LevelEditImage2.Resize((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16);
-        Globals.LevelEditImage3.Resize((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16);
+		//Globals.LevelEditImageShortcuts.Fill(Colors.White);
+		Globals.LevelEditImage1.Resize((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16);
+		Globals.LevelEditImage2.Resize((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16);
+		Globals.LevelEditImage3.Resize((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16);
 		ReloadMatrix();
-    }
+	}
 
-	public void ReloadMatrix()
+	public void ReloadMatrix(bool camset = true)
 	{
 		Globals.LevelEditImageShortcuts.Fill(Color.FromHSV(0, 0, 0, 0)); //temporary artifact obliterator;
 		uint X = 0; // remember that arrays start at 0 in c#, but start at 1 in lingo (do they?) they do.
@@ -1793,7 +1799,10 @@ public partial class MatrixMaster : Node
 
 		ReferenceMatrix = Globals.matrix;
 		UpdateBoundsRect();
-		Camera.UpdateCamera();
+		if(camset == true)
+		{
+			Camera.UpdateCamera();
+		}
 	}
 
 

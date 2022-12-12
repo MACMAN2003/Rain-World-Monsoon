@@ -17,6 +17,7 @@ public partial class TileController : Node
 
 	//this will be harder to crack than the geo editor cause there's not a fixed list of tiles
 	public Sprite2D UI;
+	public Sprite2D CursorUI;
 
 	public Sprite2D Layer1Tiles;
 	public Sprite2D Layer1Geo;
@@ -43,6 +44,7 @@ public partial class TileController : Node
 	public Image Previmg2;
 	public ImageTexture Prevtex2;
 	public LERect AffectRect;
+	public LERect RectSelect;
 	public Image TEP0;
 	public Image TEP1;
 	public Image TEP2;
@@ -97,7 +99,10 @@ public partial class TileController : Node
 
 	MatrixMaster Master;
 	Vector2i LastCursorPosition;
+	public Vector2i LastPos;
 	Image PurpleRect;
+	bool isMatSelected = false;
+
 	//int fakethreadindex;
 	//int fakethreadindexy;
 	//bool isfakethreading = false;
@@ -117,6 +122,7 @@ public partial class TileController : Node
 		Previmg2 = new Image();
 		
 		UI = (Sprite2D)Apprentice.FindChild("UIRect", true, false);
+		CursorUI = (Sprite2D)Apprentice.FindChild("CursorRect", true, false);
 		
 		Cursor = (Sprite2D)Apprentice.FindChild("DisplayCursor", true, false);
 
@@ -126,8 +132,13 @@ public partial class TileController : Node
 
 
 		RedRectV = Utilities.QuickConvert("res://Core/Rect_L.png");
-		//WhiteRectV = Utilities.ColorConvert(WhiteRectV, Color.Color8(255, 0, 0, 255), Color.Color8(255, 255, 255, 255));
+		WhiteRectV = Utilities.QuickConvert("res://Core/Rect_L.png");
+		WhiteRectV = Utilities.ColorConvert(WhiteRectV, Color.Color8(255, 0, 0, 255), Color.Color8(255, 255, 255, 255));
 		RedRectH = Utilities.QuickConvert("res://Core/Rect_T.png");
+		WhiteRectH = Utilities.QuickConvert("res://Core/Rect_T.png");
+		WhiteRectH = Utilities.ColorConvert(WhiteRectH, Color.Color8(255, 0, 0, 255), Color.Color8(255, 255, 255, 255));
+
+
 
 		Previmg1.Create(320, 320, false, Image.Format.Rgba8);
 		Previmg2.Create(320, 320, false, Image.Format.Rgba8);
@@ -157,35 +168,56 @@ public partial class TileController : Node
 
 	public override void _PhysicsProcess(double delta)
 	{
+		//sample tile is in CursorController
+		if (Globals.TileCatIndex.y <= Globals.GTiles[Globals.TileCatIndex.x].tiles.Count)
+		{
+			if (Globals.State == EditorState.Tile)
+			{
+				SetGlobalTile();
+			}
+			if (Globals.GTiles[Globals.TileCatIndex.x].tiles[Globals.TileCatIndex.y] is InternalMaterial)
+			{
+				isMatSelected = true;
+			}
+			else
+			{
+				isMatSelected = false;
+			}
+		}
 		//base._PhysicsProcess(delta);
 		RectMin = new Vector2i(Globals.CursorPosition.x - 1,Globals.CursorPosition.y - 1);
 		RectMax = new Vector2i(Globals.CursorPosition.x + 1, Globals.CursorPosition.y + 1);
 
-		if(Input.IsActionPressed("TOOL_USE4"/*"F"*/) & !Input.IsActionPressed("TOOL_USE5"/*"V"*/))
+		if(isMatSelected && Input.IsActionPressed("TOOL_USE4"/*"F"*/) & !Input.IsActionPressed("TOOL_USE5"/*"V"*/))
 		{
 			RectDisp = true;
+			Cursor.Visible = false;
 			RectMin = new Vector2i(Globals.CursorPosition.x - 2, Globals.CursorPosition.y - 2);
 			RectMax = new Vector2i(Globals.CursorPosition.x + 2, Globals.CursorPosition.y + 2);
 		}
 		else if (!Input.IsActionPressed("TOOL_USE5"/*"V"*/))
 		{
 			RectDisp = false;
+			Cursor.Visible = true;
 		}
 
-		if (Input.IsActionPressed("TOOL_USE5"/*"V"*/))
+		if (isMatSelected && Input.IsActionPressed("TOOL_USE5"/*"V"*/))
 		{
 			RectDisp = true;
+			Cursor.Visible = false;
 			RectMin = new Vector2i(Globals.CursorPosition.x - 3, Globals.CursorPosition.y - 3);
 			RectMax = new Vector2i(Globals.CursorPosition.x + 3, Globals.CursorPosition.y + 3);
 		}
 		else if (!Input.IsActionPressed("TOOL_USE4"/*"F"*/))
 		{
 			RectDisp = false;
+			Cursor.Visible = true;
 		}
 
 		if (Globals.State == EditorState.Tile)
 		{
 			LayerDisplay();
+
 			if (Input.IsActionJustPressed("NonGeoChangeLayer"))
 			{
 				if (Globals.CurrentLayer == 3)
@@ -196,40 +228,49 @@ public partial class TileController : Node
 				else { Globals.CurrentLayer += 1; GD.Print("Active layer changed to ", Globals.CurrentLayer); }
 			}
 		}
-		if (Globals.IsRectOn == true)
+		if (Globals.IsRectOn == true & Globals.State == EditorState.Tile)
 		{
+
 			AffectRect = new LERect(new Vector2i(Globals.CursorPosition.x - 1, Globals.CursorPosition.y - 1), Globals.RectLockPos);
 			if (AffectRect.top > AffectRect.bottom)
 			{
+#pragma warning disable IDE0180 // Use tuple to swap values
 				int sav = AffectRect.bottom;
+#pragma warning restore IDE0180 // Use tuple to swap values
 				AffectRect.bottom = AffectRect.top;
 				AffectRect.top = sav;
 			}
 			if (AffectRect.left > AffectRect.right)
 			{
+#pragma warning disable IDE0180 // Use tuple to swap values
 				int sav = AffectRect.right;
+#pragma warning restore IDE0180 // Use tuple to swap values
 				AffectRect.right = AffectRect.left;
 				AffectRect.left = sav;
 			}
 			if (LastCursorPosition != new Vector2i(Globals.CursorPosition.x - 1, Globals.CursorPosition.y - 1))
 			{
-				UpdateToolRect();
-				LastCursorPosition = new Vector2i(Globals.CursorPosition.x - 1, Globals.CursorPosition.y - 1);
-			}
-
-		}
-		else
-		{
-			AffectRect = new LERect(RectMin, RectMax);
-			if (LastCursorPosition != new Vector2i(Globals.CursorPosition.x - 1, Globals.CursorPosition.y - 1))
-			{
-				UpdateToolRect();
+				UpdateCursorRect();
 				//LastCursorPosition = new Vector2i(Globals.CursorPosition.x - 1, Globals.CursorPosition.y - 1);
 			}
+			if (!(Globals.SelectedTile is InternalSpecial t && t.PlaceMethod == SpecialPlaceType.Rect))
+			{
+				ClearCursorRect();
+				Globals.IsRectOn = false;
+			}
 		}
-
+		RectSelect = new LERect(RectMin, RectMax);
+		//if (LastCursorPosition != new Vector2i(Globals.CursorPosition.x - 1, Globals.CursorPosition.y - 1))
+		//{
+		UpdateCursorRect();
+			//LastCursorPosition = new Vector2i(Globals.CursorPosition.x - 1, Globals.CursorPosition.y - 1);
+		//}
+		LastCursorPosition = Globals.CursorPosition - Vector2i.One;
 	}
-
+	public void SetGlobalTile()
+	{
+		Globals.SelectedTile = Globals.GTiles[Globals.TileCatIndex.x].tiles[Globals.TileCatIndex.y];
+	}
 	public void LayerDisplay()
 	{
 		if (Globals.IsEditorEvil == false)
@@ -321,6 +362,7 @@ public partial class TileController : Node
 				Cursor.Offset = new Vector2i(-1, -1);
 				Cursor.Texture = tex;
 				Cursor.SelfModulate = new Color(1, 1, 1, 1);
+				CursorUI.SelfModulate = new Color(1, 1, 1, 1);
 			}
 			if (Globals.GTiles[Globals.TileCatIndex.x].tiles[Globals.TileCatIndex.y] is InternalSpecial d)
 			{
@@ -330,6 +372,7 @@ public partial class TileController : Node
 				ImageTexture tex = ImageTexture.CreateFromImage(BaseCursorImage);
 				Cursor.Texture = tex;
 				Cursor.SelfModulate = d.Color;
+				CursorUI.SelfModulate = d.Color;
 			}
 			if (Globals.GTiles[Globals.TileCatIndex.x].tiles[Globals.TileCatIndex.y] is InternalTile t)
 			{
@@ -349,10 +392,12 @@ public partial class TileController : Node
 
 
 
+#pragma warning disable IDE0074 // Use compound assignment
 		if (Apprentice == null)
 		{
 			Apprentice = GetTree().Root.FindChild("Matrix Display Apprentice Tile", true, false);
 		}
+#pragma warning restore IDE0074 // Use compound assignment
 		CheckMatrix();
 		//if (isfakethreading == true)
 		//{
@@ -486,8 +531,8 @@ public partial class TileController : Node
 			//GD.Print(Cursor.Material);
 			//GD.Print()
 			Cursor.Material = null;
-            Cursor.SelfModulate = new Color(1,1,1);
-        }
+			Cursor.SelfModulate = new Color(1,1,1);
+		}
 		else
 		{
 			Cursor.Material = (CanvasItemMaterial)ResourceLoader.Load("res://Shaders/ADD_Modulate.material");
@@ -544,6 +589,46 @@ public partial class TileController : Node
 				UpdateMatrixDisplay();
 				break;
 			case TETools.Special:
+				//GD.Print(LastPos);
+				//GD.Print(new Vector2i(x, y));
+				if (LastPos != new Vector2i(x, y))
+				{
+					if (Globals.SelectedTile is InternalSpecial s)
+					{
+						if (s.PlaceMethod == SpecialPlaceType.Rect)
+						{
+							bool thisframerect = false;
+							if (Globals.IsRectOn == false)
+							{
+								Globals.RectLockPos = new Vector2i(x, y);
+								Globals.IsRectOn = true;
+								thisframerect = true;
+							}
+							else if (thisframerect == false)
+							{
+								bool Fancy = false;
+								if (s.Tags.Contains("Fancy"))
+								{
+									Fancy = true;
+								}
+
+								if (s.Name == "Rect Clear")
+								{
+									RectClear(AffectRect);
+									ClearCursorRect();
+									Globals.IsRectOn = false;
+								}
+								else
+								{
+									SpecialRectPlacement(AffectRect, Fancy);
+									ClearCursorRect();
+									Globals.IsRectOn = false;
+								}
+							}
+						}
+					}
+				}
+				//SpecialRectPlacement
 				break;
 			case TETools.Tile:
 				if(IsTilePositionLegal(new Vector2i(x,y)) | Input.IsActionPressed("TOOL_USE4"/*"F"*/) | Input.IsActionPressed("TOOL_USE7"/*"G"*/))
@@ -564,6 +649,173 @@ public partial class TileController : Node
 		y -= 1;
 		layer -= 1;
 		DeleteTile(new Vector2i(x, y));
+	}
+
+	public void RectClear(LERect rect)
+	{
+		for (int q = rect.left; q <= rect.right; q++)
+		{
+			for (int c = rect.top; c <= rect.bottom; c++)
+			{
+				RectDeleteTile(new Vector2i(q,c));
+				//UpdateTile(q,c);
+			}
+		}
+		BeginClearTileFragments();
+		ReloadMatrix(false);
+		UpdateMatrixDisplay();
+	}
+
+
+
+	//fancy placement is inspired by schroedinger's cat and jigsaw pieces
+	public void SpecialRectPlacement (LERect rect, bool Fancy)
+	{
+		if (Fancy == false)
+		{
+			QuicklyPlaceTile(new Vector2i(rect.left, rect.top), new Vector2i(5, 4));
+			QuicklyPlaceTile(new Vector2i(rect.right, rect.top), new Vector2i(5, 5));
+			QuicklyPlaceTile(new Vector2i(rect.right, rect.bottom), new Vector2i(5, 6));
+			QuicklyPlaceTile(new Vector2i(rect.left, rect.bottom), new Vector2i(5, 7));
+			for (int px = rect.left + 1; px < rect.right; px++)
+			{
+				QuicklyPlaceTile(new Vector2i(px, rect.top), new Vector2i(5, 0));
+				QuicklyPlaceTile(new Vector2i(px, rect.bottom), new Vector2i(5, 2));
+			}
+			for (int py = rect.top + 1; py < rect.bottom; py++)
+			{
+				QuicklyPlaceTile(new Vector2i(rect.left, py), new Vector2i(5, 3));
+				QuicklyPlaceTile(new Vector2i(rect.right, py), new Vector2i(5, 1));
+			}
+			string LookForTileCat = "SU patterns";
+			int StringLength = 10;
+			if (Globals.SelectedTile is InternalSpecial s && s.Name == "SH Grate Box")
+			{
+				LookForTileCat = "SU grates";
+				StringLength = 8;
+			}
+			else if (Globals.SelectedTile is InternalSpecial t && t.Name == "Alt Grate Box")
+			{
+				LookForTileCat = "Drought Alt Grates";
+				StringLength = 9;
+			}
+			int idx;
+			if(!Globals.CategoriesDictionary.TryGetValue(LookForTileCat, out idx))
+			{
+				GD.PushError(LookForTileCat + " category not found! Check your Graphics/Init.txt file for possible errors/duplicates!");
+			}
+			//GD.Print(idx);
+			//Vector2i Value = new Vector2i();
+			/*for (int i = 0; i < Globals.TileDictionaries.Count; i++)
+			{
+				//Vector2i outval;
+				//GD.Print(Globals.TileDictionaries[i].Count);
+				//Globals.TileDictionaries[i].TryGetValue(LookForTileCat, out outval);
+				if (Globals.TileDictionaries[i].TryGetValue(LookForTileCat, out outval))
+				{
+					break;
+				}
+			}*/
+			List<BoringPlacementPattern> Patterns = new List<BoringPlacementPattern>();
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"A"}, BoringPlacementConnection.Dense, BoringPlacementConnection.Dense, 1, 5));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"B1"}, BoringPlacementConnection.Espaced, BoringPlacementConnection.Dense, 1, 5));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"B2"}, BoringPlacementConnection.Dense, BoringPlacementConnection.Espaced, 1, 5));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"B3"}, BoringPlacementConnection.Ospaced, BoringPlacementConnection.Dense, 1, 5));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"B4"}, BoringPlacementConnection.Dense, BoringPlacementConnection.Ospaced, 1, 5));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"C1"}, BoringPlacementConnection.Espaced, BoringPlacementConnection.Espaced, 1, 5));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"C2"}, BoringPlacementConnection.Ospaced, BoringPlacementConnection.Ospaced, 1, 5));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"E1"}, BoringPlacementConnection.Ospaced, BoringPlacementConnection.Espaced, 1, 5));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"E2"}, BoringPlacementConnection.Espaced, BoringPlacementConnection.Ospaced, 1, 5));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"F1"}, BoringPlacementConnection.Dense, BoringPlacementConnection.Dense, 2, 1));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"F2"}, BoringPlacementConnection.Dense, BoringPlacementConnection.Dense, 2, 1));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"F1","F2"}, BoringPlacementConnection.Dense, BoringPlacementConnection.Dense, 2, 5));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"F3"}, BoringPlacementConnection.Dense, BoringPlacementConnection.Dense, 2, 5));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"F4"}, BoringPlacementConnection.Dense, BoringPlacementConnection.Dense, 2, 5));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"G1","G2"}, BoringPlacementConnection.Dense, BoringPlacementConnection.Ospaced, 2, 5));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"I"}, BoringPlacementConnection.Espaced, BoringPlacementConnection.Dense, 1, 4));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"J1"}, BoringPlacementConnection.Ospaced, BoringPlacementConnection.Ospaced, 2, 1));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"J2"}, BoringPlacementConnection.Ospaced, BoringPlacementConnection.Ospaced, 2, 1));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"J1","J2"}, BoringPlacementConnection.Ospaced, BoringPlacementConnection.Ospaced, 2, 2));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"J3"}, BoringPlacementConnection.Espaced, BoringPlacementConnection.Espaced, 2, 1));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"J4"}, BoringPlacementConnection.Espaced, BoringPlacementConnection.Espaced, 2, 1));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"J3","J4"}, BoringPlacementConnection.Espaced, BoringPlacementConnection.Espaced, 2, 2));
+			Patterns.Add(new BoringPlacementPattern(new List<string>() {"B1","I"}, BoringPlacementConnection.Espaced, BoringPlacementConnection.Dense, 1, 2));
+			//CTRL + D my beloved
+			//GD.Print("new");
+			for(int q = 0; q < Patterns.Count; q++)
+			{
+				for(int a = 0; a < Patterns[q].Tiles.Count; a++)
+				{
+					for (int b = 0; b < Globals.GTiles[idx].tiles.Count; b++)
+					{
+						//GD.Print(idx, " ", Globals.GTiles[idx].CategoryName);
+						if (Globals.GTiles[idx].tiles[b] is InternalTile tile && Patterns[q].Tiles[a] == tile.Name.Substring(StringLength - 1))
+						{
+							//GD.Print(tile.Name.Substring(StringLength - 1));
+							Patterns[q].Tiles[a] = b.ToString();
+						}
+					}
+				}
+			}
+			int ply = rect.top + 1;
+			BoringPlacementPattern CurrentPattern = Patterns[RNG.Random(Patterns.Count) - 1];
+			//string lastconnect = null;
+			//List<BoringPlacementPattern> PossiblePatterns = new List<BoringPlacementPattern>();
+			//int bignum = 0;
+			//GD.Print(" oooo ", string.Join(" ", CurrentPattern.Tiles.ToArray()));
+			while (ply < rect.bottom)
+			{
+				List<BoringPlacementPattern> PossiblePatterns = new List<BoringPlacementPattern>();
+				//GD.Print("big number ", bignum);
+				for (int q = 0; q < Patterns.Count; q++)
+				{
+					if ((Patterns[q].Upper == CurrentPattern.Lower) & (ply + Patterns[q].Tall < rect.bottom + 1))
+					{
+						//GD.Print(" ply ", ply, " tall ", Patterns[q].Tall, " bottom ", rect.bottom);
+						//GD.Print(Patterns[q].Upper, " <- ", string.Join(",", Patterns[q].Tiles.ToArray()) ,"|" ,string.Join(",", CurrentPattern.Tiles.ToArray()) ," -> ", CurrentPattern.Lower);
+						for (int f = 0; f < Patterns[q].Freq; f++)
+						{
+							PossiblePatterns.Add(Patterns[q]); // this is horribly unoptimized lol
+							//bignum++;
+						}
+					}
+					/*else
+					{
+						GD.Print("FAIL-> ", string.Join(", ", Patterns[q].Tiles.ToArray()));
+						GD.Print("FAIL1T ", CurrentPattern.Lower, " ", Patterns[q].Upper);
+						GD.Print("FAIL22 ", ply + Patterns[q].Tall, " ", rect.bottom + 1);
+					}*/
+				}
+				//GD.Print(" wwww ", PossiblePatterns.Count);
+				int ssss = RNG.Random(PossiblePatterns.Count);
+				//GD.Print(" ssss ", ssss - 1);
+				CurrentPattern = PossiblePatterns[ssss - 1]; // visual studio autofilled it holy shit
+
+				int TL = RNG.Random(CurrentPattern.Tiles.Count) - 1;
+				for (int plx = rect.left + 1; plx < rect.right; plx++)
+				{
+					TL += 1;
+					if (TL > CurrentPattern.Tiles.Count - 1)
+					{
+						TL = 0;
+					}
+					QuicklyPlaceTile(new Vector2i(plx, ply), new Vector2i(idx, int.Parse(CurrentPattern.Tiles[TL])));
+
+				}
+				ply += CurrentPattern.Tall;
+				//lastconnect = CurrentPattern.Lower.ToString();
+			}
+		}
+		else
+		{
+
+		}
+		UpdateRect(rect);
+		//if (Fancy == true)
+		//{
+		//	GD.Print("Fancy!");
+		//}
+		//GD.Print(rect.ToString());
 	}
 
 	public bool IsTilePositionLegal(Vector2i pos)
@@ -652,6 +904,104 @@ public partial class TileController : Node
 
 		}
 		return rtrn;
+	}
+
+	public void QuicklyPlaceTile(Vector2i plctile, Vector2i tmpos)
+	{
+		if (plctile.x < 0 | plctile.y < 0 | plctile.x > Globals.levelSize.x | plctile.y > Globals.levelSize.y)
+		{
+			return;
+		}
+		bool forceadaptterrain = Input.IsActionPressed("TOOL_USE7"/*"G"*/);
+		InternalTile tl = (InternalTile)Globals.GTiles[tmpos.x].tiles[tmpos.y];
+		Vector2i Midpoint = new Vector2i(Convert.ToInt32((tl.Size.x * 0.5) + 0.4999), Convert.ToInt32((tl.Size.y * 0.5) + 0.4999));
+
+		Vector2i Start = plctile - Midpoint + new Vector2i(1, 1);
+		Globals.tilematrix[plctile.x, plctile.y, Globals.CurrentLayer - 1].Type = TETileType.TileHead;
+		Globals.tilematrix[plctile.x, plctile.y, Globals.CurrentLayer - 1].Data = new TETileData();
+		Globals.tilematrix[plctile.x, plctile.y, Globals.CurrentLayer - 1].Data.TileIndexOrHeadCoords = tmpos + new Vector2i(1, 1);
+		Globals.tilematrix[plctile.x, plctile.y, Globals.CurrentLayer - 1].Data.MaterialOrTileName = tl.Name;
+		//UpdateTile(plctile.x, plctile.y);
+		//Globals.CurrentLayer starts at one, so for *important* internal bullshittery subtract it by one
+		int n = 0;
+		if (tl.Specs2 != null & Globals.CurrentLayer < 3)
+		{
+			//GD.Print(tl.Specs2.Length);
+			//might need to go -1 (or -2) for the tile size
+			n = 0;
+			for (int q = Start.x; q < Start.x + tl.Size.x; q++)
+			{
+				for (int c = Start.y; c < Start.y + tl.Size.y; c++)
+				{
+					if (tl.Specs2[n] != -1 & Utilities.IsInsideLevel(q, c))
+					{
+						//this is supposed to be for the layer BEHIND the active layer, so will an unmodified globals.currentlayer work?
+						//e.g. if active layer is 2, then this adds to 3
+						// (internally, if active layer is 1, then this adds to 2)
+						// "- 1 + 1" is the same as not subtracting or adding
+						Globals.tilematrix[q, c, Globals.CurrentLayer].Type = TETileType.TileBody;
+						Globals.tilematrix[q, c, Globals.CurrentLayer].Data = new TETileData();
+						Globals.tilematrix[q, c, Globals.CurrentLayer].Data.TileIndexOrHeadCoords = new Vector2i(plctile.x + 1, plctile.y + 1);
+						Globals.tilematrix[q, c, Globals.CurrentLayer].Data.LayerOrDefault = Globals.CurrentLayer; //might as well be + 1
+						//UpdateTile(q, c);
+						//above is NOT internal, if it was it'd be - 2
+						if (forceadaptterrain == true)
+						{
+							Globals.matrix[q, c, Globals.CurrentLayer].TileID = (Tiles)tl.Specs2[n];
+							Master.UpdateTile(q, c);
+						}
+					}
+					//else if (Utilities.IsInsideLevel(q, c)) UpdateTile(q, c);
+					n++;
+				}
+			}
+		}
+
+		n = 0;
+		for (int q = Start.x; q < Start.x + tl.Size.x; q++)
+		{
+			for (int c = Start.y; c < Start.y + tl.Size.y; c++)
+			{
+				if (tl.Specs[n] != -1 & Utilities.IsInsideLevel(q, c))
+				{
+					if (new Vector2i(q, c) != plctile)
+					{
+						Globals.tilematrix[q, c, Globals.CurrentLayer - 1].Type = TETileType.TileBody;
+						Globals.tilematrix[q, c, Globals.CurrentLayer - 1].Data = new TETileData();
+						Globals.tilematrix[q, c, Globals.CurrentLayer - 1].Data.TileIndexOrHeadCoords = new Vector2i(plctile.x + 1, plctile.y + 1);
+						Globals.tilematrix[q, c, Globals.CurrentLayer - 1].Data.LayerOrDefault = Globals.CurrentLayer;
+						//UpdateTile(q, c);
+					}
+					//this is supposed to be for the layer BEHIND the active layer, so will an unmodified globals.currentlayer work?
+					//e.g. if active layer is 2, then this adds to 3
+					// (internally, if active layer is 1, then this adds to 2)
+					// "- 1 + 1" is the same as not subtracting or adding
+
+
+					//above is NOT internal, if it was it'd be - 2
+					if (forceadaptterrain == true)
+					{
+						Globals.matrix[q, c, Globals.CurrentLayer - 1].TileID = (Tiles)tl.Specs[n];
+						Master.UpdateTile(q, c);
+					}
+				}
+				//else if (Utilities.IsInsideLevel(q, c)) UpdateTile(q, c);
+				n++;
+			}
+		}
+
+		// lingo stuff starts at 1
+		// c# stuff starts at 0
+		//example: the index for "big head" is 14, 3 in the .txt
+		//but internally (for this editor), "big head" is at 13, 2
+		//another example,
+		// "Big head" (14,3 -> 13, 2) is at pos 40, 23, 3 (39, 22, 2)
+		//3 layers, lingo is 1, 2, 3
+		//C# is 0, 1, 2
+		//UpdateTile(plctile.x, plctile.y);
+		//Master.UpdateDisplay();
+		//UpdateMatrixDisplay();
+		//BeginClearTileFragments();
 	}
 
 	public void PlaceTile(Vector2i plctile, Vector2i tmpos)
@@ -774,15 +1124,8 @@ public partial class TileController : Node
 		TETileData dt = Globals.tilematrix[x, y, z].Data;
 		if (Globals.tilematrix[dt.TileIndexOrHeadCoords.x - 1, dt.TileIndexOrHeadCoords.y - 1, dt.LayerOrDefault - 1].Type == TETileType.TileHead)
 		{
-			//t = false;
-			TETileData dt2 = Globals.tilematrix[dt.TileIndexOrHeadCoords.x - 1, dt.TileIndexOrHeadCoords.y - 1, dt.LayerOrDefault - 1].Data;
-            InternalTile tl = (InternalTile)Globals.GTiles[dt2.TileIndexOrHeadCoords.x - 1].tiles[dt2.TileIndexOrHeadCoords.y - 1];
-			//if ()
-
-
-
-
-        }
+			
+		}
 		else
 		{
 			ObliterateTileFragment(x, y, z);
@@ -790,11 +1133,71 @@ public partial class TileController : Node
 	}
 	public void ObliterateTileFragment(int x, int y, int z)
 	{
-        Globals.tilematrix[x,y,z].Type = TETileType.Default;
-        Globals.tilematrix[x,y,z].Data = new TETileData();
-    }
+		Globals.tilematrix[x,y,z].Type = TETileType.Default;
+		Globals.tilematrix[x,y,z].Data = new TETileData();
+	}
+
+	public void SampleTile(int x, int y, int z)
+	{
+		x -= 1;
+		y -= 1;
+		z -= 1;
+		switch (Globals.tilematrix[x,y,z].Type)
+		{
+			case TETileType.Default:
+				//do nothing lol
+				break;
+			case TETileType.Material:
+				Vector2i Value = new Vector2i();
+				if (Globals.MaterialsDictionary.TryGetValue(Globals.tilematrix[x, y, z].Data.MaterialOrTileName, out Value))
+				{
+					if (Globals.GTiles[Value.x].tiles[Value.y] is InternalMaterial d)
+					{
+						Globals.TileCatIndex = Value;
+						//GD.Print(d.Name);
+					}
+				}
+				break;
+			case TETileType.TileHead:
+				if (Globals.GTiles[Globals.tilematrix[x, y, z].Data.TileIndexOrHeadCoords.x - 1].tiles[Globals.tilematrix[x,y,z].Data.TileIndexOrHeadCoords.y - 1] is InternalTile t)
+				{
+					//GD.Print(t.Name);
+					if (t.Name == Globals.tilematrix[x, y, z].Data.MaterialOrTileName)
+					{
+						Globals.TileCatIndex = Globals.tilematrix[x, y, z].Data.TileIndexOrHeadCoords - new Vector2i(1, 1);
+					}
+				}
+				break;
+			case TETileType.TileBody:
+				//my brain hurts so i'm just gonna recursion a little
+				Vector2i h1 = Globals.tilematrix[x, y, z].Data.TileIndexOrHeadCoords;
+				int layer = Globals.tilematrix[x, y, z].Data.LayerOrDefault;
+				Vector3i h2 = new Vector3i(h1.x - 1, h1.y - 1, layer - 1);
+				if (Globals.tilematrix[h1.x - 1, h1.y - 1, layer - 1].Type != TETileType.TileBody)
+				{
+					if (Globals.GTiles[Globals.tilematrix[h2.x,h2.y,h2.z].Data.TileIndexOrHeadCoords.x - 1].tiles[Globals.tilematrix[h2.x,h2.y,h2.z].Data.TileIndexOrHeadCoords.y - 1] is InternalTile t2jd)
+					{
+						if (t2jd.Name == Globals.tilematrix[h1.x - 1, h1.y - 1, layer - 1].Data.MaterialOrTileName)
+						{
+							GD.Print(h2.ToString());
+							Globals.TileCatIndex = Globals.tilematrix[h2.x, h2.y, h2.z].Data.TileIndexOrHeadCoords - new Vector2i(1, 1);
+						}
+					}
 
 
+
+
+					//SampleTile(h1.x, h1.y, layer);
+				}
+				//this is literally cheating but it's quick (for me to type) xd
+				//this could break ecks dee i'll add an if statement to prevent this
+				//wait i don't need the recursion i've already done the hard part XD
+				//rubber duck debugging once again shows it's use
+				break;
+			default:
+				break;
+		}
+	}
 
 	public void DeleteTile(Vector2i pos)
 	{
@@ -896,13 +1299,183 @@ public partial class TileController : Node
 		UpdateMatrixDisplay();
 		BeginClearTileFragments();
 	}
-	
+
+	public void RectDeleteTile(Vector2i pos)
+	{
+		switch (Globals.tilematrix[pos.x, pos.y, Globals.CurrentLayer - 1].Type)
+		{
+			case TETileType.Default:
+				break;
+			case TETileType.Material:
+				int x = pos.x;
+				int y = pos.y;
+				int layer = Globals.CurrentLayer - 1;
+				Globals.tilematrix[x, y, layer].Type = TETileType.Default;
+				Globals.tilematrix[x, y, layer].Data = new TETileData();
+				break;
+			case TETileType.TileHead:
+				Globals.tilematrix[pos.x, pos.y, Globals.CurrentLayer - 1].Type = TETileType.Default;
+				Globals.tilematrix[pos.x, pos.y, Globals.CurrentLayer - 1].Data = new TETileData();
+				break;
+			case TETileType.TileBody:
+				TETileData dt = Globals.tilematrix[pos.x, pos.y, Globals.CurrentLayer - 1].Data;
+				if (dt.TileIndexOrHeadCoords.x >= 0 & dt.TileIndexOrHeadCoords.y >= 0 & dt.TileIndexOrHeadCoords.x <= Globals.levelSize.x & dt.TileIndexOrHeadCoords.y <= Globals.levelSize.y)
+				{
+					if (Globals.tilematrix[dt.TileIndexOrHeadCoords.x - 1, dt.TileIndexOrHeadCoords.y - 1, dt.LayerOrDefault - 1].Type == TETileType.TileHead)
+					{
+						int dtx = dt.TileIndexOrHeadCoords.x - 1;
+						int dty = dt.TileIndexOrHeadCoords.y - 1;
+						//RectDeleteTileTile(dt.TileIndexOrHeadCoords - new Vector2i(1, 1), dt.LayerOrDefault - 1);
+						Globals.tilematrix[dtx, dty, Globals.CurrentLayer - 1].Type = TETileType.Default;
+						Globals.tilematrix[dtx, dty, Globals.CurrentLayer - 1].Data = new TETileData();
+					}
+					else
+					{
+						Globals.tilematrix[pos.x, pos.y, Globals.CurrentLayer - 1].Type = TETileType.Default;
+						Globals.tilematrix[pos.x, pos.y, Globals.CurrentLayer - 1].Data = new TETileData();
+					}
+				}
+				else
+				{
+					Globals.tilematrix[pos.x, pos.y, Globals.CurrentLayer - 1].Type = TETileType.Default;
+					Globals.tilematrix[pos.x, pos.y, Globals.CurrentLayer - 1].Data = new TETileData();
+				}
+				break;
+			default:
+				break;
+		}
+		//UpdateTile(pos.x, pos.y);
+
+	}
+
+
+	public void RectDeleteTileTile(Vector2i pos, int layer)
+	{
+		TETileData dt = Globals.tilematrix[pos.x, pos.y, layer].Data;
+		//InternalTile tl = (InternalTile)Globals.GTiles[dt.TileIndexOrHeadCoords.x - 1].tiles[dt.TileIndexOrHeadCoords.y - 1];
+		InternalTile tl = new InternalTile();
+
+		Vector2i Value2;
+		for (int i = 0; i < Globals.TileDictionaries.Count; i++)
+		{
+			if (Globals.TileDictionaries[i].TryGetValue(dt.MaterialOrTileName, out Value2))
+			{
+				//GD.Print(Value2);
+				//GD.Print(Globals.GTiles.Count, " x ", Value2.x);
+				//GD.Print(Globals.GTiles[Value2.x].tiles.Count, " y ", Value2.y);
+				try
+				{
+					//asfasfdasf i have no idea why its inconsistent!!!!
+					//it wasn't inconsistent i was just a capital m Moron
+					if (Globals.GTiles[Value2.x].tiles[Value2.y - 1] is InternalTile d)
+					{
+						//GD.Print(Value2 + new Vector2i(0, -1));
+						//GD.Print(d.Name);
+						tl = d;
+					}
+				}
+				catch
+				{
+					GD.Print("Woah!", Value2.x - 1, " ", Value2.y);
+					GD.Print("Max size is ", Globals.GTiles[Value2.x].tiles.Count);
+				}
+			}
+		}
+
+		Vector2i Midpoint = new Vector2i(Convert.ToInt32((tl.Size.x * 0.5) + 0.4999), Convert.ToInt32((tl.Size.y * 0.5) + 0.4999));
+		Vector2i Start = pos - Midpoint + new Vector2i(1, 1);
+		int n = 0;
+
+		if (tl.Specs2 != null & layer < 2)
+		{
+			n = 0;
+			for (int q = Start.x; q < Start.x + tl.Size.x; q++)
+			{
+				for (int c = Start.y; c < Start.y + tl.Size.y; c++)
+				{
+					if (Utilities.IsInsideLevel(q, c))
+					{
+						if (q < Start.x + tl.Size.x & c < Start.y + tl.Size.y)
+						{
+							if (tl.Specs2[n] != -1)
+							{
+								Globals.tilematrix[q, c, layer + 1].Type = TETileType.Default;
+								//Globals.tilematrix[q, c, Globals.CurrentLayer].Data.TileIndexOrHeadCoords = plctile;
+								//Globals.tilematrix[q, c, Globals.CurrentLayer].Data.MaterialOrTileName = null;
+								//Globals.tilematrix[q, c, Globals.CurrentLayer].Data.LayerOrDefault = Globals.CurrentLayer - 1;
+								Globals.tilematrix[q, c, layer + 1].Data = new TETileData();
+							}
+						}
+						//n++;
+						UpdateTile(q, c);
+						//Master.UpdateTile(q, c);
+					}
+					n++;
+				}
+			}
+		}
+		n = 0;
+		for (int q = Start.x; q < Start.x + tl.Size.x; q++)
+		{
+			for (int c = Start.y; c < Start.y + tl.Size.y; c++)
+			{
+				if (Utilities.IsInsideLevel(q, c))
+				{
+					if (q < Start.x + tl.Size.x & c < Start.y + tl.Size.y)
+					{
+						if (tl.Specs[n] != -1)
+						{
+							Globals.tilematrix[q, c, layer].Type = TETileType.Default;
+							//Globals.tilematrix[q, c, Globals.CurrentLayer].Data.TileIndexOrHeadCoords = plctile;
+							//Globals.tilematrix[q, c, Globals.CurrentLayer].Data.MaterialOrTileName = null;
+							//Globals.tilematrix[q, c, Globals.CurrentLayer].Data.LayerOrDefault = Globals.CurrentLayer - 1;
+							Globals.tilematrix[q, c, layer].Data = new TETileData();
+						}
+					}
+					//n++;
+					UpdateTile(q, c);
+					//Master.UpdateTile(q, c);
+				}
+				n++;
+			}
+		}
+		UpdateMatrixDisplay();
+	}
+
 	public void DeleteTileTile(Vector2i pos, Int32 layer) //int32 because i'm feeling VERBOSE today
 	{
 		TETileData dt = Globals.tilematrix[pos.x, pos.y, layer].Data;
-		InternalTile tl = (InternalTile)Globals.GTiles[dt.TileIndexOrHeadCoords.x - 1].tiles[dt.TileIndexOrHeadCoords.y - 1];
-		Vector2i Midpoint = new Vector2i(Convert.ToInt32((tl.Size.x * 0.5) + 0.4999), Convert.ToInt32((tl.Size.y * 0.5) + 0.4999));
+		//InternalTile tl = (InternalTile)Globals.GTiles[dt.TileIndexOrHeadCoords.x - 1].tiles[dt.TileIndexOrHeadCoords.y - 1];
+		InternalTile tl = new InternalTile();
 
+		Vector2i Value2;
+		for (int i = 0; i < Globals.TileDictionaries.Count; i++)
+		{
+			if (Globals.TileDictionaries[i].TryGetValue(dt.MaterialOrTileName, out Value2))
+			{
+				//GD.Print(Value2);
+				//GD.Print(Globals.GTiles.Count, " x ", Value2.x);
+				//GD.Print(Globals.GTiles[Value2.x].tiles.Count, " y ", Value2.y);
+				try
+				{
+					//asfasfdasf i have no idea why its inconsistent!!!!
+					//it wasn't inconsistent i was just a capital m Moron
+					if (Globals.GTiles[Value2.x].tiles[Value2.y - 1] is InternalTile d)
+					{
+						//GD.Print(Value2 + new Vector2i(0, -1));
+						//GD.Print(d.Name);
+						tl = d;
+					}
+				}
+				catch
+				{
+					GD.Print("Woah!", Value2.x - 1, " ", Value2.y);
+					GD.Print("Max size is ", Globals.GTiles[Value2.x].tiles.Count);
+				}
+			}
+		}
+
+		Vector2i Midpoint = new Vector2i(Convert.ToInt32((tl.Size.x * 0.5) + 0.4999), Convert.ToInt32((tl.Size.y * 0.5) + 0.4999));
 		Vector2i Start = pos - Midpoint + new Vector2i(1, 1);
 		int n = 0;
 
@@ -1207,19 +1780,19 @@ public partial class TileController : Node
 
 									try
 									{
-                                        if (tl.Specs[(h - Start.y) + (g - Start.x) * tl.Size.y] == -1)
-                                        {
-                                            draw = false;
-                                        }
-                                    }
+										if (tl.Specs[(h - Start.y) + (g - Start.x) * tl.Size.y] == -1)
+										{
+											draw = false;
+										}
+									}
 									catch (NullReferenceException ex)
 									{
-                                        GD.Print(tl.Specs.Length);
-                                        GD.Print(g, " gh ", h);
-                                        GD.Print((h - Start.y) + (g - Start.x) * tl.Size.y, " <- funny number");
-                                        GD.Print(tl.Name);
+										GD.Print(tl.Specs.Length);
+										GD.Print(g, " gh ", h);
+										GD.Print((h - Start.y) + (g - Start.x) * tl.Size.y, " <- funny number");
+										GD.Print(tl.Name);
 										throw ex;
-                                    }
+									}
 								}
 							}
 							if (draw == true)
@@ -1278,6 +1851,16 @@ public partial class TileController : Node
 
 	}
 
+	public void UpdateRect(LERect rect)
+	{
+		for (int x = rect.left; x <= rect.right; x++)
+		{
+			for (int y = rect.top; y <= rect.bottom; y++)
+			{
+				UpdateTile(x, y);
+			}
+		}
+	}
 
 	public void UpdateMatrixDisplay()
 	{
@@ -1319,10 +1902,10 @@ public partial class TileController : Node
 		Globals.TEImage1.Resize((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16);
 		Globals.TEImage2.Resize((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16);
 		Globals.TEImage3.Resize((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16);
-		ReloadMatrix();
+		ReloadMatrix(false);
 	}
 	//extraordinarily inefficient, replace asap!!!!
-	public void ReloadMatrix()
+	public void ReloadMatrix(bool showtimer = true)
 	{
 		//Globals.TEImage1.Create((int)Globals.levelSize.x * 16,(int)Globals.levelSize.y * 16, false, Image.Format.Rgba8);
 		//GD.Print("Reloading tile display matrix! This will lag!");
@@ -1336,7 +1919,10 @@ public partial class TileController : Node
 			}
 		}
 		stopwatch.Stop();
-		GD.Print("Done!, tile display took ", stopwatch.ElapsedMilliseconds, "ms");
+		if (showtimer == true)
+		{
+			GD.Print("Done!, tile display took ", stopwatch.ElapsedMilliseconds, "ms");
+		}
 		//FakeMultithreadingEcksDee();
 
 
@@ -1406,10 +1992,20 @@ public partial class TileController : Node
 		RedRect.Fill(Color.Color8(0, 0, 0, 0));
 		int X = 0;
 		int Y = 0;
-		int Z = 0;
-		if (RectDisp == true)
+		//int Z = 0;
+		if (Globals.IsRectOn == true)
 		{
-			foreach (GeometryTile tile in Globals.matrix)
+			for (int i = 0; i < Globals.matrix.Length / 3; i++)
+			{
+				DrawToolRect(X, Y);
+				Y++;
+				if (Y + 1 > Globals.levelSize.y)
+				{
+					Y = 0;
+					X++;
+				}
+			}
+			/*foreach (GeometryTile tile in Globals.matrix)
 			{
 				if ((Z + 1) == 1)
 				{
@@ -1429,7 +2025,7 @@ public partial class TileController : Node
 					Y = 0;
 					X++;
 				}
-			}
+			}*/
 		}
 
 		redrect = new ImageTexture();
@@ -1439,17 +2035,15 @@ public partial class TileController : Node
 
 	}
 
+
+
+
 	public void DrawToolRect(int x, int y)
 	{
 		LERect displayToolRect;
-		if (Globals.IsRectOn == true)
-		{
-			displayToolRect = new LERect(AffectRect.left - 1, AffectRect.top - 1, AffectRect.right + 1, AffectRect.bottom + 1);
-		}
-		else
-		{
-			displayToolRect = new LERect(AffectRect.left - 1, AffectRect.top - 1, AffectRect.right - 1, AffectRect.bottom - 1);
-		}
+
+		displayToolRect = new LERect(AffectRect.left - 1, AffectRect.top - 1, AffectRect.right + 1, AffectRect.bottom + 1);
+
 		
 		if (displayToolRect.IsOnEdge(new Vector2i(x, y)) == true)
 		{
@@ -1490,4 +2084,128 @@ public partial class TileController : Node
 
 
 	}
+
+	public void ClearCursorRect()
+	{
+		WhiteRect.Fill(Color.FromHSV(0, 0, 0, 0));
+		whiterect = new ImageTexture();
+		whiterect.SetImage(WhiteRect);
+
+	}
+
+	public void UpdateCursorRect()
+	{
+		if (WhiteRect == null)
+		{
+			WhiteRect = new Image();
+			WhiteRect.Create((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16, false, Image.Format.Rgba8);
+		}
+		WhiteRect.Resize((int)Globals.levelSize.x * 16, (int)Globals.levelSize.y * 16);
+		WhiteRect.Fill(Color.Color8(0, 0, 0, 0));
+		int X = 0;
+		int Y = 0;
+		//int Z = 0;
+		if (RectDisp == true | Globals.IsRectOn == true)
+		{
+			//gonna fix this
+			for (int i = 0; i < Globals.matrix.Length / 3; i++)
+			{
+				DrawCursorRect(X, Y);
+				Y++;
+				if (Y + 1 > Globals.levelSize.y)
+				{
+					Y = 0;
+					X++;
+				}
+			}
+			/*foreach (GeometryTile tile in Globals.matrix)
+			{
+				if ((Z + 1) == 1)
+				{
+					DrawCursorRect(X, Y);
+				}
+
+
+				//lol copy and pasted
+				Z++;
+				if (Z + 1 > 3)
+				{
+					Z = 0;
+					Y++;
+				}
+				if (Y + 1 > Globals.levelSize.y)
+				{
+					Y = 0;
+					X++;
+				}
+			}*/
+		}
+
+		whiterect = new ImageTexture();
+		whiterect.SetImage(WhiteRect);
+		CursorUI.Texture = whiterect;
+
+
+	}
+
+	public void DrawCursorRect(int x, int y)
+	{
+		LERect displayToolRect;
+
+		bool GlobalOrDraw = false;
+		if(Globals.IsRectOn == true)
+		{
+			GlobalOrDraw = true;
+		}
+		if(GlobalOrDraw == false)
+		{
+			displayToolRect = new LERect(RectSelect.left - 1, RectSelect.top - 1, RectSelect.right - 1, RectSelect.bottom - 1);
+		}
+		else
+		{
+			displayToolRect = new LERect(AffectRect.left - 1, AffectRect.top - 1, AffectRect.right + 1, AffectRect.bottom + 1);
+		}
+
+
+		if (displayToolRect.IsOnEdge(new Vector2i(x, y)) == true)
+		{
+			LERectEdge edge = displayToolRect.WhichEdge(new Vector2i(x, y));
+			switch (edge)
+			{
+				case LERectEdge.Null:
+					break;
+				case LERectEdge.Left:
+					WhiteRect.BlitRect(WhiteRectV, WhiteRectV.GetUsedRect(), new Vector2i((x * 16) + 14, (y * 16)));
+					break;
+				case LERectEdge.Top:
+					WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16) + 14));
+					break;
+				case LERectEdge.Right:
+					WhiteRect.BlitRect(WhiteRectV, WhiteRectV.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
+					break;
+				case LERectEdge.Bottom:
+					WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
+					break;
+				case LERectEdge.TopLeft:
+					WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16) + 14, (y * 16) + 14));
+					break;
+				case LERectEdge.TopRight:
+					//WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16) + 14));
+					break;
+				case LERectEdge.BottomRight:
+					//WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
+					break;
+				case LERectEdge.BottomLeft:
+					//WhiteRect.BlitRect(WhiteRectH, WhiteRectH.GetUsedRect(), new Vector2i((x * 16), (y * 16)));
+					break;
+				default:
+					break;
+			}
+		}
+		else WhiteRect.FillRect(new Rect2i((int)x * 16, (int)y * 16, 16, 16), Color.FromHSV(0, 0, 0, 0));
+
+
+	}
+
+
 }

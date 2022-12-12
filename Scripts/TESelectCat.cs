@@ -17,7 +17,8 @@ public partial class TESelectCat : RichTextLabel
 		lastvec.x = -1;
 		if (list == null && IsIndexShower == false)
 		{
-			list = GetParent().GetNode<RichTextLabel>("VFlowContainer/TILE LIST");
+			//list = GetParent().GetNode<RichTextLabel>("VFlowContainer/TILE LIST");
+			list = (RichTextLabel)GetTree().Root.FindChild("TILE LIST", true, false);
 		}
 	}
 

@@ -56,14 +56,16 @@ public enum MaterialRenderType
 	RoughRock,
 	MegaTrashType,
 	DirtType,
-	SandyDirtType,
+	Sandy,
 	WoodType,
+	WV,
 	DensePipeType,
 	RandomPipesType,
 	CeramicType,
 	CeramicAType,
 	CeramicBType,
-	AddVoidLmao
+	AddVoidLmao,
+	InvisibleI,
 }
 // they're separate because i cannot tell the difference between the lingo code and the init file xd
 public enum TileRenderType
@@ -72,14 +74,22 @@ public enum TileRenderType
 	VoxelStructRandomDisplaceHorizontal,
 	VoxelStructRandomDisplaceVertical,
 	VoxelStructRockType,
-	Box //But what kind of box????
+	Box, //But what kind of box????
+	VoxelStructSandType //????? only one thing uses this??
 }
 public enum SpecialPlaceType
 {
-	Rect
+	Rect,
+	Draw
 }
 
-
+[Flags]public enum TSetTileConnections
+{
+	North = 1,
+	West = 2,
+	East = 4,
+	South = 8
+}
 
 public struct TileCategory
 {
@@ -246,8 +256,28 @@ public struct InternalTile
 
 
 
-
-
+public enum BoringPlacementConnection
+{
+	Dense,
+	Espaced,
+	Ospaced
+}
+public struct BoringPlacementPattern
+{
+	public BoringPlacementPattern(List<string> tiles, BoringPlacementConnection upper, BoringPlacementConnection lower, int tall, int freq)
+	{
+		Tiles = tiles;
+		Upper = upper;
+		Lower = lower;
+		Tall = tall;
+		Freq = freq;
+	}
+	public List<string> Tiles;
+	public BoringPlacementConnection Upper;
+	public BoringPlacementConnection Lower;
+	public int Tall;
+	public int Freq;
+}
 
 public partial class TileDefiner : Node
 {

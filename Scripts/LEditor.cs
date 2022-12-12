@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates; // no idea what the fuck this is or does, vscode just auto generated it
@@ -58,14 +59,18 @@ public enum GeometryTools
 	Waterfall = 26,
 	WhackAMoleHole = 27,
 	Wormgrass = 28,
-	ScavengerHole = 29
+	ScavengerHole = 29,
+	InvertRect = 30,
+	Fill = 31, // this will be hell to code!
+	Null = 32,
+	Null2 = 33
 }
 
 public enum EditorState
 {
 	LoadSaveIO = 0,
 	Main = 1,
-	Geomery = 2,
+	Geometry = 2,
 	Tile = 3,
 	Camera = 4,
 	Light = 5,
@@ -96,9 +101,11 @@ public struct EditorSettings
 	{
 		IsFreecam = false;
 		ShowCompass = true;
+		ShowTileAtlas = false;
 	}
 	public bool IsFreecam;
 	public bool ShowCompass;
+	public bool ShowTileAtlas;
 }
 
 
@@ -302,6 +309,14 @@ public struct LERect
 	public int right;
 	public int bottom;
 
+	public override string ToString()
+	{
+		string s = "Left: " + left + " Right: " + right + " Top: " + top + " Bottom: " + bottom;
+		return s;
+	}
+
+
+
 	//hastily slapped together because fuck it
 	public static LERect operator +(LERect a, LERect b) => new LERect(a.left + b.left, a.top + b.top, a.right + b.right, a.bottom + b.bottom);
 	public static LERect operator -(LERect a, LERect b) => new LERect(a.left - b.left, a.top - b.top, a.right - b.right, a.bottom - b.bottom);
@@ -453,9 +468,35 @@ public struct ExtraTiles
 	public int bottom;
 }
 
+
+//think of this as like a "screenshot" of the state of all the matrices, like a temporary save.
+//this is non-functional unless it has friends
+public struct UndoCacheState
+{
+	public UndoCacheState(ExtraTiles etiles, LevelSize lsize, GeometryTile[,,] gmat, TETile[,,] tmat)
+	{
+		CacheExtraTiles = etiles;
+		CacheLevelSize = lsize;
+		CacheGeoMatrix = new GeometryTile[lsize.x,lsize.y,3];
+		Array.Copy(gmat, CacheGeoMatrix, gmat.Length);
+		CacheTileMatrix = new TETile[lsize.x, lsize.y, 3];
+		Array.Copy(tmat, CacheTileMatrix, tmat.Length);
+	}
+	public ExtraTiles CacheExtraTiles;
+	public LevelSize CacheLevelSize;
+	public GeometryTile[,,] CacheGeoMatrix;
+	public TETile[,,] CacheTileMatrix;
+	//will add more as more gets added in
+	// TODO: add more
+}
+
+
+
+
 //namespace RainWorldMonsoon;
 public static class Globals 
 {
+#pragma warning disable CA2211
 	public static bool IsEditorEvil = false; //let me show you the power of the dark side
 	//store the level's project txt file as a 9 stringed buffer;
 	public static string gLoadedName = "New Level";
@@ -469,7 +510,14 @@ public static class Globals
 	public static string DefaultMaterialName;
 	public static GeometryTools CurrentTool = GeometryTools.Invert;
 	public static int CurrentLayer = 1;
+	public static Vector2 UnroundedCursorPosition;
 	public static Vector2i CursorPosition;
+	public static Vector2 MousePosition;
+	//public static Vector2 GlobalMousePosition;
+	public static Vector2 ActiveViewportSize;
+	public static Viewport ActiveViewport;
+
+
 	public static Vector2i RectLockPos;
 	public static int MirrorXPos = 0;
 
@@ -485,9 +533,10 @@ public static class Globals
 
 	//why didn't i think of this earlier XD
 	public static Dictionary<string, Vector2i> MaterialsDictionary = new Dictionary<string, Vector2i>();
+	public static Dictionary<string, int> CategoriesDictionary = new Dictionary<string, int>(); //uint because someone might want more than 65536 categories
 	public static List<Dictionary<string, Vector2i>> TileDictionaries = new List<Dictionary<string, Vector2i>>();
 
-	public static List<int> TMSavePositionLookup = new List<int>();
+	public static List<int> TMSavePositionLookup = new List<int>(); //???? what is this i forgor
 
 	public static bool IsRectOn = false;
 	public static Boolean IsMirrorOn = false; //boolean > bool because it sounds cool
@@ -503,26 +552,8 @@ public static class Globals
 	public static bool CPUConversion = false;
 	//please todo: change if needed
 	//----------------------------------------------------------------------------------------------------------------------------------------------------
-	/*
+	public static ushort UndoCacheSize = 64;
 
-	afsddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-	afsddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-
-	asfddddddddasfasdfglkjfadg;lkjagfds;lkjgf;dlkjgfda;lkagsj;lkagfsd
-
-	asgdlkj;adlsfgkjadf;glkjgafd;lkgjf;lkdfsgj;alsdfkgja;sdlgkjgas;dlksdgj
-
-
-
-	this will help find the quick load speed x
-
-	ajkhdsflkjhafsdlkjhadfslkajsdfhlakjdsfhlaskdjfhalskdfjha
-	afdskjhadsfkjahsdfkjasdhfkjasdfhkasjdfhaskdjfhasdkjfhasdkjfhasdkfjahsd
-
-
-
-
-	*/
 	public static Image LevelEditImageShortcuts;
 	public static Image LevelEditImage1;
 	public static Image LevelEditImage2;
@@ -552,7 +583,9 @@ public static class Globals
 	public static LevelFileBuffer NewLevelFile; // warning, LOOOOOONG!!!!!!
 
 	public static List<TileCategory> GTiles;
+	public static object SelectedTile;
 	public static Vector2i TileCatIndex = new Vector2i(0, 0); // X is category Y is index
+	public static Vector2i ToolMatrixIndex = new Vector2i(1, 1);
 
 	// the official editor can only show 52x40 grids in the geo editor
 	public static LevelSize levelSize = new LevelSize(72, 43); // camelCase ftw
@@ -560,6 +593,11 @@ public static class Globals
 	public static ExtraTiles extraTiles = new ExtraTiles(12, 3, 12, 5);
 	public static GeometryTile[,,] matrix = new GeometryTile[levelSize.x, levelSize.y, 3];// haha hardcoding lol lmao;
 	public static TETile[,,] tilematrix = new TETile[levelSize.x, levelSize.y, 3]; // once more haha lol lmao;
+
+	//Undo cache goes from 0-(for brevity it's 64)
+	//0 is the most recent and 64 is the oldest
+	public static int UndoCacheIndex = 0;
+	public static List<UndoCacheState> UndoCache = new List<UndoCacheState>();
 
 	//^ all that just to hold the data of //ONE LINE ;-;// TWO LINES :D
 
@@ -587,9 +625,11 @@ public static class Globals
 	//for reading line 9
 
 	//for reading line 10 lol jk line 10 is unused
+#pragma warning restore CA2211
 	public static void Init()
 	{
 		GD.Print("Beginning Initialization");
+		RNG.Seed = System.Environment.TickCount;
 		Stopwatch timer = new Stopwatch();
 		timer.Start();
 		string path1 = OS.GetExecutablePath().GetBaseDir();
@@ -599,6 +639,7 @@ public static class Globals
 			GD.Print("Loading Configuration");
 			Regex QuickStartRegex = new Regex("\\[Fast\\sStartup:\\s([^\\]]+)\\]", RegexOptions.IgnoreCase);
 			Regex CPURegex = new Regex("\\[CPU\\sColor\\sConversion:\\s([^\\]]+)\\]", RegexOptions.IgnoreCase);
+			Regex UndoCacheRegex = new Regex("\\[Undo\\sCache\\sSize:\\s([0-9]+)\\]", RegexOptions.IgnoreCase);
 			foreach(string s in System.IO.File.ReadLines(configpath))
 			{
 				Match QuickMatch = QuickStartRegex.Match(s);
@@ -614,18 +655,21 @@ public static class Globals
 					}
 				}
 				Match CPUMatch = CPURegex.Match(s);
+				if (CPUMatch.Groups[1].Success)
 				{
-					if (CPUMatch.Groups[1].Success)
+					if (QuickMatch.Groups[1].Value == "true" | QuickMatch.Groups[1].Value == "True")
 					{
-						if (QuickMatch.Groups[1].Value == "true" | QuickMatch.Groups[1].Value == "True")
-						{
-							CPUConversion = true;
-						}
-						else
-						{
-							CPUConversion = false;
-						}
+						CPUConversion = true;
 					}
+					else
+					{
+						CPUConversion = false;
+					}
+				}
+				Match UndoMatch = UndoCacheRegex.Match(s);
+				if (UndoMatch.Groups[1].Success)
+				{
+					UndoCacheSize = ushort.Parse(UndoMatch.Groups[1].Value);
 				}
 			}
 		}
@@ -657,10 +701,10 @@ public static class Globals
 		GTiles[0].tiles.Add(new InternalMaterial("Chaotic Stone", 1, 1, 0, "Tiles", Color.Color8(255, 0, 255)));
 		GTiles[0].tiles.Add(new InternalMaterial("Small Pipes", 1, 1, 0, "PipeType", Color.Color8(255, 255, 0)));
 		GTiles[0].tiles.Add(new InternalMaterial("Trash", 1, 1, 0, "PipeType", Color.Color8(90, 255, 0)));
-		GTiles[0].tiles.Add(new InternalMaterial("Invisible", 1, 1, 0, "AddVoidLmao", Color.Color8(200, 200, 200)));
+		GTiles[0].tiles.Add(new InternalMaterial("Invisible", 1, 1, 0, "InvisibleI", Color.Color8(200, 200, 200)));
 		GTiles[0].tiles.Add(new InternalMaterial("LargeTrash", 1, 1, 0, "LargeTrashType", Color.Color8(175, 30, 255)));
 		GTiles[0].tiles.Add(new InternalMaterial("3DBricks", 1, 1, 0, "Tiles", Color.Color8(255, 150, 0)));
-		GTiles[0].tiles.Add(new InternalMaterial("Random Machines", 1, 1, 0, "Tiles", Color.Color8(72, 116, 80))); // <- this motherfucker is the GOAT, the MVP
+		GTiles[0].tiles.Add(new InternalMaterial("Random Machines", 1, 1, 0, "Tiles", Color.Color8(72, 116, 80))); // <- this motherfucker
 		GTiles[0].tiles.Add(new InternalMaterial("Dirt", 1, 1, 0, "DirtType", Color.Color8(124, 72, 52)));
 		GTiles[0].tiles.Add(new InternalMaterial("Ceramic Tile", 1, 1, 0, "CeramicType", Color.Color8(60, 60, 100)));
 		GTiles[0].tiles.Add(new InternalMaterial("Temple Stone", 1, 1, 0, "Tiles", Color.Color8(0, 120, 180)));
@@ -673,21 +717,26 @@ public static class Globals
 		}
 		// ===============
 		// hand copied from the lingo code (the september 1st branch of the community editor's)
-		// on request i will comment the below out.
+		// com editor branch is now 0.373
+		// on request i will re-add the "droughtReserve" tags
 		GTiles.Add(new TileCategory("Drought Materials", 1));
-		GTiles[1].tiles.Add(new InternalMaterial("4Mosaic", 1, 1, 0, "Tiles", Color.Color8(227, 76, 13), "droughtReserve"));
+		GTiles[1].tiles.Add(new InternalMaterial("4Mosaic", 1, 1, 0, "Tiles", Color.Color8(227, 76, 13)));
 		GTiles[1].tiles.Add(new InternalMaterial("Color A Ceramic", 1, 1, 0, "CeramicAType", Color.Color8(120, 0, 90)));
 		GTiles[1].tiles.Add(new InternalMaterial("Color B Ceramic", 1, 1, 0, "CeramicBType", Color.Color8(0, 175, 175)));
 		GTiles[1].tiles.Add(new InternalMaterial("Random Pipes", 1, 1, 0, "RandomPipesType", Color.Color8(80, 0, 140)));
-		GTiles[1].tiles.Add(new InternalMaterial("Rocks", 1, 1, 0, "RockType", Color.Color8(185, 200, 0), "droughtReserve"));
-		GTiles[1].tiles.Add(new InternalMaterial("Rough Rock", 1, 1, 0, "RoughRock", Color.Color8(155, 170, 0), "droughtReserve"));
+		GTiles[1].tiles.Add(new InternalMaterial("Rocks", 1, 1, 0, "RockType", Color.Color8(185, 200, 0)));
+		GTiles[1].tiles.Add(new InternalMaterial("Rough Rock", 1, 1, 0, "RoughRock", Color.Color8(155, 170, 0)));
 		GTiles[1].tiles.Add(new InternalMaterial("Random Metal", 1, 1, 0, "Tiles", Color.Color8(180, 10, 10)));
-		GTiles[1].tiles.Add(new InternalMaterial("Cliff", 1, 1, 0, "Unified", Color.Color8(75, 75, 75), "droughtReserve"));
-		GTiles[1].tiles.Add(new InternalMaterial("Non-Slip Metal", 1, 1, 0, "Unified", Color.Color8(180, 80, 80), "droughtReserve"));
+		GTiles[1].tiles.Add(new InternalMaterial("Cliff", 1, 1, 0, "Unified", Color.Color8(75, 75, 75)));
+		GTiles[1].tiles.Add(new InternalMaterial("Non-Slip Metal", 1, 1, 0, "Unified", Color.Color8(180, 80, 80)));
 		GTiles[1].tiles.Add(new InternalMaterial("Stained Glass", 1, 1, 0, "Unified", Color.Color8(180, 80, 180)));
-		GTiles[1].tiles.Add(new InternalMaterial("Sandy Dirt", 1, 1, 0, "RoughRock", Color.Color8(180, 180, 80)));
+		GTiles[1].tiles.Add(new InternalMaterial("Sandy Dirt", 1, 1, 0, "Sandy", Color.Color8(180, 180, 80)));
 		GTiles[1].tiles.Add(new InternalMaterial("MegaTrash", 1, 1, 0, "MegaTrashType", Color.Color8(135, 10, 255)));
-		GTiles[1].tiles.Add(new InternalMaterial("Shallow Dense Pipes", 1, 1, 0, "DensePipeType", Color.Color8(13, 23, 110)));
+		GTiles[1].tiles.Add(new InternalMaterial("Sheet Metal", 1, 1, 0, "WV", Color.Color8(145, 135, 125)));
+		GTiles[1].tiles.Add(new InternalMaterial("Chaotic Stone 2", 1, 1, 0, "Tiles", Color.Color8(90, 90, 90)));
+		
+		
+		
 		// that's that stuff
 		// now for the community materials
 		GTiles.Add(new TileCategory("Community Materials", 2));
@@ -698,6 +747,12 @@ public static class Globals
 		GTiles[2].tiles.Add(new InternalMaterial("ElectricMetal", 1, 1, 0, "Unified", Color.Color8(255, 0, 100)));
 		GTiles[2].tiles.Add(new InternalMaterial("Grate", 1, 1, 0, "Unified", Color.Color8(190, 50, 190)));
 		GTiles[2].tiles.Add(new InternalMaterial("CageGrate", 1, 1, 0, "Unified", Color.Color8(50, 190, 190)));
+		GTiles[2].tiles.Add(new InternalMaterial("BulkMetal", 1, 1, 0, "Unified", Color.Color8(50, 19, 190)));
+		GTiles[2].tiles.Add(new InternalMaterial("MassiveBulkMetal", 1, 1, 0, "Unified", Color.Color8(255, 19, 19)));
+		GTiles[2].tiles.Add(new InternalMaterial("Dune Sand", 1, 1, 0, "Tiles", Color.Color8(255, 255, 100)));
+
+
+
 		// special rect stuff below done: added the special rect stuff
 		GTiles.Add(new TileCategory("Special", 3));
 		GTiles[3].tiles.Add(new InternalSpecial("Rect Clear", 1, 1, 0, "Rect", Color.Color8(255, 0, 0)));
@@ -708,6 +763,14 @@ public static class Globals
 		//my eyes and fingerses hurtses, precious
 		// the painses oh the painses, it is too much for me
 		// gollum, gollum
+		//GTiles[3].tiles.Add(new InternalSpecial("Easy Thin Pipes", 1, 1, 0, "Draw", Color.Color8(255, 255, 0)));
+		//GTiles[3].tiles.Add(new InternalSpecial("Easy Pipes", 1, 1, 0, "Draw", Color.Color8(255,255,0)));
+		//GTiles[3].tiles.Add(new InternalSpecial("Easy Wall Wires", 1, 1, 0, "Draw", Color.Color8(255, 255, 0)));
+		//GTiles[3].tiles.Add(new InternalSpecial("Fancy SH Pattern Box", 1, 1, 0, "Rect", Color.Color8(210, 128, 0), "Fancy"));
+		//GTiles[3].tiles.Add(new InternalSpecial("Fancy SH Grate Box", 1, 1, 0, "Rect", Color.Color8(160, 105, 255), "Fancy"));
+		//GTiles[3].tiles.Add(new InternalSpecial("Fancy Alt Grate Box", 1, 1, 0, "Rect", Color.Color8(75, 255, 240), "Fancy"));
+		//0.373 mats time
+		//oof ouch my fingers
 
 		for (int i = 0; i < GTiles.Count - 1; i++)
 		{
@@ -731,9 +794,10 @@ public static class Globals
 		GraphicsDir += "/Graphics";
 		string GraphicsFile = GraphicsDir + "/Init.txt";
 		//GD.Print(GraphicsFile);
+		int index = 4;
 		if (System.IO.File.Exists(GraphicsFile))
 		{
-			int index = 4;
+			//int index = 4;
 			//GD.Print("!!!!");
 			GD.Print("Initializing Graphics/Init.txt!");
 			foreach (string line in System.IO.File.ReadLines(GraphicsFile))
@@ -859,6 +923,138 @@ public static class Globals
 			GD.Print("Graphics/init.txt read Successfuly!");
 		}
 		else GD.Print(string.Format("There is no Init.txt found at {0}!", GraphicsDir));
+		//(black and white robert downey jr picture) There Are 'Hardcoded' Tiles In The Community Editor..... And Outside My House
+		//well, not exactly hardcoded, just in a text file that's embedded into the horrid mess of evil that is adobe director's .dir files
+		//same goes for some props lmao
+		//now, will i do this the normal way or the insane way?
+		//insane way of course :)
+		string drfile = "res://Assets/Graphics/Drought Needed Init.txt";
+		using var file = Godot.FileAccess.Open(drfile, Godot.FileAccess.ModeFlags.Read);
+		string drline = file.GetAsText();
+		//GD.Print(drline);
+		string[] drlines = drline.Split(new string[] {"\r\n","\r","\n"}, StringSplitOptions.None);
+		//GD.Print(lines.Length);
+
+
+		foreach (string line in drlines)
+		{
+			//GD.Print("New Line!", line);
+			Match CatMatch = CategoryRegex.Match(line);
+			if (CatMatch.Success == true)
+			{
+				//GD.Print(index);
+				//GD.Print(CatMatch.Groups[1].Value);
+				//GD.Print(CatMatch.Groups[2].Value);
+				//GD.Print(CatMatch.Groups[3].Value);
+				//GD.Print(CatMatch.Groups[4].Value);
+				byte r = byte.Parse(CatMatch.Groups[2].Value);
+				byte g = byte.Parse(CatMatch.Groups[3].Value);
+				byte b = byte.Parse(CatMatch.Groups[4].Value);
+				GTiles.Add(new TileCategory(CatMatch.Groups[1].Value, index, Color.Color8(r, g, b)));
+				TileDictionaries.Add(new Dictionary<string, Vector2i>());
+				index++;
+			}
+			Match indMatch = InternalTileRegex.Match(line);
+			if (indMatch.Success == true)
+			{
+				List<int> specs;
+				//if (line[indMatch.Groups[4].Index - 1] == char.Parse("["))
+				//{
+				//	GD.Print("yes 763");
+				//}
+				//if (indMatch.Groups[4].Value != "0")
+				if (line[indMatch.Groups[4].Index - 1] == char.Parse("["))
+				{
+					MatchCollection matches = Numbers.Matches(indMatch.Groups[4].Value);
+					//int matchindx = 0;
+					specs = new List<int>();
+					foreach (Match match in matches)
+					{
+						specs.Add(int.Parse(match.Value));
+					}
+				}
+				else
+				{
+					specs = null;
+					GD.Print(indMatch.Groups[1].Value + "'s SPECS IS NULL! THIS WILL BREAK STUFF!");
+				}
+				//TODO: find way to differentiate between Specs: 0 and Specs: [0]
+				List<int> specs2;
+				//if (indMatch.Groups[5].Value != "0" & indMatch.Groups[5].Value != "void") // for the edge cases "Crane House Platform" and "Crane House"
+				if (line[indMatch.Groups[5].Index - 1] == char.Parse("["))
+				{
+					MatchCollection matches = Numbers.Matches(indMatch.Groups[5].Value);
+					//GD.Print(indMatch.Groups[5].Value);
+					//int matchindx = 0;
+					specs2 = new List<int>();
+					foreach (Match match in matches)
+					{
+						specs2.Add(int.Parse(match.Value));
+						//GD.Print(match.Value);
+						//GD.Print()
+					}
+					//GD.Print(specs2.Count(), " count");
+				}
+				else
+				{
+					specs2 = null;
+				}
+				List<int> repeatl;
+				if (indMatch.Groups[7].Success)
+				{
+					MatchCollection matches = Numbers.Matches(indMatch.Groups[7].Value);
+					//int matchindx = 0;
+					repeatl = new List<int>();
+					foreach (Match match in matches)
+					{
+						repeatl.Add(int.Parse(match.Value));
+					}
+				}
+				else
+				{
+					repeatl = null; // shouldn't EVER go null // nvm it should be nullable
+									//GD.Print("repeatL for \"", indMatch.Groups[1].Value, "\" is null, but it shouldn't be!");
+				}
+				MatchCollection matches2 = Words.Matches(indMatch.Groups[11].Value);
+				List<string> tags = new List<string>();
+				if (matches2.Count > 0)
+				{
+					foreach (Match match2 in matches2)
+					{
+						tags.Add(match2.Value);
+					}
+				}
+				string[] stags = new string[tags.Count];
+				for (int i = 0; i < tags.Count; i++)
+				{
+					stags[i] = tags[i];
+				}
+				//TileRenderType tp = Enum.Parse<TileRenderType>(indMatch.Groups[6].Value);
+				string tp = indMatch.Groups[6].Value;
+				tp = char.ToUpper(tp[0]) + tp.Substring(1);
+				InternalTile t;
+				if (repeatl == null)
+				{
+					t = new InternalTile(indMatch.Groups[1].Value, int.Parse(indMatch.Groups[2].Value), int.Parse(indMatch.Groups[3].Value), specs, specs2, tp, new List<int>(), int.Parse(indMatch.Groups[9].Value), int.Parse(indMatch.Groups[10].Value), 0, stags);
+				}
+				else
+				{
+					t = new InternalTile(indMatch.Groups[1].Value, int.Parse(indMatch.Groups[2].Value), int.Parse(indMatch.Groups[3].Value), specs, specs2, tp, repeatl, int.Parse(indMatch.Groups[9].Value), int.Parse(indMatch.Groups[10].Value), 0, stags);
+				}
+				//GD.Print(GTiles[index - 1].CategoryName);
+				GTiles[index - 1].tiles.Add(t);
+				//GD.Print(TileDictionaries.Count, " ", index - 4);
+				TileDictionaries[index - 5].TryAdd(t.Name, new Vector2i(index - 1, GTiles[index - 1].tiles.Count));
+			}
+		}
+		for (int i = 0; i < GTiles.Count; i++)
+		{
+			CategoriesDictionary.Add(GTiles[i].CategoryName, i);
+		}
+
+
+
+
 		for (int q = 0; q < GTiles.Count; q++)
 		{
 			TMSavePositionLookup.Add(1);
@@ -882,7 +1078,7 @@ public static class Globals
 				for (int c = 0; c < GTiles[q].tiles.Count; c++)
 				{
 					//Image sav2 = Image.LoadFromFile(GraphicsDir + GTiles[q].tiles[c].Name);
-					if (GTiles[q].tiles[c] is InternalTile ad)// 2000 ad robocop reference?!?!?!?!?!?! // judge dredd, not robocop, get some sleep
+					if (GTiles[q].tiles[c] is InternalTile ad && !ad.Tags.Contains("INTERNAL"))// 2000 ad robocop reference?!?!?!?!?!?! // judge dredd, not robocop, get some sleep
 					{
 						// find a way to disable the warning that pops up
 						Image sav2 = Image.LoadFromFile(GraphicsDir + "/" + ad.Name + ".png"); // im going to go moron mode
@@ -920,7 +1116,7 @@ public static class Globals
 						//	sav2 = Utilities.NuclearConvert(sav2, Colors.Transparent, GTiles[q].CategoryColor);
 						//}
 						//if (ad.Name == "Big Head")
-					   // {
+						// {
 						//    sav2 = Utilities.SuperConvert(sav2, Colors.White, Colors.Green);
 						//	//sav2 = Utilities.SuperConvert(sav2, Colors.Black, GTiles[q].CategoryColor);
 						//}
@@ -942,7 +1138,7 @@ public static class Globals
 						Rect2i rct = new Rect2i(0, CalculatedHeight - (16 * ad.Size.y), (16 * ad.Size.x), (16 * ad.Size.y));
 						//GD.Print(rct.ToString());
 						//GD.Print("newrect " + rect.top + " " + rect.bottom);
-						
+
 						if (QuickLoadSpeedX == false)
 						{
 							Image sav3 = sav2.GetRect(rct);
@@ -956,12 +1152,12 @@ public static class Globals
 								sav3 = Utilities.SuperConvert(sav3, Colors.White, Colors.Transparent);
 								sav3 = Utilities.NuclearConvert(sav3, Colors.Transparent, GTiles[q].CategoryColor);
 							}
-							sav2.BlitRect(sav3,new Rect2i(0,0,sav3.GetWidth(),sav3.GetHeight()),new Vector2i(0, CalculatedHeight - (16 * ad.Size.y)));
+							sav2.BlitRect(sav3, new Rect2i(0, 0, sav3.GetWidth(), sav3.GetHeight()), new Vector2i(0, CalculatedHeight - (16 * ad.Size.y)));
 						}
 
 
 
-						if (ptposx + (16*ad.Size.x) + 1 > TilePreviewAtlas.GetWidth())
+						if (ptposx + (16 * ad.Size.x) + 1 > TilePreviewAtlas.GetWidth())
 						{
 							GD.Print("MORE X!");
 							ptposx = 1;
@@ -979,7 +1175,7 @@ public static class Globals
 							ad.PreviewTilePositionY = ptposy;
 							GTiles[q].tiles[c] = ad;
 							//InternalTile xd = (InternalTile)GTiles[q].tiles[c];
-						   // GD.Print(xd.PreviewTilePosition);
+							// GD.Print(xd.PreviewTilePosition);
 							ptposx += (16 * ad.Size.x) + 1;
 						}
 						else
@@ -1002,6 +1198,86 @@ public static class Globals
 
 
 					}
+					else if (GTiles[q].tiles[c] is InternalTile bce) //for the kepler fans
+					{
+						Image sav2 = new Image();
+						sav2 = Utilities.QuickConvert("res://Assets/Graphics" + "/" + bce.Name + ".png"); //Image.LoadFromFile("res://Assets/Graphics" + "/" + bce.Name + ".png");
+						//sav2.Load("res://Assets/Graphics" + "/" + bce.Name + ".png");
+						//GD.Print(sav2.GetHeight());
+						//GD.Print(ptposx);
+						//sav2 = Utilities.QuickConvert(sav2);
+						int CalculatedHeight = sav2.GetHeight();
+						if (bce.Type == TileRenderType.VoxelStruct)
+						{
+							CalculatedHeight = 1 + (16 * bce.Size.y) + (20 * (bce.Size.y + (bce.BFTiles * 2)) * bce.RepeatL.Count());
+							//GD.Print(CalculatedHeight);
+						}
+
+						if (tempptposy <= (16 * bce.Size.y) + 1)
+						{
+							tempptposy += (16 * bce.Size.y) + 1;
+							//GD.Print("MORE Y!");
+						}
+						//GD.Print(ad.Name + " " + ad.Type);
+						//GD.Print(CalculatedHeight);
+						//LERect rect = new LERect(0, CalculatedHeight - (16 * ad.Size.y), (16 * ad.Size.x), CalculatedHeight);
+						Rect2i rct = new Rect2i(0, CalculatedHeight - (16 * bce.Size.y), (16 * bce.Size.x), (16 * bce.Size.y));
+						//GD.Print(rct.ToString());
+						//GD.Print("newrect " + rect.top + " " + rect.bottom);
+
+						if (QuickLoadSpeedX == false)
+						{
+							Image sav3 = sav2.GetRect(rct);
+							if (CPUConversion == true)
+							{
+								sav3 = Utilities.ColorConvert(sav3, Colors.White, Colors.Transparent);
+								sav3 = Utilities.SpillConvert(sav3, Colors.Transparent, GTiles[q].CategoryColor);
+							}
+							else
+							{
+								sav3 = Utilities.SuperConvert(sav3, Colors.White, Colors.Transparent);
+								sav3 = Utilities.NuclearConvert(sav3, Colors.Transparent, GTiles[q].CategoryColor);
+							}
+							sav2.BlitRect(sav3, new Rect2i(0, 0, sav3.GetWidth(), sav3.GetHeight()), new Vector2i(0, CalculatedHeight - (16 * bce.Size.y)));
+						}
+
+
+
+						if (ptposx + (16 * bce.Size.x) + 1 > TilePreviewAtlas.GetWidth())
+						{
+							GD.Print("MORE X!");
+							ptposx = 1;
+							ptposy += tempptposy;
+							if (ptposy + (16 * bce.Size.y) + 1 > TilePreviewAtlas.GetHeight())
+							{
+								GD.Print("OH GOD!");
+								GD.PrintErr("OH FUCK!!");
+								throw new IndexOutOfRangeException("Whoops! too many tiles for Y workaround!");
+								//Crash(); //lol, lmao
+							}
+							//GD.Print(ptposy + " MORE Y!");
+							TilePreviewAtlas.BlitRect(sav2, rct, new Vector2i(ptposx, ptposy));
+							bce.PreviewTilePosition = ptposx;
+							bce.PreviewTilePositionY = ptposy;
+							GTiles[q].tiles[c] = bce;
+							//InternalTile xd = (InternalTile)GTiles[q].tiles[c];
+							// GD.Print(xd.PreviewTilePosition);
+							ptposx += (16 * bce.Size.x) + 1;
+						}
+						else
+						{
+							TilePreviewAtlas.BlitRect(sav2, rct, new Vector2i(ptposx, ptposy));
+							bce.PreviewTilePosition = ptposx;
+							bce.PreviewTilePositionY = ptposy;
+							GTiles[q].tiles[c] = bce;
+							//InternalTile xd = (InternalTile)GTiles[q].tiles[c];
+							//GD.Print(xd.PreviewTilePosition);
+							ptposx += (16 * bce.Size.x) + 1;
+						}
+
+
+
+					}
 				}
 			}
 
@@ -1010,10 +1286,14 @@ public static class Globals
 
 
 		}
+		TilePreviewTexture = ImageTexture.CreateFromImage(TilePreviewAtlas);
+		GD.Print(TilePreviewTexture.GetHeight());
 		GD.Print("Graphics initialization took ", timer.ElapsedMilliseconds, " ms!");
 	}
 	public static void Import(string levelname)
 	{
+		UndoCache = new List<UndoCacheState>();
+		UndoCacheIndex = 0;
 		gLOADPATH = levelname;
 		string temp = levelname.Split(@"/").Last();
 		int tempindex = temp.IndexOf(".txt");
@@ -1135,7 +1415,7 @@ public static class Globals
 		}
 		else
 		{
-			TileSeed = (int)GD.Randi() % 400;
+			TileSeed = RNG.Random(400);
 			GD.Print("Level file has no \"#tileSeed\" parameter, defaulting to ", TileSeed, "!");
 			//TileSeed = (int)GD.Randi() % 400;
 		}
@@ -1315,13 +1595,72 @@ public static class Globals
 
 
 
-
+		LoadIntoUndoCache();
 	}
+	public static void Undo()
+	{
+		//GD.Print("Undo");
+		//GD.Print(UndoCacheIndex," ", UndoCache.Count);
+		if (UndoCacheIndex + 1 < UndoCache.Count)
+		{
+			//GD.Print("Undo");
+			UndoCacheIndex += 1;
+			LoadFromUndoCache();
+			//GD.Print(UndoCacheIndex, " u ", UndoCache.Count);
+		}
+	}
+	public static void Redo()
+	{
+		//GD.Print("Redo");
+		//GD.Print("Redo");
+		//GD.Print(UndoCacheIndex, " ", UndoCache.Count);
+		if (UndoCacheIndex - 1 > -1)
+		{
+			//GD.Print("Redo");
+			UndoCacheIndex -= 1;
+			//GD.Print(UndoCacheIndex, " r ", UndoCache.Count);
+			LoadFromUndoCache();
+		}
+	}
+	public static void LoadIntoUndoCache()
+	{
+		//if this doesn't work.....
+		//GD.Print("Saved into undo cache!");
+		UndoCacheState undostate = new UndoCacheState(extraTiles,levelSize,matrix,tilematrix);
+		List<UndoCacheState> list = UndoCache.GetRange(UndoCacheIndex, UndoCache.Count - UndoCacheIndex);
+		//list = (List<UndoCacheState>)UndoCache.Skip(UndoCacheIndex - 1);
+		list.Insert(0, undostate);
+		UndoCacheIndex = 0;
 
 
+		UndoCache = list;
+	}
+	public static void LoadFromUndoCache()
+	{
+		//this'll explode
+		//UndoCacheState state = UndoCache[UndoCacheIndex];
+		//GD.Print(tilematrix[0, 0, 0].Data.MaterialOrTileName, " data");
+		//GD.Print(UndoCache[UndoCacheIndex].CacheTileMatrix[0, 0, 0].Data.MaterialOrTileName, " cache");
+		extraTiles = UndoCache[UndoCacheIndex].CacheExtraTiles;
+		levelSize = UndoCache[UndoCacheIndex].CacheLevelSize;
+		matrix = new GeometryTile[levelSize.x, levelSize.y, 3];
+		Array.Copy(UndoCache[UndoCacheIndex].CacheGeoMatrix, matrix, UndoCache[UndoCacheIndex].CacheGeoMatrix.Length);
+		tilematrix = new TETile[levelSize.x, levelSize.y, 3];
+		Array.Copy(UndoCache[UndoCacheIndex].CacheTileMatrix, tilematrix, UndoCache[UndoCacheIndex].CacheTileMatrix.Length);
+		//tilematrix = UndoCache[UndoCacheIndex].CacheTileMatrix;
+		//extraTiles = UndoCache[UndoCacheIndex].CacheExtraTiles;
+	}
 
 	public static void Export(string Filepath)
 	{
+
+		gLOADPATH = Filepath;
+		string temp = Filepath.Split(@"/").Last();
+		int tempindex = temp.IndexOf(".txt");
+		string temp2 = temp.Remove(tempindex);
+		gLoadedName = temp2;
+
+
 		LevelFileBuffer NewLevel = new LevelFileBuffer();
 		string l1;
 		List<string> columns = new List<string>();
@@ -1447,6 +1786,7 @@ public static class Globals
 		//	System.IO.File.WriteAllLines(Filepath, lines);
 		//}
 		System.IO.File.WriteAllLines(Filepath, lines);
+		GD.Print(string.Format("Saved file \"{0}\" to \"{1}\"", gLoadedName, gLOADPATH));
 	}
 
 }
@@ -1764,6 +2104,11 @@ public partial class LEditor : Node
 		{
 			GD.Print("Evil Mode set to " + !Globals.IsEditorEvil);
 			Globals.IsEditorEvil = !Globals.IsEditorEvil;
+		}
+		if (input == 3)
+		{
+			GD.Print("Tile Atlas Visibility = " + !Globals.Settings.ShowTileAtlas);
+			Globals.Settings.ShowTileAtlas = !Globals.Settings.ShowTileAtlas;
 		}
 	}
 

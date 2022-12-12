@@ -12,12 +12,14 @@ current = true
 custom_minimum_size = Vector2i(320, 320)
 offset_right = 320.0
 offset_bottom = 320.0
+mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false
 self_modulate = Color(1, 1, 1, 0.396078)
 offset_right = 832.0
 offset_bottom = 640.0
+mouse_filter = 2
 texture = ExtResource("1_nbaai")
 
 [node name="TilePrevLayer1" type="Sprite2D" parent="."]

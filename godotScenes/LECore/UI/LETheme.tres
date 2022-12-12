@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=25 format=3 uid="uid://cjaowsnu7xtcr"]
+[gd_resource type="Theme" load_steps=26 format=3 uid="uid://cjaowsnu7xtcr"]
 
 [ext_resource type="StyleBox" uid="uid://bybpp6cj6fo3r" path="res://godotScenes/LECore/UI/theme/style_box2.tres" id="1_mpkpl"]
 [ext_resource type="StyleBox" uid="uid://u8vfv7yfqvrp" path="res://godotScenes/LECore/UI/theme/letheme_styleboxflat.tres" id="2_mjkl3"]
@@ -112,6 +112,9 @@ corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ij4ii"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dw77y"]
 bg_color = Color(0.533333, 0.533333, 0.533333, 1)
@@ -619,7 +622,7 @@ Tree/constants/children_hl_line_width = 0
 Tree/constants/draw_guides = 0
 Tree/constants/draw_relationship_lines = 0
 Tree/constants/h_separation = 0
-Tree/constants/item_margin = 0
+Tree/constants/item_margin = 12
 Tree/constants/outline_size = 0
 Tree/constants/parent_hl_line_margin = 0
 Tree/constants/parent_hl_line_width = 0
@@ -646,7 +649,7 @@ Tree/styles/cursor_unfocused = null
 Tree/styles/custom_button = null
 Tree/styles/custom_button_hover = null
 Tree/styles/custom_button_pressed = null
-Tree/styles/selected = null
+Tree/styles/selected = SubResource("StyleBoxFlat_ij4ii")
 Tree/styles/selected_focus = null
 Tree/styles/title_button_hover = null
 Tree/styles/title_button_normal = SubResource("StyleBoxFlat_dw77y")

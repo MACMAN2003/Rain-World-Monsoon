@@ -1,10 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://i6dwbwi2ej2u"]
+[gd_scene load_steps=10 format=3 uid="uid://i6dwbwi2ej2u"]
 
 [ext_resource type="PackedScene" uid="uid://ce1lvn4je3olx" path="res://godotScenes/LECore/EditorsScenes/MatrixDisplayApprenticeTile.tscn" id="1_em15c"]
 [ext_resource type="Script" path="res://Scripts/LayerChecker.cs" id="2_0rrel"]
 [ext_resource type="Script" path="res://Scripts/TESelectCat.cs" id="2_jx6ri"]
 [ext_resource type="PackedScene" uid="uid://ddl6idjpc2ijp" path="res://godotScenes/LECore/EditorsScenes/TilePreviewMatrix.tscn" id="3_u6p20"]
 [ext_resource type="Script" path="res://Scripts/DroughtTagChecker.cs" id="4_jycl1"]
+[ext_resource type="Script" path="res://Scripts/Dropdownbutton.cs" id="5_57yuf"]
+[ext_resource type="Script" path="res://Scripts/TETreeSelector.cs" id="5_ag3o7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mxvwn"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kbr5h"]
 
 [node name="Tile Editor" type="HBoxContainer"]
 anchors_preset = 15
@@ -22,6 +29,7 @@ offset_bottom = 1080.0
 offset_left = 40.0
 offset_right = 1240.0
 offset_bottom = 1080.0
+focus_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2i(0, 24)
@@ -32,6 +40,7 @@ offset_bottom = 24.0
 offset_top = 28.0
 offset_right = 1200.0
 offset_bottom = 828.0
+focus_mode = 2
 
 [node name="SubViewport" type="SubViewport" parent="VBoxContainer/SubViewportContainer"]
 transparent_bg = true
@@ -82,7 +91,7 @@ offset_bottom = 856.0
 [node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
 offset_top = 860.0
 offset_right = 1200.0
-offset_bottom = 883.0
+offset_bottom = 894.0
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/normal_font_size = 24
 theme_override_font_sizes/bold_font_size = 24
@@ -93,9 +102,9 @@ scroll_active = false
 shortcut_keys_enabled = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-offset_top = 887.0
+offset_top = 898.0
 offset_right = 1200.0
-offset_bottom = 991.0
+offset_bottom = 1002.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
 offset_right = 346.0
@@ -147,33 +156,34 @@ offset_left = 1264.0
 offset_right = 1614.0
 offset_bottom = 1080.0
 size_flags_horizontal = 3
+focus_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer2"]
 custom_minimum_size = Vector2i(0, 24)
 offset_right = 350.0
 offset_bottom = 24.0
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer2"]
+[node name="VFlowContainer" type="VBoxContainer" parent="VBoxContainer2"]
+custom_minimum_size = Vector2i(265, 0)
 offset_top = 28.0
 offset_right = 350.0
-offset_bottom = 51.0
+offset_bottom = 756.0
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer2/VFlowContainer"]
+offset_right = 350.0
+offset_bottom = 23.0
 bbcode_enabled = true
 text = "[b][ Category ]"
 fit_content_height = true
 deselect_on_focus_loss_enabled = false
 script = ExtResource("2_jx6ri")
 
-[node name="VFlowContainer" type="VBoxContainer" parent="VBoxContainer2"]
-custom_minimum_size = Vector2i(265, 0)
-offset_top = 55.0
-offset_right = 350.0
-offset_bottom = 756.0
-size_flags_vertical = 3
-
 [node name="TILE LIST" type="RichTextLabel" parent="VBoxContainer2/VFlowContainer"]
 custom_minimum_size = Vector2i(350, 500)
+offset_top = 27.0
 offset_right = 350.0
-offset_bottom = 701.0
+offset_bottom = 728.0
 size_flags_horizontal = 0
 size_flags_vertical = 3
 bbcode_enabled = true
@@ -198,20 +208,20 @@ render_target_update_mode = 4
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="."]
 offset_left = 1618.0
-offset_right = 1920.0
+offset_right = 1892.0
 offset_bottom = 1080.0
 size_flags_horizontal = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer3"]
 custom_minimum_size = Vector2i(0, 24)
-offset_right = 302.0
+offset_right = 274.0
 offset_bottom = 24.0
 size_flags_stretch_ratio = 0.03
 
 [node name="Label" type="RichTextLabel" parent="VBoxContainer3"]
 custom_minimum_size = Vector2i(0, 24)
 offset_top = 28.0
-offset_right = 302.0
+offset_right = 274.0
 offset_bottom = 52.0
 bbcode_enabled = true
 text = "[b]Category & Index"
@@ -219,22 +229,44 @@ text = "[b]Category & Index"
 [node name="Label2" type="RichTextLabel" parent="VBoxContainer3"]
 custom_minimum_size = Vector2i(0, 24)
 offset_top = 56.0
-offset_right = 302.0
+offset_right = 274.0
 offset_bottom = 80.0
 bbcode_enabled = true
 text = "[b]0,0"
 script = ExtResource("2_jx6ri")
 IsIndexShower = true
 
-[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer3"]
+[node name="Button" type="Button" parent="VBoxContainer3" node_paths=PackedStringArray("IDropdown")]
 offset_top = 84.0
-offset_right = 302.0
-offset_bottom = 732.0
+offset_right = 274.0
+offset_bottom = 115.0
+tooltip_text = "Open/Close Tile Tree"
+toggle_mode = true
+text = "V"
+script = ExtResource("5_57yuf")
+IDropdown = NodePath("../Tree")
+
+[node name="Tree" type="Tree" parent="VBoxContainer3"]
+visible = false
+offset_top = 119.0
+offset_right = 274.0
+offset_bottom = 1052.0
 size_flags_vertical = 3
+theme_override_styles/selected = SubResource("StyleBoxFlat_mxvwn")
+theme_override_styles/selected_focus = SubResource("StyleBoxFlat_kbr5h")
+script = ExtResource("5_ag3o7")
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer3"]
+custom_minimum_size = Vector2i(0, 24)
+offset_top = 119.0
+offset_right = 274.0
+offset_bottom = 143.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer3"]
-offset_top = 736.0
-offset_right = 302.0
+process_mode = 4
+visible = false
+offset_top = 746.0
+offset_right = 274.0
 offset_bottom = 1080.0
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.53
@@ -244,3 +276,9 @@ text = "Warning! Selected Tile or Material is marked as Drought Reserve!"
 scroll_active = false
 shortcut_keys_enabled = false
 script = ExtResource("4_jycl1")
+
+[node name="MarginContainer3" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2i(24, 0)
+offset_left = 1896.0
+offset_right = 1920.0
+offset_bottom = 1080.0

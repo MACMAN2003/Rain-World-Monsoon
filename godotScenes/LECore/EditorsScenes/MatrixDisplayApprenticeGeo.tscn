@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dnnijtjhcc218"]
+[gd_scene load_steps=11 format=3 uid="uid://dnnijtjhcc218"]
 
 [ext_resource type="Script" path="res://Scripts/ApprenticeCamera.cs" id="1_r8c32"]
 [ext_resource type="PackedScene" uid="uid://xg342uyjdht8" path="res://godotScenes/Other/Compass.tscn" id="2_bfs25"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" path="res://Scripts/GeoOverlayGrid.cs" id="3_e1e0x"]
 [ext_resource type="Texture2D" uid="uid://d2cv54wu5py1y" path="res://Assets/QuickImport/png_from_bmp_files/Internal_040_levelEditImage1.png" id="4_76j0q"]
 [ext_resource type="Texture2D" uid="uid://blbu6x4ymqsvr" path="res://Assets/QuickImport/png_from_bmp_files/Internal_041_levelEditImage2.png" id="5_vgeh0"]
-[ext_resource type="Material" uid="uid://bwg6blcf5ntpi" path="res://Shaders/Additive_Modulate.material" id="5_yap84"]
 [ext_resource type="Texture2D" uid="uid://h1gotbwsap8x" path="res://Assets/QuickImport/png_from_bmp_files/Internal_042_levelEditImage3.png" id="6_1gap8"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_gq6hr"]
@@ -84,7 +83,6 @@ centered = false
 [node name="GeoEditImage1" type="Sprite2D" parent="Node2d"]
 unique_name_in_owner = true
 modulate = Color(0, 0, 0, 0.65098)
-material = ExtResource("5_yap84")
 position = Vector2(16, 16)
 z_index = 3
 texture = ExtResource("4_76j0q")
@@ -93,7 +91,6 @@ centered = false
 [node name="GeoEditImage2" type="Sprite2D" parent="Node2d"]
 unique_name_in_owner = true
 modulate = Color(0, 1, 0, 0.415686)
-material = ExtResource("5_yap84")
 position = Vector2(16, 16)
 z_index = 2
 texture = ExtResource("5_vgeh0")
@@ -102,7 +99,6 @@ centered = false
 [node name="GeoEditImage3" type="Sprite2D" parent="Node2d"]
 unique_name_in_owner = true
 modulate = Color(1, 0, 0, 0.396078)
-material = ExtResource("5_yap84")
 position = Vector2(16, 16)
 z_index = 1
 texture = ExtResource("6_1gap8")
