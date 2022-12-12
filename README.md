@@ -12,7 +12,7 @@ A fan-made, improved level editor for the indie game "Rain World"
 - It shouldn't ask to replace files, but if it does, make backups!
 
 ## Features
-- [x] Import and Export for the official Editor and RWCOM + Drought Editor ver 0.3.6 (aka, the community editor)
+- [x] Import and Export for the official Editor and RWCOM + Drought Editor ver 0.3.73 (aka, the community editor)
 - [x] Panning and Zooming with mouse controls.
 - [x] Geometry Editor features (except the move tool ;-;)
 - [x] Tile Editor features (except default material and special tools)
